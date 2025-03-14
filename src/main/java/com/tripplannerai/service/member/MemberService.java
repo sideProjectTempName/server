@@ -36,10 +36,8 @@ import static com.tripplannerai.util.CookieUtil.getCookie;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final ImageRepository imageRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
-    private final S3UploadService s3UploadService;
     @Value("${jwt.refresh.expiration}")
     private int refreshExpiration;
 
@@ -57,15 +55,10 @@ public class MemberService {
         return SignInResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,accessToken);
     }
 
-    public SignUpResponse signUp(SignUpRequest signUpRequest, MultipartFile file) throws IOException {
+    public SignUpResponse signUp(SignUpRequest signUpRequest){
 
-            Image image = null;
-            if(!file.isEmpty()){
-                String url = s3UploadService.upload(file);
-                image = of(url);
-            }
-            imageRepository.save(image);
-            Member member = of(signUpRequest,image);
+
+            Member member = of(signUpRequest);
             memberRepository.save(member);
             return SignUpResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
