@@ -1,6 +1,7 @@
 package com.tripplannerai.entity.member;
 
 import com.tripplannerai.entity.BaseEntity;
+import com.tripplannerai.entity.image.Image;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,10 +38,12 @@ public class Member extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String providerId;
 
-
     @Column(name = "state", columnDefinition = "BOOLEAN DEFAULT FALSE")  //회원탈퇴여부
     private boolean isWithdrawn;
 
     @Column
     private String refreshToken;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="image_id")
+    private Image image;
 }
