@@ -4,11 +4,16 @@ import com.tripplannerai.dto.request.member.SignInRequest;
 import com.tripplannerai.dto.request.member.SignUpRequest;
 import com.tripplannerai.dto.response.member.SignInResponse;
 import com.tripplannerai.dto.response.member.SignUpResponse;
+import com.tripplannerai.entity.image.Image;
 import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.exception.member.NotFoundMemberException;
 import com.tripplannerai.exception.member.UnCorrectPasswordException;
+import com.tripplannerai.mapper.image.ImageFactory;
+import com.tripplannerai.mapper.member.MemberFactory;
+import com.tripplannerai.repository.image.ImageRepository;
 import com.tripplannerai.repository.member.MemberRepository;
 import com.tripplannerai.provider.JwtProvider;
+import com.tripplannerai.s3.S3UploadService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +22,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
+import static com.tripplannerai.mapper.member.MemberFactory.*;
+import static com.tripplannerai.mapper.image.ImageFactory.*;
 import static com.tripplannerai.util.ConstClass.SUCCESS_CODE;
 import static com.tripplannerai.util.ConstClass.SUCCESS_MESSAGE;
 import static com.tripplannerai.util.CookieUtil.getCookie;
@@ -27,8 +36,10 @@ import static com.tripplannerai.util.CookieUtil.getCookie;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final ImageRepository imageRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final S3UploadService s3UploadService;
     @Value("${jwt.refresh.expiration}")
     private int refreshExpiration;
 
@@ -46,7 +57,17 @@ public class MemberService {
         return SignInResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,accessToken);
     }
 
-    public SignUpResponse signUp(SignUpRequest signUpRequest, MultipartFile file) {
-        return null;
+    public SignUpResponse signUp(SignUpRequest signUpRequest, MultipartFile file) throws IOException {
+
+            Image image = null;
+            if(!file.isEmpty()){
+                String url = s3UploadService.upload(file);
+                image = of(url);
+            }
+            imageRepository.save(image);
+            Member member = of(signUpRequest,image);
+            memberRepository.save(member);
+            return SignUpResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
+
 }
