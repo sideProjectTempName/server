@@ -9,6 +9,8 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.IOException;
+
 import static com.tripplannerai.util.ConstClass.*;
 
 @RestControllerAdvice
@@ -22,6 +24,10 @@ public class CommonAdviceController {
     public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException
             (HttpRequestMethodNotSupportedException ex) {
         return new ResponseEntity<>(ErrorResponse.of(METHOD_NOT_SUPPORTED_CODE,METHOD_NOT_SUPPORTED_MESSAGE), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleException(IOException ex) {
+        return new ResponseEntity<>(ErrorResponse.of(DB_ERROR_CODE,DB_ERRORM_MESSAGE), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Table(name = "view_log")
 public class ViewLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

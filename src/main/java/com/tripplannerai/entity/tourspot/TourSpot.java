@@ -12,11 +12,13 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Table(name = "tour_spot")
 public class TourSpot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tour_spot_id")
     private Long tourSpotId;
+    @Column(name = "orders")
     private Integer order;
     @Column(name = "start_date")
     private LocalDateTime startDate;

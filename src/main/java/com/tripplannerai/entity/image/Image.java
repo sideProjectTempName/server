@@ -2,12 +2,15 @@ package com.tripplannerai.entity.image;
 
 import com.tripplannerai.entity.review.Review;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Table(name = "image")
 public class Image {
 
     @Id

@@ -10,6 +10,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "review")
 public class Review extends BaseEntity {
     @Id
     @Column(name = "review_id")

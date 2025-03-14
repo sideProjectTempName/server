@@ -8,6 +8,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "itinerary")
 public class Itinerary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

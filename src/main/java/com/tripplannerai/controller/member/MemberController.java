@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
@@ -27,7 +29,7 @@ public class MemberController {
         return new ResponseEntity<>(signInResponse, HttpStatus.OK);
     }
     @PostMapping(value = "/auth/sign-up",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<SignUpResponse> signUp(@Valid @RequestBody SignUpRequest signUpRequest, @RequestPart MultipartFile file){
+    public ResponseEntity<SignUpResponse> signUp(@Valid @RequestPart(name = "signUpRequest") SignUpRequest signUpRequest, @RequestPart MultipartFile file) throws IOException {
         SignUpResponse signUpResponse = memberService.signUp(signUpRequest,file);
         return new ResponseEntity<>(signUpResponse, HttpStatus.OK);
     }

@@ -10,6 +10,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "destination")
 public class Destination {
     @Id
     @Column(name = "destination_id")
