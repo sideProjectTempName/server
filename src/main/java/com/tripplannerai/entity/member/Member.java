@@ -1,5 +1,6 @@
-package com.tripplannerai.entity;
+package com.tripplannerai.entity.member;
 
+import com.tripplannerai.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import java.sql.Timestamp;
 @Entity
 @Getter
 @Setter
-public class Member {
+public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -34,14 +35,6 @@ public class Member {
     @Column(nullable = false, length = 50)
     private String providerId;
 
-
-    @Column(nullable = false,
-            columnDefinition = "TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp createAt;
-
-    @UpdateTimestamp
-    @Column
-    private Timestamp updateAt;
 
     @Column(name = "state", columnDefinition = "BOOLEAN DEFAULT FALSE")  //회원탈퇴여부
     private boolean isWithdrawn;

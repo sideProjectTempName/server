@@ -1,6 +1,6 @@
 package com.tripplannerai.repository.member;
 
-import com.tripplannerai.entity.Member;
+import com.tripplannerai.entity.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

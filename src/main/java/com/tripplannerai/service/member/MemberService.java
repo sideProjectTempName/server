@@ -4,7 +4,7 @@ import com.tripplannerai.dto.request.member.SignInRequest;
 import com.tripplannerai.dto.request.member.SignUpRequest;
 import com.tripplannerai.dto.response.member.SignInResponse;
 import com.tripplannerai.dto.response.member.SignUpResponse;
-import com.tripplannerai.entity.Member;
+import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.exception.member.NotFoundMemberException;
 import com.tripplannerai.exception.member.UnCorrectPasswordException;
 import com.tripplannerai.repository.member.MemberRepository;
