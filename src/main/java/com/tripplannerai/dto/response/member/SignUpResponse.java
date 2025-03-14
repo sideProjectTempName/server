@@ -14,4 +14,8 @@ import lombok.NoArgsConstructor;
 public class SignUpResponse {
     private String code;
     private String message;
+
+    public static SignUpResponse of (String code, String message) {
+        return new SignUpResponse(code, message);
+    }
 }
