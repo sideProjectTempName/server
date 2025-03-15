@@ -1,8 +1,9 @@
-package com.tripplannerai.entity;
+package com.tripplannerai.entity.member;
 
+import com.tripplannerai.entity.BaseEntity;
+import com.tripplannerai.entity.image.Image;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import org.hibernate.annotations.UpdateTimestamp;
@@ -12,7 +13,11 @@ import java.sql.Timestamp;
 @Entity
 @Getter
 @Setter
-public class Member {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "member")
+public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -27,27 +32,21 @@ public class Member {
     @Column(length = 20)
     private String nickname;
 
-    @Column(length = 11)
+    @Column(length = 13)
     private String phoneNumber;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = true, length = 10)
     private String provider;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = true, length = 50)
     private String providerId;
-
-
-    @Column(nullable = false,
-            columnDefinition = "TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp createAt;
-
-    @UpdateTimestamp
-    @Column
-    private Timestamp updateAt;
 
     @Column(name = "state", columnDefinition = "BOOLEAN DEFAULT FALSE")  //회원탈퇴여부
     private boolean isWithdrawn;
 
     @Column
     private String refreshToken;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="image_id")
+    private Image image;
 }
