@@ -28,9 +28,9 @@ public class MemberController {
         SignInResponse signInResponse = memberService.signIn(signInRequest,response);
         return new ResponseEntity<>(signInResponse, HttpStatus.OK);
     }
-    @PostMapping(value = "/auth/sign-up",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<SignUpResponse> signUp(@Valid @RequestPart(name = "signUpRequest") SignUpRequest signUpRequest, @RequestPart MultipartFile file) throws IOException {
-        SignUpResponse signUpResponse = memberService.signUp(signUpRequest,file);
+    @PostMapping(value = "/auth/sign-up")
+    public ResponseEntity<SignUpResponse> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
+        SignUpResponse signUpResponse = memberService.signUp(signUpRequest);
         return new ResponseEntity<>(signUpResponse, HttpStatus.OK);
     }
 }

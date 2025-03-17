@@ -12,11 +12,10 @@ public class JwtValidator {
     private String secretKey;
 
     public Claims validateToken(String jwtToken) {
-        Claims claims = Jwts.parserBuilder()
+        return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(jwtToken)
                 .getBody();
-        return claims;
     }
 }
