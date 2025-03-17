@@ -21,6 +21,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private  String[] whitelist = {
+            "/auth/login","/auth/sign-up",
+            "/v3/api-docs/**","/swagger-ui/**","/swagger-ui.html", "/api/post/**","/api/posts","/swagger-resources/**", "/webjars/**"
+    };
+
     private final JwtAuthFilter jwtAuthFilter;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -29,8 +34,7 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/login","/auth/sign-up",
-                                "/v3/api-docs/**","/swagger-ui/**","/swagger-ui.html", "/api/post/**","/api/posts","/swagger-resources/**", "/webjars/**")
+                        .requestMatchers(whitelist)
                         .permitAll()
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
@@ -48,7 +52,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
-        configuration.addAllowedOrigin("*");
+        configuration.addAllowedOrigin("http://localhost:3000");
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",configuration);
