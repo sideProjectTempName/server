@@ -1,6 +1,5 @@
 package com.tripplannerai.service.oauth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tripplannerai.entity.member.CustomOAuth2User;
 import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.entity.social.Social;
@@ -43,6 +42,9 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
             Map<String, String> response = (Map<String, String>) oAuth2User.getAttributes().get("response");
             userId = "naver_" + response.get("id").substring(0, 14);
             nickname = response.get("nickname");
+        } else if (oauthClientName.equals("google")) {
+            userId = "google_" + oAuth2User.getAttributes().get("sub");
+            nickname = (String) oAuth2User.getAttributes().get("name");
         } else {
             throw new OAuth2AuthenticationException("Unsupported OAuth provider: " + oauthClientName);
         }
@@ -62,8 +64,14 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
                     .build();
             memberRepository.save(member);
 
+            SocialType socialType = switch (oauthClientName) {
+                case "kakao" -> SocialType.KAKAO;
+                case "naver" -> SocialType.NAVER;
+                case "google" -> SocialType.GOOGLE;
+                default -> throw new IllegalStateException("Unexpected provider: " + oauthClientName);
+            };
             Social social = Social.builder()
-                    .socialType(oauthClientName.equals("kakao") ? SocialType.KAKAO : SocialType.NAVER)
+                    .socialType(socialType)
                     .member(member)
                     .build();
             socialRepository.save(social);
