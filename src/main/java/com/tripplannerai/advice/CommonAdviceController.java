@@ -27,7 +27,7 @@ public class CommonAdviceController {
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(IOException ex) {
-        return new ResponseEntity<>(ErrorResponse.of(DB_ERROR_CODE,DB_ERRORM_MESSAGE), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ErrorResponse.of(DB_ERROR_CODE,DB_ERROR_MESSAGE), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
