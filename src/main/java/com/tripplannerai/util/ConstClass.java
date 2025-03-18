@@ -9,13 +9,15 @@ public class ConstClass {
     public static String METHOD_NOT_SUPPORTED_CODE = "MN";
     public static String UPLOAD_FAILED_CODE = "UF";
     public static String DB_ERROR_CODE = "DE";
+    public static String NOT_AUTHORIZED_CODE = "NA";
     public static String SUCCESS_MESSAGE = "Success";
     public static String NOT_FOUND_MEMBER_MESSAGE = "Not Found Member";
     public static String UN_CORRECT_PASSWORD_MESSAGE = "Un correct Password";
     public static String VALIDATION_FAILED_MESSAGE = "Validation Failed";
     public static String METHOD_NOT_SUPPORTED_MESSAGE = "Method not supported";
     public static String UPLOAD_FAILED_MESSAGE = "Upload Failed";
-    public static String DB_ERRORM_MESSAGE = "Database Error";
+    public static String DB_ERROR_MESSAGE = "Database Error";
+    public static String NOT_AUTHORIZED_MESSAGE = "Not Authorized";
 
     //OAuth2 실패
     public static String AUTHENTICATION_FAILED_CODE = "AF";

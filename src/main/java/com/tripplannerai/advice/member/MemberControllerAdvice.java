@@ -2,6 +2,7 @@ package com.tripplannerai.advice.member;
 
 import com.tripplannerai.controller.member.MemberController;
 import com.tripplannerai.dto.response.ErrorResponse;
+import com.tripplannerai.exception.member.NotAuthorizeException;
 import com.tripplannerai.exception.member.NotFoundMemberException;
 import com.tripplannerai.exception.member.UnCorrectPasswordException;
 import lombok.extern.slf4j.Slf4j;
@@ -18,15 +19,19 @@ import static com.tripplannerai.util.ConstClass.*;
 public class MemberControllerAdvice {
 
     @ExceptionHandler(NotFoundMemberException.class)
-    public ResponseEntity<ErrorResponse> handleNotFoundMemberException(NotFoundMemberException ex) {
+    public ResponseEntity<ErrorResponse> handleNotFoundMemberException() {
         return new ResponseEntity<>(ErrorResponse.of(NOT_FOUND_MEMBER_CODE,NOT_FOUND_MEMBER_MESSAGE), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(UnCorrectPasswordException.class)
-    public ResponseEntity<ErrorResponse> handleUnCorrectPasswordException(UnCorrectPasswordException ex) {
+    public ResponseEntity<ErrorResponse> handleUnCorrectPasswordException() {
         return new ResponseEntity<>(ErrorResponse.of(UN_CORRECT_PASSWORD_CODE,UN_CORRECT_PASSWORD_MESSAGE), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(NotAuthorizeException.class)
+    public ResponseEntity<ErrorResponse> handleNotAuthorizaException() {
+        return new ResponseEntity<>(ErrorResponse.of(NOT_AUTHORIZED_CODE,NOT_AUTHORIZED_MESSAGE), HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(IOException.class)
-    public ResponseEntity<ErrorResponse> handleIOException(IOException ex) {
+    public ResponseEntity<ErrorResponse> handleIOException() {
         return new ResponseEntity<>(ErrorResponse.of(UPLOAD_FAILED_CODE,UPLOAD_FAILED_MESSAGE), HttpStatus.BAD_REQUEST);
     }
 }

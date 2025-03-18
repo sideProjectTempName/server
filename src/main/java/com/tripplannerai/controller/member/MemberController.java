@@ -1,5 +1,6 @@
 package com.tripplannerai.controller.member;
 
+import com.tripplannerai.annotation.Username;
 import com.tripplannerai.dto.request.member.SignInRequest;
 import com.tripplannerai.dto.request.member.SignUpRequest;
 import com.tripplannerai.dto.response.member.SignInResponse;
@@ -33,4 +34,6 @@ public class MemberController {
         SignUpResponse signUpResponse = memberService.signUp(signUpRequest);
         return new ResponseEntity<>(signUpResponse, HttpStatus.OK);
     }
+
+
 }
