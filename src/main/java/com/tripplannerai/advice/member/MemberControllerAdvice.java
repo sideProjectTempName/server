@@ -2,6 +2,7 @@ package com.tripplannerai.advice.member;
 
 import com.tripplannerai.controller.member.MemberController;
 import com.tripplannerai.dto.response.ErrorResponse;
+import com.tripplannerai.exception.member.MemberExistException;
 import com.tripplannerai.exception.member.NotAuthorizeException;
 import com.tripplannerai.exception.member.NotFoundMemberException;
 import com.tripplannerai.exception.member.UnCorrectPasswordException;
@@ -29,6 +30,10 @@ public class MemberControllerAdvice {
     @ExceptionHandler(NotAuthorizeException.class)
     public ResponseEntity<ErrorResponse> handleNotAuthorizaException() {
         return new ResponseEntity<>(ErrorResponse.of(NOT_AUTHORIZED_CODE,NOT_AUTHORIZED_MESSAGE), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(MemberExistException.class)
+    public ResponseEntity<ErrorResponse> handleMemberExistException() {
+        return new ResponseEntity<>(ErrorResponse.of(MEMBER_EXISTS_CODE,MEMBER_EXISTS_MESSAGE), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(IOException.class)
     public ResponseEntity<ErrorResponse> handleIOException() {

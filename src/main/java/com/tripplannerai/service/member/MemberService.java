@@ -1,11 +1,14 @@
 package com.tripplannerai.service.member;
 
+import com.tripplannerai.dto.request.member.EmailCheckoutRequest;
 import com.tripplannerai.dto.request.member.SignInRequest;
 import com.tripplannerai.dto.request.member.SignUpRequest;
+import com.tripplannerai.dto.response.member.EmailCheckoutResponse;
 import com.tripplannerai.dto.response.member.SignInResponse;
 import com.tripplannerai.dto.response.member.SignUpResponse;
 import com.tripplannerai.entity.image.Image;
 import com.tripplannerai.entity.member.Member;
+import com.tripplannerai.exception.member.MemberExistException;
 import com.tripplannerai.exception.member.NotFoundMemberException;
 import com.tripplannerai.exception.member.UnCorrectPasswordException;
 import com.tripplannerai.mapper.image.ImageFactory;
@@ -16,6 +19,7 @@ import com.tripplannerai.provider.JwtProvider;
 import com.tripplannerai.s3.S3UploadService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static com.tripplannerai.mapper.member.MemberFactory.*;
 import static com.tripplannerai.mapper.image.ImageFactory.*;
@@ -63,4 +68,11 @@ public class MemberService {
             return SignUpResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
+    public EmailCheckoutResponse emailCheck(@Valid EmailCheckoutRequest emailCheckoutRequest) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(emailCheckoutRequest.getEmail());
+        if(optionalMember.isPresent()){
+            throw new MemberExistException("member exist");
+        }
+        return EmailCheckoutResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
+    }
 }

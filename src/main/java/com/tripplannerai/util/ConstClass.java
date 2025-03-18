@@ -10,6 +10,7 @@ public class ConstClass {
     public static String UPLOAD_FAILED_CODE = "UF";
     public static String DB_ERROR_CODE = "DE";
     public static String NOT_AUTHORIZED_CODE = "NA";
+    public static String MEMBER_EXISTS_CODE = "ME";
     public static String SUCCESS_MESSAGE = "Success";
     public static String NOT_FOUND_MEMBER_MESSAGE = "Not Found Member";
     public static String UN_CORRECT_PASSWORD_MESSAGE = "Un correct Password";
@@ -18,6 +19,7 @@ public class ConstClass {
     public static String UPLOAD_FAILED_MESSAGE = "Upload Failed";
     public static String DB_ERROR_MESSAGE = "Database Error";
     public static String NOT_AUTHORIZED_MESSAGE = "Not Authorized";
+    public static String MEMBER_EXISTS_MESSAGE = "Member already exists";
 
     //OAuth2 실패
     public static String AUTHENTICATION_FAILED_CODE = "AF";
