@@ -17,5 +17,17 @@ public class ConstClass {
     public static String UPLOAD_FAILED_MESSAGE = "Upload Failed";
     public static String DB_ERRORM_MESSAGE = "Database Error";
 
+    //OAuth2 실패
+    public static String AUTHENTICATION_FAILED_CODE = "AF";
+    public static String AUTHENTICATION_FAILED_MESSAGE = "Authentication Failed";
+    //OAuth2 사용자 동의 거부
+    public static String OAUTH_DENIED_CODE = "OD";
+    public static String OAUTH_DENIED_MESSAGE = "OAuth Access Denied";
+    //OAuth 인증서버 오류
+    public static String OAUTH_SERVER_ERROR_CODE = "OS";
+    public static String OAUTH_SERVER_ERROR_MESSAGE = "OAuth Server Error";
+    //클라이언트 ID/시크릿 오류.
+    public static String OAUTH_INVALID_CLIENT_CODE = "OI";
+    public static String OAUTH_INVALID_CLIENT_MESSAGE = "OAuth Invalid Client";
 
 }
