@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.IOException;
 
-import static com.tripplannerai.util.ConstClass.UPLOAD_FAILED_CODE;
-import static com.tripplannerai.util.ConstClass.UPLOAD_FAILED_MESSAGE;
+import static com.tripplannerai.util.ConstClass.*;
 
 @RestControllerAdvice(basePackageClasses = ImageController.class)
 public class ImageControllerAdvice {
