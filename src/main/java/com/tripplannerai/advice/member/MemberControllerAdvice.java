@@ -35,8 +35,4 @@ public class MemberControllerAdvice {
     public ResponseEntity<ErrorResponse> handleMemberExistException() {
         return new ResponseEntity<>(ErrorResponse.of(MEMBER_EXISTS_CODE,MEMBER_EXISTS_MESSAGE), HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(IOException.class)
-    public ResponseEntity<ErrorResponse> handleIOException() {
-        return new ResponseEntity<>(ErrorResponse.of(UPLOAD_FAILED_CODE,UPLOAD_FAILED_MESSAGE), HttpStatus.BAD_REQUEST);
-    }
 }
