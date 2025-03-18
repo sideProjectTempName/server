@@ -1,7 +1,10 @@
 package com.tripplannerai.controller.member;
 
+import com.tripplannerai.annotation.Username;
+import com.tripplannerai.dto.request.member.EmailCheckoutRequest;
 import com.tripplannerai.dto.request.member.SignInRequest;
 import com.tripplannerai.dto.request.member.SignUpRequest;
+import com.tripplannerai.dto.response.member.EmailCheckoutResponse;
 import com.tripplannerai.dto.response.member.SignInResponse;
 import com.tripplannerai.dto.response.member.SignUpResponse;
 import com.tripplannerai.service.member.MemberService;
@@ -33,4 +36,12 @@ public class MemberController {
         SignUpResponse signUpResponse = memberService.signUp(signUpRequest);
         return new ResponseEntity<>(signUpResponse, HttpStatus.OK);
     }
+    @PostMapping(value = "/email-check")
+    public ResponseEntity<EmailCheckoutResponse> emailCheck(@Valid @RequestBody EmailCheckoutRequest emailCheckoutRequest) {
+        EmailCheckoutResponse emailCheckoutResponse = memberService.emailCheck(emailCheckoutRequest);
+        return new ResponseEntity<>(emailCheckoutResponse, HttpStatus.OK);
+    }
+
+
+
 }
