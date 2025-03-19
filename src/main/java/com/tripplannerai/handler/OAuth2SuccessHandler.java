@@ -1,5 +1,7 @@
 package com.tripplannerai.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tripplannerai.dto.JwtSubject;
 import com.tripplannerai.entity.member.CustomOAuth2User;
 import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.exception.member.NotFoundMemberException;
@@ -30,6 +32,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private int refreshExpiration;
     @Value("${jwt.access.expiration}")
     private int accessExpiration;
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     @Override
     @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -37,13 +41,16 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                                         Authentication authentication) throws IOException, ServletException {
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
-        String userId = oAuth2User.getName();
-        String accessToken = jwtProvider.createAccessToken(userId,"user");
-        String refreshToken = jwtProvider.createRefreshToken(userId,"user");
+        String email = oAuth2User.getName();
+
 
         // DB에 refreshToken 저장
-        Member member = memberRepository.findByEmail(userId)
+        Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundMemberException("Member not found in OAuth2"));
+        JwtSubject jwtSubject = JwtSubject.of(member);
+        String accessToken = jwtProvider.createAccessToken(objectMapper.writeValueAsString(jwtSubject), "user");
+        String refreshToken = jwtProvider.createRefreshToken(objectMapper.writeValueAsString(jwtSubject),"user");
+
         member.setRefreshToken(refreshToken);
         memberRepository.save(member);
 
