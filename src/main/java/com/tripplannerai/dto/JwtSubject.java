@@ -15,9 +15,9 @@ public class JwtSubject {
 
     private String email;
     private String nickname;
-    private Image image;
+    private String  url;
 
     public static JwtSubject of(Member member){
-        return new JwtSubject(member.getEmail(),member.getNickname(),member.getImage());
+        return new JwtSubject(member.getEmail(),member.getNickname(),member.getImage().getUrl());
     }
 }
