@@ -1,22 +1,17 @@
 package com.tripplannerai.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tripplannerai.dto.response.ErrorResponse;
-import com.tripplannerai.util.ConstClass;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.bcel.Const;
-import org.springframework.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.URLEncoder;
 
 import static com.tripplannerai.util.ConstClass.*;
 
@@ -24,25 +19,39 @@ import static com.tripplannerai.util.ConstClass.*;
 @RequiredArgsConstructor
 public class OAuth2FailureHandler implements AuthenticationFailureHandler {
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private static final Logger logger = LoggerFactory.getLogger(OAuth2FailureHandler.class);
+
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String error = request.getParameter("error");
-        ErrorResponse errorResponse;
 
-        if (error.equals("access_denied")) {
-            errorResponse = ErrorResponse.of(OAUTH_DENIED_CODE, OAUTH_DENIED_MESSAGE);
-        } else if (error.equals("invalid_client")) {
-            errorResponse = ErrorResponse.of(OAUTH_INVALID_CLIENT_CODE, OAUTH_INVALID_CLIENT_MESSAGE);
-        } else if (error.equals("server_error")) {
-            errorResponse = ErrorResponse.of(OAUTH_SERVER_ERROR_CODE, OAUTH_SERVER_ERROR_MESSAGE);
-        } else {
-            errorResponse = ErrorResponse.of(AUTHENTICATION_FAILED_CODE,AUTHENTICATION_FAILED_MESSAGE);
-        }
+        record ErrorPair(String errorCode, String errorMessage) {}
+        ErrorPair errorPair = switch (error) {
+            case "access_denied" -> new ErrorPair(
+                    OAUTH_DENIED_CODE,
+                    OAUTH_DENIED_MESSAGE
+            );
+            case "invalid_client" -> new ErrorPair(
+                    OAUTH_INVALID_CLIENT_CODE,
+                    OAUTH_INVALID_CLIENT_MESSAGE
+            );
+            case "server_error" -> new ErrorPair(
+                    OAUTH_SERVER_ERROR_CODE,
+                    OAUTH_SERVER_ERROR_MESSAGE
+            );
+            case null -> new ErrorPair(
+                    AUTHENTICATION_FAILED_CODE,
+                    AUTHENTICATION_FAILED_MESSAGE + ": " + exception.getMessage()
+            );
+            default -> new ErrorPair(
+                    AUTHENTICATION_FAILED_CODE,
+                    AUTHENTICATION_FAILED_MESSAGE + ": " + error
+            );
+        };
+        logger.error("소셜 로그인 실패 - error: {}, message: {}",error, exception.getMessage());
 
-        response.setContentType("application/json;charset=UTF-8");
-        response.setStatus(HttpStatus.BAD_REQUEST.value());
-        response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
-        response.getWriter().flush();
+        String redirectUrl = "http://localhost:3000/oauth2/redirect" + "?status=error&errorCode=" + errorPair.errorCode()
+                + "&errorMessage=" + URLEncoder.encode(errorPair.errorMessage(),"UTF-8");
+        response.sendRedirect(redirectUrl);
     }
 }
