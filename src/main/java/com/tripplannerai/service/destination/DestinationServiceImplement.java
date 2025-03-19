@@ -21,12 +21,5 @@ public class DestinationServiceImplement implements DestinationService {
 
     @Override
     public void fetchAndSaveDestinations(String areaCode) {
-        RestTemplate restTemplate = new RestTemplate();
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        int pageNo = 1;
-        int numOfRows = 1000;
-        boolean hasMoreData = true;
-
     }
 }
