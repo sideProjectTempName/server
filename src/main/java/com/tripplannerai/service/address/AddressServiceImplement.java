@@ -31,17 +31,11 @@ public class AddressServiceImplement implements AddressService{
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @PostConstruct
-    public void init() throws Exception {
+    @Override
+    public void saveAddressFromApi() throws Exception{
         if (addressRepository.count() > 0) {
             return;
         }
-        saveAddressFromApi();
-    }
-
-    @Override
-    public void saveAddressFromApi() throws Exception{
-
         String areaCodeUrl = baseUrl + "/areaCode1?serviceKey=" + serviceKey +
                 "&numOfRows=100&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json";
         JsonNode areas = fetchData(areaCodeUrl).path("response").path("body").path("items").path("item");
