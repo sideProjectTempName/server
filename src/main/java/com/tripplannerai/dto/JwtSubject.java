@@ -18,6 +18,8 @@ public class JwtSubject {
     private String  url;
 
     public static JwtSubject of(Member member){
-        return new JwtSubject(member.getEmail(),member.getNickname(),member.getImage().getUrl());
+        return new JwtSubject(member.getEmail(),
+                member.getNickname(),
+                member.getImage() != null ? member.getImage().getUrl() : null);
     }
 }
