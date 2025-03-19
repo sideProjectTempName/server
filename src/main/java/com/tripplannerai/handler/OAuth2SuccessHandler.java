@@ -15,12 +15,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-
 
 import static com.tripplannerai.util.ConstClass.SUCCESS_CODE;
 import static com.tripplannerai.util.ConstClass.SUCCESS_MESSAGE;
@@ -34,6 +32,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final MemberRepository memberRepository;
     @Value("${jwt.refresh.expiration}")
     private int refreshExpiration;
+
     @Override
     @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request,
