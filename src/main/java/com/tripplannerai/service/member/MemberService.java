@@ -1,5 +1,8 @@
 package com.tripplannerai.service.member;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tripplannerai.dto.JwtSubject;
 import com.tripplannerai.dto.request.member.EmailCheckoutRequest;
 import com.tripplannerai.dto.request.member.SignInRequest;
 import com.tripplannerai.dto.request.member.SignUpRequest;
@@ -17,6 +20,7 @@ import com.tripplannerai.repository.image.ImageRepository;
 import com.tripplannerai.repository.member.MemberRepository;
 import com.tripplannerai.provider.JwtProvider;
 import com.tripplannerai.s3.S3UploadService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -45,17 +49,20 @@ public class MemberService {
     private final JwtProvider jwtProvider;
     @Value("${jwt.refresh.expiration}")
     private int refreshExpiration;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
-    public SignInResponse signIn(SignInRequest signInRequest, HttpServletResponse response) {
+    public SignInResponse signIn(SignInRequest signInRequest, HttpServletResponse response) throws JsonProcessingException {
 
         Member member = memberRepository.findByEmail(signInRequest.getEmail()).orElseThrow(()-> new NotFoundMemberException("not Found Member"));
         boolean matches = passwordEncoder.matches(signInRequest.getPassword(), member.getPassword());
         if(!matches){
             throw new UnCorrectPasswordException("doesn't match Password!");
         }
-        String accessToken = jwtProvider.createAccessToken(member.getEmail(),"user");
-        String refreshToken = jwtProvider.createRefreshToken(member.getEmail(),"user");
-        getCookie("refreshToken",refreshToken,refreshExpiration);
+        JwtSubject jwtSubject = JwtSubject.of(member);
+        String accessToken = jwtProvider.createAccessToken(objectMapper.writeValueAsString(jwtSubject),"user");
+        String refreshToken = jwtProvider.createRefreshToken(objectMapper.writeValueAsString(jwtSubject),"user");
+        Cookie cookie = getCookie("refreshToken",refreshToken,refreshExpiration);
+        response.addCookie(cookie);
         member.setRefreshToken(refreshToken);
         return SignInResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,accessToken);
     }
