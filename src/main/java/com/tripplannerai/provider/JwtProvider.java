@@ -29,8 +29,8 @@ public class JwtProvider {
     }
 
 
-    public String createAccessToken(String email, String role){
-        Claims claims = Jwts.claims().setSubject(email);
+    public String createAccessToken(String subject, String role){
+        Claims claims = Jwts.claims().setSubject(subject);
         claims.put("role", role);
         Date now = new Date();
         String token = Jwts.builder()
@@ -42,8 +42,8 @@ public class JwtProvider {
         return token;
     }
 
-    public String createRefreshToken(String email, String role){
-        Claims claims = Jwts.claims().setSubject(email);
+    public String createRefreshToken(String subject, String role){
+        Claims claims = Jwts.claims().setSubject(subject);
         claims.put("role", role);
         Date now = new Date();
         String token = Jwts.builder()

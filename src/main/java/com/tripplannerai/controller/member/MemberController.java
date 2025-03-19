@@ -1,5 +1,6 @@
 package com.tripplannerai.controller.member;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tripplannerai.annotation.Username;
 import com.tripplannerai.dto.request.member.EmailCheckoutRequest;
 import com.tripplannerai.dto.request.member.SignInRequest;
@@ -27,7 +28,7 @@ import java.io.IOException;
 public class MemberController {
     private final MemberService memberService;
     @PostMapping("/auth/login")
-    public ResponseEntity<SignInResponse> signIn(@Valid @RequestBody SignInRequest signInRequest, HttpServletResponse response) {
+    public ResponseEntity<SignInResponse> signIn(@Valid @RequestBody SignInRequest signInRequest, HttpServletResponse response) throws JsonProcessingException {
         SignInResponse signInResponse = memberService.signIn(signInRequest,response);
         return new ResponseEntity<>(signInResponse, HttpStatus.OK);
     }
