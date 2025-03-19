@@ -1,7 +1,5 @@
 package com.tripplannerai.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tripplannerai.dto.response.member.SignInResponse;
 import com.tripplannerai.entity.member.CustomOAuth2User;
 import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.exception.member.NotFoundMemberException;
@@ -20,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
-import static com.tripplannerai.util.ConstClass.SUCCESS_CODE;
-import static com.tripplannerai.util.ConstClass.SUCCESS_MESSAGE;
 import static com.tripplannerai.util.CookieUtil.getCookie;
 
 @Component
@@ -32,7 +28,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final MemberRepository memberRepository;
     @Value("${jwt.refresh.expiration}")
     private int refreshExpiration;
-
+    @Value("${jwt.access.expiration}")
+    private int accessExpiration;
     @Override
     @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -51,14 +48,16 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         memberRepository.save(member);
 
         // 쿠키 설정
+        Cookie accessTokenCookie = getCookie("accessToken", accessToken, accessExpiration);
+        accessTokenCookie.setHttpOnly(false);
+
         Cookie refreshTokenCookie =getCookie("refreshToken",refreshToken,refreshExpiration);
+
+        response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
 
-        // SignInResponse 응답
-        SignInResponse signInResponse = SignInResponse.of(SUCCESS_CODE, SUCCESS_MESSAGE, accessToken);
-        response.setContentType("application/json;charset=UTF-8");
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write(new ObjectMapper().writeValueAsString(signInResponse));
-        response.getWriter().flush();
+        //프론트엔드로 리다이렉트
+        String redirectUrl = "http://localhost:3000/oauth2/redirect" + "?status=success";
+        response.sendRedirect(redirectUrl);
     }
 }
