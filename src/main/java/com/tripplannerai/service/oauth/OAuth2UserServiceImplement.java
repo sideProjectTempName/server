@@ -30,27 +30,27 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
 
         OAuth2User oAuth2User = super.loadUser(request);
         String oauthClientName = request.getClientRegistration().getClientName();
-        String userId = null;
+        String email = null;
         String nickname = null;
 
         // 소셜 제공자별 userId와 nickname 설정
         if (oauthClientName.equals("kakao")) {
             Map<String, String> properties = (Map<String, String>) oAuth2User.getAttributes().get("properties");
-            userId = "kakao_" + oAuth2User.getAttributes().get("id");
+            email = "kakao_" + oAuth2User.getAttributes().get("id");
             nickname = properties.get("nickname");
         } else if (oauthClientName.equals("naver")) {
             Map<String, String> response = (Map<String, String>) oAuth2User.getAttributes().get("response");
-            userId = "naver_" + response.get("id").substring(0, 14);
+            email = "naver_" + response.get("id").substring(0, 14);
             nickname = response.get("nickname");
         } else if (oauthClientName.equals("google")) {
-            userId = "google_" + oAuth2User.getAttributes().get("sub");
+            email = "google_" + oAuth2User.getAttributes().get("sub");
             nickname = (String) oAuth2User.getAttributes().get("name");
         } else {
             throw new OAuth2AuthenticationException("Unsupported OAuth provider: " + oauthClientName);
         }
 
         // 기존 회원 조회
-        Optional<Member> existingMember = memberRepository.findByEmail(userId);
+        Optional<Member> existingMember = memberRepository.findByEmail(email);
         Member member;
         if (existingMember.isPresent()) {
             // 이미 존재하는 경우 기존 회원 사용
@@ -58,7 +58,7 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
         } else {
             // 새로운 회원 생성 및 저장
             member = Member.builder()
-                    .email(userId)
+                    .email(email)
                     .nickname(nickname)
                     .password("password")
                     .build();
@@ -77,6 +77,6 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
             socialRepository.save(social);
         }
 
-        return new CustomOAuth2User(userId);
+        return new CustomOAuth2User(email);
     }
 }
