@@ -7,7 +7,6 @@ import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.exception.member.NotFoundMemberException;
 import com.tripplannerai.provider.JwtProvider;
 import com.tripplannerai.repository.member.MemberRepository;
-import com.tripplannerai.util.ConstClass;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,12 +14,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.Map;
 
 import static com.tripplannerai.util.ConstClass.SUCCESS_CODE;
 import static com.tripplannerai.util.ConstClass.SUCCESS_MESSAGE;
@@ -28,12 +26,13 @@ import static com.tripplannerai.util.CookieUtil.getCookie;
 
 @Component
 @RequiredArgsConstructor
-public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtProvider jwtProvider;
     private final MemberRepository memberRepository;
     @Value("${jwt.refresh.expiration}")
     private int refreshExpiration;
+
     @Override
     @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request,
