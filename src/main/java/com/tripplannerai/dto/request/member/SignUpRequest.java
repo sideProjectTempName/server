@@ -1,6 +1,7 @@
 package com.tripplannerai.dto.request.member;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class SignUpRequest {
 
     @NotBlank(message = "email can't be null")
+    @Email
     private String email;
     @NotBlank(message = "password can't be null")
     private String password;

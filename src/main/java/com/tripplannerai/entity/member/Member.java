@@ -45,7 +45,9 @@ public class Member extends BaseEntity {
     private boolean isWithdrawn;
 
     @Column
+    @Lob
     private String refreshToken;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="image_id")
     private Image image;

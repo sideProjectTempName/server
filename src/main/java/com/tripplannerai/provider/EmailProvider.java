@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class EmailProvider {
     private final JavaMailSender javaMailSender;
     private final CertificationRepository certificationRepository;
-    private final String SUBJECT = "[소모임 서비스] 인증메일입니다.";
+    private final String SUBJECT = "[여행지 추천 서비스] 인증메일입니다.";
 
     public boolean sendCertificationMail(String email,String certificationNumber) throws MessagingException {
 
@@ -30,7 +30,7 @@ public class EmailProvider {
     }
     private String getCertificationMessage(String certificationNumber){
         String certificationMessage = "";
-        certificationMessage += "<h1 style = 'text-align: center;'>[여행지 서비스] 인증메일</h1>";
+        certificationMessage += "<h1 style = 'text-align: center;'>[여행지 추천 서비스] 인증메일</h1>";
         certificationMessage += "<h3 style = 'text-align: center;'>인증코드 : <strong style = 'font-size: 32px; letter-spacing: 8px;'>"+certificationNumber+"</strong></h3>";
         return certificationMessage;
     }

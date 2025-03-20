@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import static com.tripplannerai.util.ConstClass.*;
 
-@RestControllerAdvice(basePackageClasses = ImageController.class)
+//@RestControllerAdvice(basePackageClasses = ImageController.class)
 public class ImageControllerAdvice {
     @ExceptionHandler(IOException.class)
     public ResponseEntity<ErrorResponse> handleIOException() {

@@ -75,7 +75,7 @@ public class MemberService {
     public SignUpResponse signUp(SignUpRequest signUpRequest){
 
 
-            Member member = of(signUpRequest);
+            Member member = MemberFactory.of(signUpRequest);
             memberRepository.save(member);
             return SignUpResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
@@ -95,7 +95,7 @@ public class MemberService {
 
     public CheckCertificationResponse checkCertification(String email) {
         String certificationNumber = certificationRepository.findCertificationNumberByEmail(email);
-        if(StringUtils.hasText(certificationNumber)) throw new NotFoundCertificationException("not found certification");
+        if(!StringUtils.hasText(certificationNumber)) throw new NotFoundCertificationException("not found certification");
         return CheckCertificationResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,certificationNumber);
     }
 }

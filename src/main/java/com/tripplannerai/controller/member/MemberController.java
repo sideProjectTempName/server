@@ -40,7 +40,7 @@ public class MemberController {
         return new ResponseEntity<>(emailCheckoutResponse, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/email-check")
+    @PostMapping(value = "/certification")
     public ResponseEntity<SendCertificationResponse> sendCertification(@Valid @RequestBody EmailCertificationRequest emailCertificationRequest) {
         SendCertificationResponse sendCertificationResponse = memberService.sendCertification(emailCertificationRequest);
         return new ResponseEntity<>(sendCertificationResponse, HttpStatus.OK);
