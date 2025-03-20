@@ -13,4 +13,6 @@ import lombok.NoArgsConstructor;
 public class EmailCertificationRequest {
     @NotBlank(message = "email can't be null")
     private String email;
+    @NotBlank(message = "clientId can't be null")
+    private String clientId;
 }

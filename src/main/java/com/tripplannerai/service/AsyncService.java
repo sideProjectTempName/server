@@ -2,6 +2,7 @@ package com.tripplannerai.service;
 
 import com.tripplannerai.dto.request.EmailCertificationRequest;
 import com.tripplannerai.provider.EmailProvider;
+import com.tripplannerai.service.fail.FailService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class AsyncService {
     private final EmailProvider emailProvider;
+    private final FailService failService;
 
     @Async("customAsyncExecutor")
     public void asyncTask(EmailCertificationRequest emailCertificationRequest){
@@ -21,7 +23,7 @@ public class AsyncService {
         }catch (MessagingException e){
 
             log.error(e.getMessage(),e);
-            //failService.send(emailCertificationRequest.getClientId());
+            failService.send(emailCertificationRequest);
         }
     }
 

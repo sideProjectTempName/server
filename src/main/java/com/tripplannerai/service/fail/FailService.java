@@ -1,9 +1,12 @@
 package com.tripplannerai.service.fail;
 
+import com.tripplannerai.dto.request.EmailCertificationRequest;
 import com.tripplannerai.dto.response.fail.CloseResponse;
+import com.tripplannerai.dto.response.fail.FailResponse;
 import com.tripplannerai.emiitter.EmitterRepository;
 import com.tripplannerai.entity.fail.Fail;
 import com.tripplannerai.repository.fail.FailRepository;
+import com.tripplannerai.util.ConstClass;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,8 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 
-import static com.tripplannerai.util.ConstClass.SUCCESS_CODE;
-import static com.tripplannerai.util.ConstClass.SUCCESS_MESSAGE;
+import static com.tripplannerai.util.ConstClass.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,10 +33,13 @@ public class FailService {
         return emitter;
     }
 
-    public void send(String clientId){
+    public void send(EmailCertificationRequest emailCertificationRequest){
+        String clientId = emailCertificationRequest.getClientId();
+        String email = emailCertificationRequest.getEmail();
         SseEmitter sseEmitter = emitterRepository.findById(clientId);
         Fail fail = Fail.of(clientId,"fail send Mail");
-        sendToClient(sseEmitter,clientId,fail);
+        FailResponse failResponse = FailResponse.of(NOT_VALID_EMAIL, NOT_VALID_EMAIL_MESSAGE, clientId, email);
+        sendToClient(sseEmitter,clientId,failResponse);
         failRepository.save(fail);
     }
 
