@@ -24,7 +24,7 @@ public class Member extends BaseEntity {
     private Long id;
 
     @Column(unique = true, nullable = false, length = 100)
-    private String email;  //이메일 겸 로그인 시 아이디
+    private String email;
 
     @Column(nullable = false)
     private String password;
