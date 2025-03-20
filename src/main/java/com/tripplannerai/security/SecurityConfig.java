@@ -42,16 +42,18 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/login","/auth/sign-up",
-                                "/v3/api-docs/**","/swagger-ui/**", "/api/post/**","/api/posts","/swagger-resources/**", "/webjars/**","/oauth2/**")
+                                "/v3/api-docs/**","/swagger-ui/**", "/api/post/**","/api/posts","/swagger-resources/**", "/webjars/**","/oauth2/**"
+                                ,"/email-check","/certification"
+                        )
                         .permitAll()
                         .anyRequest().authenticated())
-                .oauth2Login(oauth2 -> oauth2
-                        .authorizationEndpoint(endpoint -> endpoint.baseUri("/api/auth/oauth2"))
-                        .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
-                        .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
-                        .successHandler(oAuth2SuccessHandler)
-                        .failureHandler(oAuth2FailureHandler)
-                )
+//                .oauth2Login(oauth2 -> oauth2
+//                        .authorizationEndpoint(endpoint -> endpoint.baseUri("/api/auth/oauth2"))
+//                        .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+//                        .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
+//                        .successHandler(oAuth2SuccessHandler)
+//                        .failureHandler(oAuth2FailureHandler)
+//                )
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));

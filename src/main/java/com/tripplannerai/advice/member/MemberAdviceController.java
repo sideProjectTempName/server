@@ -2,22 +2,16 @@ package com.tripplannerai.advice.member;
 
 import com.tripplannerai.controller.member.MemberController;
 import com.tripplannerai.dto.response.ErrorResponse;
-import com.tripplannerai.exception.member.MemberExistException;
-import com.tripplannerai.exception.member.NotAuthorizeException;
-import com.tripplannerai.exception.member.NotFoundMemberException;
-import com.tripplannerai.exception.member.UnCorrectPasswordException;
-import lombok.extern.slf4j.Slf4j;
+import com.tripplannerai.exception.member.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.io.IOException;
-
 import static com.tripplannerai.util.ConstClass.*;
 
-@RestControllerAdvice(basePackageClasses = MemberController.class)
-public class MemberControllerAdvice {
+//@RestControllerAdvice
+public class MemberAdviceController {
 
     @ExceptionHandler(NotFoundMemberException.class)
     public ResponseEntity<ErrorResponse> handleNotFoundMemberException() {
@@ -34,5 +28,9 @@ public class MemberControllerAdvice {
     @ExceptionHandler(MemberExistException.class)
     public ResponseEntity<ErrorResponse> handleMemberExistException() {
         return new ResponseEntity<>(ErrorResponse.of(MEMBER_EXISTS_CODE,MEMBER_EXISTS_MESSAGE), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(NotFoundCertificationException.class)
+    public ResponseEntity<ErrorResponse> handleNotFoundCertificationException() {
+        return new ResponseEntity<>(ErrorResponse.of(NOT_FOUND_CERTIFICATION_CODE,NOT_FOUND_CERTIFICATION_MESSAGE), HttpStatus.BAD_REQUEST);
     }
 }

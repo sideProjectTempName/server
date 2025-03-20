@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    @Query("select m from Member m left join fetch m.image i")
+    @Query("select m from Member m left join fetch m.image i where m.email =:email")
     Optional<Member> findByEmail(String email);
 }

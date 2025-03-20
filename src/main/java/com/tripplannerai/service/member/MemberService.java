@@ -3,23 +3,25 @@ package com.tripplannerai.service.member;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tripplannerai.dto.JwtSubject;
+import com.tripplannerai.dto.request.EmailCertificationRequest;
 import com.tripplannerai.dto.request.member.EmailCheckoutRequest;
 import com.tripplannerai.dto.request.member.SignInRequest;
 import com.tripplannerai.dto.request.member.SignUpRequest;
-import com.tripplannerai.dto.response.member.EmailCheckoutResponse;
-import com.tripplannerai.dto.response.member.SignInResponse;
-import com.tripplannerai.dto.response.member.SignUpResponse;
+import com.tripplannerai.dto.response.member.*;
 import com.tripplannerai.entity.image.Image;
 import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.exception.member.MemberExistException;
+import com.tripplannerai.exception.member.NotFoundCertificationException;
 import com.tripplannerai.exception.member.NotFoundMemberException;
 import com.tripplannerai.exception.member.UnCorrectPasswordException;
 import com.tripplannerai.mapper.image.ImageFactory;
 import com.tripplannerai.mapper.member.MemberFactory;
+import com.tripplannerai.repository.certification.CertificationRepository;
 import com.tripplannerai.repository.image.ImageRepository;
 import com.tripplannerai.repository.member.MemberRepository;
 import com.tripplannerai.provider.JwtProvider;
 import com.tripplannerai.s3.S3UploadService;
+import com.tripplannerai.service.AsyncService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
@@ -28,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -46,7 +49,9 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CertificationRepository certificationRepository;
     private final JwtProvider jwtProvider;
+    private final AsyncService asyncService;
     @Value("${jwt.refresh.expiration}")
     private int refreshExpiration;
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -70,16 +75,27 @@ public class MemberService {
     public SignUpResponse signUp(SignUpRequest signUpRequest){
 
 
-            Member member = of(signUpRequest);
+            Member member = MemberFactory.of(signUpRequest);
             memberRepository.save(member);
             return SignUpResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
-    public EmailCheckoutResponse emailCheck(@Valid EmailCheckoutRequest emailCheckoutRequest) {
+    public EmailCheckoutResponse emailCheck( EmailCheckoutRequest emailCheckoutRequest) {
         Optional<Member> optionalMember = memberRepository.findByEmail(emailCheckoutRequest.getEmail());
         if(optionalMember.isPresent()){
             throw new MemberExistException("member exist");
         }
         return EmailCheckoutResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
+    }
+
+    public SendCertificationResponse sendCertification(EmailCertificationRequest emailCertificationRequest) {
+        asyncService.asyncTask(emailCertificationRequest);
+        return SendCertificationResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
+    }
+
+    public CheckCertificationResponse checkCertification(String email) {
+        String certificationNumber = certificationRepository.findCertificationNumberByEmail(email);
+        if(!StringUtils.hasText(certificationNumber)) throw new NotFoundCertificationException("not found certification");
+        return CheckCertificationResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,certificationNumber);
     }
 }

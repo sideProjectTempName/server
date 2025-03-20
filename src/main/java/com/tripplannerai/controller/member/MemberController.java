@@ -2,12 +2,11 @@ package com.tripplannerai.controller.member;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tripplannerai.annotation.Username;
+import com.tripplannerai.dto.request.EmailCertificationRequest;
 import com.tripplannerai.dto.request.member.EmailCheckoutRequest;
 import com.tripplannerai.dto.request.member.SignInRequest;
 import com.tripplannerai.dto.request.member.SignUpRequest;
-import com.tripplannerai.dto.response.member.EmailCheckoutResponse;
-import com.tripplannerai.dto.response.member.SignInResponse;
-import com.tripplannerai.dto.response.member.SignUpResponse;
+import com.tripplannerai.dto.response.member.*;
 import com.tripplannerai.service.member.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -15,10 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -27,6 +23,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+
     @PostMapping("/auth/login")
     public ResponseEntity<SignInResponse> signIn(@Valid @RequestBody SignInRequest signInRequest, HttpServletResponse response) throws JsonProcessingException {
         SignInResponse signInResponse = memberService.signIn(signInRequest,response);
@@ -43,6 +40,15 @@ public class MemberController {
         return new ResponseEntity<>(emailCheckoutResponse, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/certification")
+    public ResponseEntity<SendCertificationResponse> sendCertification(@Valid @RequestBody EmailCertificationRequest emailCertificationRequest) {
+        SendCertificationResponse sendCertificationResponse = memberService.sendCertification(emailCertificationRequest);
+        return new ResponseEntity<>(sendCertificationResponse, HttpStatus.OK);
+    }
 
-
+    @GetMapping(value = "/certification")
+    public ResponseEntity<CheckCertificationResponse> checkCertification(@RequestParam String email) {
+        CheckCertificationResponse checkCertificationResponse = memberService.checkCertification(email);
+        return new ResponseEntity<>(checkCertificationResponse, HttpStatus.OK);
+    }
 }
