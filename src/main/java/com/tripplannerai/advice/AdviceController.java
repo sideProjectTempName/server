@@ -2,6 +2,7 @@ package com.tripplannerai.advice;
 
 import com.tripplannerai.dto.response.ErrorResponse;
 import com.tripplannerai.exception.member.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import static com.tripplannerai.util.ConstClass.*;
 @Order(2)
 @RestControllerAdvice
+@Slf4j
 public class AdviceController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -28,6 +30,7 @@ public class AdviceController {
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(IOException ex) {
+        log.error(ex.getMessage(),ex);
         return new ResponseEntity<>(ErrorResponse.of(DB_ERROR_CODE,DB_ERROR_MESSAGE), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
