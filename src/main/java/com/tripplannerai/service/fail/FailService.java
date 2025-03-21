@@ -32,7 +32,6 @@ public class FailService {
         SseEmitter emitter = emitterRepository.save(clientId, new SseEmitter(DEFAULT_TIMEOUT));
         emitter.onCompletion(() -> {
             emitterRepository.deleteById(clientId);
-            System.out.println(1);
         });
         emitter.onTimeout(() -> emitterRepository.deleteById(clientId));
         emitter.onError((e) -> {
