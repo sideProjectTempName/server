@@ -1,16 +1,16 @@
 package com.tripplannerai.advice.member;
 
-import com.tripplannerai.controller.member.MemberController;
 import com.tripplannerai.dto.response.ErrorResponse;
 import com.tripplannerai.exception.member.*;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import static com.tripplannerai.util.ConstClass.*;
-
-//@RestControllerAdvice
+@Order(1)
+@RestControllerAdvice
 public class MemberAdviceController {
 
     @ExceptionHandler(NotFoundMemberException.class)
