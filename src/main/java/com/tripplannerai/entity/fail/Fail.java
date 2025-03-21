@@ -18,6 +18,7 @@ public class Fail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
+    private String email;
     private String clientId;
 
     public static Fail of(String clientId, String content) {
