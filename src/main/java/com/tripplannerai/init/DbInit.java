@@ -3,6 +3,7 @@ package com.tripplannerai.init;
 import com.tripplannerai.mapper.category.CategoryFactory;
 import com.tripplannerai.service.address.AddressService;
 import com.tripplannerai.service.category.CategoryService;
+import com.tripplannerai.service.destination.DestinationService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DbInit {
     private final AddressService addressService;
     private final CategoryService categoryService;
-
+    private final DestinationService destinationService;
 
     @PostConstruct
     public void init() {
@@ -35,5 +36,9 @@ public class DbInit {
         log.info("카테고리 데이터 저장 시작...");
         categoryService.saveCategoryFromApi();
         log.info("카테고리 데이터 저장 완료");
+
+        log.info("관광지 데이터 저장 시작...");
+        destinationService.saveDestinationFromApi();
+        log.info("관광지 데이터 저장 완료");
     }
 }
