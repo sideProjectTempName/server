@@ -44,8 +44,7 @@ public class Member extends BaseEntity {
     @Column(name = "state", columnDefinition = "BOOLEAN DEFAULT FALSE")  //회원탈퇴여부
     private boolean isWithdrawn;
 
-    @Column
-    @Lob
+    @Column(length = 2048)
     private String refreshToken;
 
     @OneToOne(fetch = FetchType.LAZY)

@@ -47,21 +47,17 @@ public class AddressServiceImplement implements AddressService{
         for (JsonNode area : areas) {
             String areaCode = area.path("code").asText();
             String areaName = area.path("name").asText();
-
+            addressRepository.save(AddressFactory.of(areaCode,areaName,null));
             String sigunguUrl = baseUrl + "/areaCode1?serviceKey=" + serviceKey +
                     "&areaCode=" + areaCode +
                     "&numOfRows=1000&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json";
             JsonNode sigungus = fetchData(sigunguUrl).path("response").path("body").path("items").path("item");
 
             List<Address> addresses = new ArrayList<>();
-            if (sigungus.isEmpty() || sigungus.isMissingNode()) {
-                addresses.add(AddressFactory.of(areaCode, areaName, ""));
-            } else {
-                for (JsonNode sigungu : sigungus) {
-                    String sigunguName = sigungu.path("name").asText();
-                    String sigunguCode = sigungu.path("code").asText();
-                    addresses.add(AddressFactory.of(areaCode,sigunguName,sigunguCode));
-                }
+            for (JsonNode sigungu : sigungus) {
+                String sigunguName = sigungu.path("name").asText();
+                String sigunguCode = sigungu.path("code").asText();
+                addresses.add(AddressFactory.of(areaCode,sigunguName,sigunguCode));
             }
             addressRepository.saveAll(addresses);
         }
