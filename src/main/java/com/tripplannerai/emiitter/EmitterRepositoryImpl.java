@@ -24,4 +24,8 @@ public class EmitterRepositoryImpl implements EmitterRepository{
     public SseEmitter findById(String clientId) {
         return emitters.get(clientId);
     }
+
+    public int size(){
+        return emitters.size();
+    }
 }
