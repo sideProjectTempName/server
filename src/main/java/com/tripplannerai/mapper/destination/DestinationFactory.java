@@ -1,0 +1,19 @@
+package com.tripplannerai.mapper.destination;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.tripplannerai.entity.destination.Destination;
+
+public class DestinationFactory {
+    public static Destination fromApiResponse(JsonNode destinationNode) {
+        return Destination.builder()
+                .addr1(destinationNode.path("addr1").asText())
+                .addr2(destinationNode.path("addr2").asText())
+                .contentId(destinationNode.path("contentid").asText())
+                .tel(destinationNode.path("tel").asText().length()>100 ? "" : destinationNode.path("tel").asText() )
+                .latitude(destinationNode.path("mapx").asText())
+                .longitude(destinationNode.path("mapy").asText())
+                .name(destinationNode.path("title").asText())
+                .build();
+
+    }
+}
