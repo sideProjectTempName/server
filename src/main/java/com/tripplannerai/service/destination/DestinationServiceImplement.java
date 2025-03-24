@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DestinationServiceImplement implements DestinationService {
@@ -51,6 +52,7 @@ public class DestinationServiceImplement implements DestinationService {
             for (JsonNode destinationNode : destinationList) {
                 Destination destination = DestinationFactory.fromApiResponse(destinationNode);
                 String cat1 = destinationNode.path("cat1").asText();
+                if(cat1.equals("25")) continue; // 여행코스는 저장하지 않음
                 String cat2 = destinationNode.path("cat2").asText();
                 String cat3 = destinationNode.path("cat3").asText();
                 Category category = categoryRepository.findCategoryByCodes(cat1,cat2,cat3).orElse(null);
@@ -61,9 +63,7 @@ public class DestinationServiceImplement implements DestinationService {
                 destination.setCategory(category);
                 destination.setAddress(address);
                 destinationRepository.save(destination);
-
             }
-
 
             int totalCount = Integer.parseInt(responseBody.path("totalCount").asText());
             int totalPages = (int) Math.ceil((double) totalCount/numOfRows);
