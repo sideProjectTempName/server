@@ -10,8 +10,8 @@ public class DestinationFactory {
                 .addr2(destinationNode.path("addr2").asText())
                 .contentId(destinationNode.path("contentid").asText())
                 .tel(destinationNode.path("tel").asText().length()>100 ? "" : destinationNode.path("tel").asText() )
-                .latitude(destinationNode.path("mapx").asText())
-                .longitude(destinationNode.path("mapy").asText())
+                .latitude(destinationNode.path("mapy").asText())
+                .longitude(destinationNode.path("mapx").asText())
                 .name(destinationNode.path("title").asText())
                 .build();
 
