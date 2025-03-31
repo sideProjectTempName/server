@@ -27,7 +27,7 @@ public class SecurityConfig {
     private  String[] whitelist = {
             "/auth/login","/auth/sign-up",
             "/v3/api-docs/**","/swagger-ui/**", "/api/post/**","/api/posts","/swagger-resources/**", "/webjars/**","/oauth2/**"
-            ,"/email-check","/check-certification","/subscribe/**","close/**","/api/recommend"
+            ,"/email-check","/check-certification","/subscribe/**","close/**","/api/recommend","/certification","/image/**"
     };
 
     private final JwtAuthFilter jwtAuthFilter;
