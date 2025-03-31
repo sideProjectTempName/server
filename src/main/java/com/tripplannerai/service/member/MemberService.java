@@ -3,17 +3,16 @@ package com.tripplannerai.service.member;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tripplannerai.dto.JwtSubject;
+import com.tripplannerai.dto.request.CertificationRequest;
 import com.tripplannerai.dto.request.EmailCertificationRequest;
 import com.tripplannerai.dto.request.member.EmailCheckoutRequest;
 import com.tripplannerai.dto.request.member.SignInRequest;
 import com.tripplannerai.dto.request.member.SignUpRequest;
+import com.tripplannerai.dto.request.member.UpdateRequest;
 import com.tripplannerai.dto.response.member.*;
 import com.tripplannerai.entity.image.Image;
 import com.tripplannerai.entity.member.Member;
-import com.tripplannerai.exception.member.MemberExistException;
-import com.tripplannerai.exception.member.NotFoundCertificationException;
-import com.tripplannerai.exception.member.NotFoundMemberException;
-import com.tripplannerai.exception.member.UnCorrectPasswordException;
+import com.tripplannerai.exception.member.*;
 import com.tripplannerai.mapper.image.ImageFactory;
 import com.tripplannerai.mapper.member.MemberFactory;
 import com.tripplannerai.repository.certification.CertificationRepository;
@@ -50,11 +49,15 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final CertificationRepository certificationRepository;
+    private final ImageRepository imageRepository;
     private final JwtProvider jwtProvider;
     private final AsyncService asyncService;
+    private final S3UploadService s3UploadService;
+    private ObjectMapper objectMapper = new ObjectMapper();
+    @Value("${server.url}")
+    private String serverUrl;
     @Value("${jwt.refresh.expiration}")
     private int refreshExpiration;
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     public SignInResponse signIn(SignInRequest signInRequest, HttpServletResponse response) throws JsonProcessingException {
 
@@ -93,9 +96,42 @@ public class MemberService {
         return SendCertificationResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
-    public CheckCertificationResponse checkCertification(String email) {
-        String certificationNumber = certificationRepository.findCertificationNumberByEmail(email);
+    public CheckCertificationResponse checkCertification(CertificationRequest certificationRequest) {
+        String certificationNumberCheck = certificationRequest.getCertification();
+        String certificationNumber = certificationRepository.findCertificationNumberByEmail(certificationRequest.getEmail());
         if(!StringUtils.hasText(certificationNumber)) throw new NotFoundCertificationException("not found certification");
+        if(!certificationNumber.equals(certificationNumberCheck)){
+            throw new NotCorrectCertificationException("not correct certification");
+        }
         return CheckCertificationResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,certificationNumber);
+    }
+
+    public UpdateResponse update(UpdateRequest updateRequest, MultipartFile file,Long memberId) throws IOException {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundMemberException("not Found Member"));
+        Image image = null;
+        if(!file.isEmpty()){
+            String url = s3UploadService.upload(file);
+            image.setUrl(url);
+            imageRepository.save(image);
+            member.setImage(image);
+        }
+        member.setEmail(updateRequest.getEmail());
+        member.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
+        member.setNickname(updateRequest.getNickname());
+        member.setPhoneNumber(updateRequest.getPhoneNumber());
+
+        return UpdateResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,member);
+    }
+    public FetchMemberResponse fetch(Long memberId) {
+        Member member = memberRepository.fetchById(memberId)
+                .orElseThrow(() -> new NotFoundMemberException("not Found Member"));
+
+        String imageUrl = getUrl(member.getImage());
+        return MemberFactory.of(member, imageUrl);
+    }
+
+    private String getUrl(Image image){
+        return serverUrl + image.getImageId();
     }
 }

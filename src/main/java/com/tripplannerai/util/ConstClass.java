@@ -12,7 +12,8 @@ public class ConstClass {
     public static String NOT_AUTHORIZED_CODE = "NA";
     public static String MEMBER_EXISTS_CODE = "ME";
     public static String NOT_FOUND_CERTIFICATION_CODE = "CR";
-    public static String NOT_VALID_EMAIL = "NE";
+    public static String NOT_VALID_EMAIL_CODE = "NE";
+    public static String NOT_CORRECT_CERTIFICATION_CODE = "NC";
     public static String SUCCESS_MESSAGE = "Success";
     public static String NOT_FOUND_MEMBER_MESSAGE = "Not Found Member";
     public static String UN_CORRECT_PASSWORD_MESSAGE = "Un correct Password";
@@ -24,6 +25,7 @@ public class ConstClass {
     public static String MEMBER_EXISTS_MESSAGE = "Member already exists";
     public static String NOT_FOUND_CERTIFICATION_MESSAGE = "Not Found Certification";
     public static String NOT_VALID_EMAIL_MESSAGE = "Not Valid Email";
+    public static String NOT_CORRECT_CERTIFICATION_MESSAGE = "Not correct Certification";
     //OAuth2 실패
     public static String AUTHENTICATION_FAILED_CODE = "AF";
     public static String AUTHENTICATION_FAILED_MESSAGE = "Authentication Failed";
