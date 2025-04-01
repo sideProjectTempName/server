@@ -15,7 +15,7 @@ import java.io.IOException;
 public class ImageController {
     private final ImageService imageService;
     @GetMapping("/image/{id}")
-    public Resource fetchImage(@PathVariable Long id, @Username String email) throws IOException {
+    public Resource fetchImage(@PathVariable Long id) throws IOException {
         return imageService.fetchImage(id);
     }
 }
