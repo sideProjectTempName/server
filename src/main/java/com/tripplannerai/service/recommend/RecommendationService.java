@@ -32,7 +32,7 @@ public class RecommendationService {
 
         Map<String, Object> jsonRequest = new HashMap<>();
         jsonRequest.put("area_code", requestDto.getAreaCode());
-        jsonRequest.put("sigungu_code", requestDto.getSigunguCode());
+        jsonRequest.put("sigungu_code", requestDto.getSigunguCode()!=null? requestDto.getSigunguCode():"");
         jsonRequest.put("category_codes", requestDto.getCategoryCodes());
         jsonRequest.put("days", days);
         String jsonBody = objectMapper.writeValueAsString(jsonRequest);
