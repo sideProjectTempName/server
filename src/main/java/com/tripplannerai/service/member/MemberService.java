@@ -74,7 +74,6 @@ public class MemberService {
 
     public SignUpResponse signUp(SignUpRequest signUpRequest){
 
-
             Member member = MemberFactory.of(signUpRequest);
             memberRepository.save(member);
             return SignUpResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
