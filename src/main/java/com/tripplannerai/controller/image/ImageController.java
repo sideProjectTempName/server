@@ -1,5 +1,6 @@
 package com.tripplannerai.controller.image;
 
+import com.tripplannerai.annotation.Username;
 import com.tripplannerai.service.image.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -14,7 +15,7 @@ import java.io.IOException;
 public class ImageController {
     private final ImageService imageService;
     @GetMapping("/image/{id}")
-    public Resource fetchImage(@PathVariable Long id) throws IOException {
+    public Resource fetchImage(@PathVariable Long id, @Username String email) throws IOException {
         return imageService.fetchImage(id);
     }
 }

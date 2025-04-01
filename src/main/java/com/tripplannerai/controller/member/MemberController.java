@@ -2,10 +2,12 @@ package com.tripplannerai.controller.member;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tripplannerai.annotation.Username;
+import com.tripplannerai.dto.request.CertificationRequest;
 import com.tripplannerai.dto.request.EmailCertificationRequest;
 import com.tripplannerai.dto.request.member.EmailCheckoutRequest;
 import com.tripplannerai.dto.request.member.SignInRequest;
 import com.tripplannerai.dto.request.member.SignUpRequest;
+import com.tripplannerai.dto.request.member.UpdateRequest;
 import com.tripplannerai.dto.response.member.*;
 import com.tripplannerai.service.member.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,6 +36,18 @@ public class MemberController {
         SignUpResponse signUpResponse = memberService.signUp(signUpRequest);
         return new ResponseEntity<>(signUpResponse, HttpStatus.OK);
     }
+    @PutMapping(value = "/member/{memberId}")
+    public ResponseEntity<UpdateResponse> update(@Valid @RequestPart UpdateRequest updateRequest,
+            @RequestPart(name = "file",required = false) MultipartFile file,
+            @PathVariable Long memberId) throws IOException {
+        UpdateResponse updateResponse = memberService.update(updateRequest,file,memberId);
+        return new ResponseEntity<>(updateResponse, HttpStatus.OK);
+    }
+    @GetMapping(value = "/member/{memberId}")
+    public ResponseEntity<FetchMemberResponse> fetch(@PathVariable Long memberId){
+        FetchMemberResponse fetchMemberResponse = memberService.fetch(memberId);
+        return new ResponseEntity<>(fetchMemberResponse, HttpStatus.OK);
+    }
     @PostMapping(value = "/email-check")
     public ResponseEntity<EmailCheckoutResponse> emailCheck(@Valid @RequestBody EmailCheckoutRequest emailCheckoutRequest) {
         EmailCheckoutResponse emailCheckoutResponse = memberService.emailCheck(emailCheckoutRequest);
@@ -46,9 +60,9 @@ public class MemberController {
         return new ResponseEntity<>(sendCertificationResponse, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/certification")
-    public ResponseEntity<CheckCertificationResponse> checkCertification(@RequestParam String email) {
-        CheckCertificationResponse checkCertificationResponse = memberService.checkCertification(email);
+    @GetMapping(value = "/check-certification")
+    public ResponseEntity<CheckCertificationResponse> checkCertification(@Valid @RequestBody CertificationRequest certificationRequest) {
+        CheckCertificationResponse checkCertificationResponse = memberService.checkCertification(certificationRequest);
         return new ResponseEntity<>(checkCertificationResponse, HttpStatus.OK);
     }
 }

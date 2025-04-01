@@ -47,7 +47,7 @@ public class FailService {
         String email = emailCertificationRequest.getEmail();
         SseEmitter sseEmitter = emitterRepository.findById(clientId);
         Fail fail = Fail.of(clientId,"fail send Mail");
-        FailResponse failResponse = FailResponse.of(NOT_VALID_EMAIL, NOT_VALID_EMAIL_MESSAGE, clientId, email);
+        FailResponse failResponse = FailResponse.of(NOT_VALID_EMAIL_CODE, NOT_VALID_EMAIL_MESSAGE, clientId, email);
         sendToClient(sseEmitter,clientId,failResponse);
         failRepository.save(fail);
     }

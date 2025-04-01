@@ -1,9 +1,13 @@
 package com.tripplannerai.mapper.member;
 
 import com.tripplannerai.dto.request.member.SignUpRequest;
+import com.tripplannerai.dto.response.member.FetchMemberResponse;
 import com.tripplannerai.entity.image.Image;
 import com.tripplannerai.entity.member.Member;
+import com.tripplannerai.util.ConstClass;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import static com.tripplannerai.util.ConstClass.*;
 
 public class MemberFactory {
 
@@ -15,6 +19,21 @@ public class MemberFactory {
                 .nickname(signUpRequest.getNickname())
                 .phoneNumber(signUpRequest.getPhoneNumber())
                 .image(null)
+                .build();
+    }
+
+    public static FetchMemberResponse of(Member member,String imageUrl){
+        return FetchMemberResponse.builder()
+                .code(SUCCESS_CODE)
+                .message(SUCCESS_MESSAGE)
+                .id(member.getId())
+                .email(member.getEmail())
+                .nickname(member.getNickname())
+                .phoneNumber(member.getPhoneNumber())
+                .provider(member.getProvider())
+                .providerId(member.getProviderId())
+                .isWithdrawn(member.isWithdrawn())
+                .imageUrl(imageUrl)
                 .build();
     }
 }

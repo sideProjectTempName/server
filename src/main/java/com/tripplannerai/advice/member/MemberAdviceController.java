@@ -33,4 +33,8 @@ public class MemberAdviceController {
     public ResponseEntity<ErrorResponse> handleNotFoundCertificationException() {
         return new ResponseEntity<>(ErrorResponse.of(NOT_FOUND_CERTIFICATION_CODE,NOT_FOUND_CERTIFICATION_MESSAGE), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(NotCorrectCertificationException.class)
+    public ResponseEntity<ErrorResponse> handleNotCorrectCertificationException() {
+        return new ResponseEntity<>(ErrorResponse.of(NOT_CORRECT_CERTIFICATION_CODE,NOT_CORRECT_CERTIFICATION_MESSAGE), HttpStatus.BAD_REQUEST);
+    }
 }
