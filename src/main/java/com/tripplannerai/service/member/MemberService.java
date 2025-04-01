@@ -112,6 +112,7 @@ public class MemberService {
         Image image = null;
         if(!file.isEmpty()){
             String url = s3UploadService.upload(file);
+            image = new Image();
             image.setUrl(url);
             imageRepository.save(image);
             member.setImage(image);
@@ -126,8 +127,7 @@ public class MemberService {
     public FetchMemberResponse fetch(Long memberId) {
         Member member = memberRepository.fetchById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException("not Found Member"));
-
-        String imageUrl = getUrl(member.getImage());
+        String imageUrl = member.getImage() == null ? null : getUrl(member.getImage());
         return MemberFactory.of(member, imageUrl);
     }
 
