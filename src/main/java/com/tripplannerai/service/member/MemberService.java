@@ -103,13 +103,12 @@ public class MemberService {
         if(!certificationNumber.equals(certificationNumberCheck)){
             throw new NotCorrectCertificationException("not correct certification");
         }
-        return CheckCertificationResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
+        return CheckCertificationResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,certificationNumber);
     }
 
     public UpdateResponse update(UpdateRequest updateRequest, MultipartFile file,Long memberId) throws IOException {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException("not Found Member"));
-
         Image image = null;
         if(!file.isEmpty()){
             String url = s3UploadService.upload(file);

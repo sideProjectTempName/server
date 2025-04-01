@@ -1,5 +1,7 @@
 package com.tripplannerai.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tripplannerai.dto.JwtSubject;
 import com.tripplannerai.validator.JwtValidator;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -28,6 +30,7 @@ import java.util.List;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtValidator jwtValidator;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -40,7 +43,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             Claims claims = jwtValidator.validateToken(jwtToken);
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_"+claims.get("role")));
-            UserDetails userDetails = new User(claims.getSubject(), "", authorities);
+            JwtSubject jwtSubject = objectMapper.readValue(claims.getSubject(), JwtSubject.class);
+            UserDetails userDetails = new User(jwtSubject.getEmail(), "", authorities);
             Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
