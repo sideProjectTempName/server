@@ -4,8 +4,7 @@ import com.tripplannerai.entity.destination.Destination;
 import com.tripplannerai.entity.itinerary.Itinerary;
 import com.tripplannerai.entity.member.Member;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +12,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "tour_spot")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TourSpot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +22,6 @@ public class TourSpot {
     private Long tourSpotId;
     @Column(name = "orders")
     private Integer order;
-    @Column(name = "start_date")
-    private LocalDateTime startDate;
-    @Column(name = "end_date")
-    private LocalDateTime endDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "itinerary_id")
     private Itinerary itinerary;
