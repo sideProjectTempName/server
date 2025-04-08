@@ -27,11 +27,13 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -110,9 +112,11 @@ public class MemberService {
                 .orElseThrow(() -> new NotFoundMemberException("not Found Member"));
         Image image = null;
         if(!file.isEmpty()){
+            String contentType = file.getContentType();
             String url = s3UploadService.upload(file);
             image = new Image();
             image.setUrl(url);
+            image.setContentType(contentType);
             imageRepository.save(image);
             member.setImage(image);
         }

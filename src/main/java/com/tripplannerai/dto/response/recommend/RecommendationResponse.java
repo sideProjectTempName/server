@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.Map;
 
 @Data
@@ -14,41 +13,9 @@ import java.util.Map;
 @AllArgsConstructor
 @Builder
 public class RecommendationResponse {
-    private Map<String,DaySchedule> schedule;
+    private Map<String, DayScheduleDto> schedule;
     private String message;
+    @JsonProperty("area_code")
+    private String areaCode;
 }
-@Data
-class DaySchedule {
-    private List<Spot> spots;
-    private Accommodation accommodation;
-}
-@Data
-class Spot {
-    @JsonProperty("destination_id")
-    private String destinationId;
-    private String name;
-    private String addr1;
-    private String addr2;
-    private Double latitude;
-    private Double longitude;
-    @JsonProperty("content_id")
-    private String contentId;
-    @JsonProperty("category_code")
-    private String categoryCode;
-    @JsonProperty("category_name")
-    private String categoryName;
-    private String type;
 
-}
-@Data
-class Accommodation {
-    @JsonProperty("destination_id")
-    private String destinationId;
-    private String name;
-    private String addr1;
-    private String addr2;
-    private Double latitude;
-    private Double longitude;
-    @JsonProperty("content_id")
-    private String contentId;
-}

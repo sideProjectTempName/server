@@ -18,6 +18,8 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageId;
     private String url;
+    @Column(name = "content_type")
+    private String contentType;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
     private Review review;

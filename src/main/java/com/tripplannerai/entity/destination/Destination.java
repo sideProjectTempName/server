@@ -4,14 +4,14 @@ import com.tripplannerai.entity.address.Address;
 import com.tripplannerai.entity.category.Category;
 import com.tripplannerai.entity.member.Member;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.extern.java.Log;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "destination")
 @Builder
 public class Destination {
