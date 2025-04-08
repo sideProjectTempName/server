@@ -50,4 +50,10 @@ public class Member extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="image_id")
     private Image image;
+
+    @Column(name = "customer_key")
+    private String customerKey;
+
+    @Column
+    private Integer point;
 }
