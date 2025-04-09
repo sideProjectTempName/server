@@ -1,5 +1,6 @@
-package com.tripplannerai.entity.group;
+package com.tripplannerai.entity.enroll;
 
+import com.tripplannerai.entity.group.Group;
 import com.tripplannerai.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,27 +8,24 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Builder
-public class Group {
-
+public class Enroll {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "group_id")
-    private Long groupId;
-    private String name;
-    private int count;
-    private int point;
-    @OneToOne
+    @Column(name = "enroll_id")
+    private Long enrollId;
+    private boolean accepted;
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
-
-    public void changePoint(int point){
-        this.point = this.point + point;
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
+    public void changeAccepted(boolean accepted) {
+        this.accepted = accepted;
     }
 }

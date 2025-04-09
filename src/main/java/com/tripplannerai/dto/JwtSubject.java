@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class JwtSubject {
-
+    private Long id;
     private String email;
     private String nickname;
     private String  url;
 
     public static JwtSubject of(Member member){
-        return new JwtSubject(member.getEmail(),
+        return new JwtSubject(member.getId(),member.getEmail(),
                 member.getNickname(),
                 member.getImage() != null ? member.getImage().getUrl() : null);
     }

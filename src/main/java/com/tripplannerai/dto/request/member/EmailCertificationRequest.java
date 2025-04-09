@@ -1,4 +1,4 @@
-package com.tripplannerai.dto.request;
+package com.tripplannerai.dto.request.member;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -7,12 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class CertificationRequest {
+public class EmailCertificationRequest {
     @NotBlank(message = "email can't be null")
     private String email;
-    @NotBlank(message = "certification can't be null")
-    private String certification;
+    @NotBlank(message = "clientId can't be null")
+    private String clientId;
 }

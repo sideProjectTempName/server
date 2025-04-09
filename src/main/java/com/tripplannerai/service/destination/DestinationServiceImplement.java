@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tripplannerai.dto.response.destination.DestinationQuery;
 import com.tripplannerai.dto.response.destination.DestinationResponse;
+import com.tripplannerai.dto.response.destination.DestinationTotalQuery;
 import com.tripplannerai.dto.response.destination.DestinationsResponse;
 import com.tripplannerai.entity.address.Address;
 import com.tripplannerai.entity.category.Category;
@@ -23,6 +24,7 @@ import com.tripplannerai.repository.destination.DestinationRepository;
 import com.tripplannerai.repository.member.MemberRepository;
 import com.tripplannerai.repository.searchlog.SearchLogRepository;
 import com.tripplannerai.repository.viewlog.ViewLogRepository;
+import com.tripplannerai.util.PageLimitCalculator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -117,9 +119,10 @@ public class DestinationServiceImplement implements DestinationService {
         }
         int limit = size;
         int offset = (page-1)*limit;
-        List<DestinationQuery> destinations = destinationRepository.fetchDestinations(offset, limit);
-        List<DestinationResponse> content = destinations.stream().map(DestinationResponse::of).toList();
-        int totalCount = destinationRepository.fetchDestinationsCount(page, size);
+        int pageLimit = PageLimitCalculator.calculatePageLimit(page, size, 10);
+        List<DestinationQuery> destinationQueries = destinationRepository.fetchDestinations(offset, limit);
+        List<DestinationResponse> content = destinationQueries.stream().map(DestinationResponse::of).toList();
+        int totalCount = destinationRepository.fetchDestinationsCount(pageLimit);
         return DestinationsResponse.of(content,totalCount);
     }
 
@@ -127,16 +130,16 @@ public class DestinationServiceImplement implements DestinationService {
     public DestinationsResponse fetchDestinationByCategory(Integer page, Integer size, String category) {
         int limit = size;
         int offset = (page-1)*limit;
-        List<DestinationQuery> destinations = destinationRepository.fetchDestinationByCategory(offset,limit,category);
-        List<DestinationResponse> content = destinations.stream().map(DestinationResponse::of).toList();
-        int totalCount = destinationRepository.fetchDestinationsCount(page, size);
+        int pageLimit = PageLimitCalculator.calculatePageLimit(page, size, 10);
+        List<DestinationQuery> destinationQueries = destinationRepository.fetchDestinationByCategory(offset,limit,category);
+        List<DestinationResponse> content = destinationQueries.stream().map(DestinationResponse::of).toList();
+        int totalCount = destinationRepository.fetchDestinationsCount(pageLimit);
         return DestinationsResponse.of(content,totalCount);
     }
-    //TODO : rownumber 사용
     @Override
     public DestinationsResponse fetchDestinationsByTotal() {
-        List<DestinationQuery> destinations = destinationRepository.fetchDestinationsByTotal();
-        List<DestinationResponse> content = destinations.stream().map(DestinationResponse::of).toList();
+        List<DestinationTotalQuery> destinationQueries = destinationRepository.fetchDestinationsByTotal();
+
         return null;
     }
 

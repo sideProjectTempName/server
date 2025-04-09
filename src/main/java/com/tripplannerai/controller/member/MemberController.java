@@ -1,9 +1,8 @@
 package com.tripplannerai.controller.member;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.tripplannerai.annotation.Username;
-import com.tripplannerai.dto.request.CertificationRequest;
-import com.tripplannerai.dto.request.EmailCertificationRequest;
+import com.tripplannerai.dto.request.member.CertificationRequest;
+import com.tripplannerai.dto.request.member.EmailCertificationRequest;
 import com.tripplannerai.dto.request.member.EmailCheckoutRequest;
 import com.tripplannerai.dto.request.member.SignInRequest;
 import com.tripplannerai.dto.request.member.SignUpRequest;
@@ -14,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

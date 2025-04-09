@@ -1,6 +1,6 @@
 package com.tripplannerai.service.fail;
 
-import com.tripplannerai.dto.request.EmailCertificationRequest;
+import com.tripplannerai.dto.request.member.EmailCertificationRequest;
 import com.tripplannerai.dto.response.fail.CloseResponse;
 import com.tripplannerai.dto.response.fail.FailResponse;
 import com.tripplannerai.emitter.EmitterRepositoryImpl;

@@ -1,8 +1,14 @@
 package com.tripplannerai.entity.impotency;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Impotency {
 
     @Id
@@ -10,4 +16,9 @@ public class Impotency {
     private Long id;
     @Column(name = "imptency_key")
     private String impotencyKey;
+
+    public static Impotency of(String impotencyKey) {
+        return Impotency.builder()
+                .impotencyKey(impotencyKey).build();
+    }
 }

@@ -52,13 +52,15 @@ public class Member extends BaseEntity {
     @JoinColumn(name ="image_id")
     private Image image;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id")
-    private Group group;
+
 
     @Column(name = "customer_key")
     private String customerKey;
 
     @Column
     private Integer point;
+
+    public void changePoint(Integer point) {
+        this.point = this.point + point;
+    }
 }

@@ -2,22 +2,28 @@ package com.tripplannerai.service.group;
 
 import com.tripplannerai.dto.request.group.AddGroupRequest;
 import com.tripplannerai.dto.response.DonateResponse;
-import com.tripplannerai.dto.response.group.AddGroupResponse;
-import com.tripplannerai.dto.response.group.LeaveGroupResponse;
-import com.tripplannerai.dto.response.group.ParticipateGroupResponse;
+import com.tripplannerai.dto.response.group.*;
+import com.tripplannerai.entity.enroll.Enroll;
 import com.tripplannerai.entity.group.Group;
 import com.tripplannerai.entity.member.Member;
+import com.tripplannerai.exception.enroll.NotFoundEnrollException;
 import com.tripplannerai.exception.group.AlreadyParticipateException;
 import com.tripplannerai.exception.group.InvalidPointException;
 import com.tripplannerai.exception.group.NotFoundGroupException;
 import com.tripplannerai.exception.group.NotParticipateException;
+import com.tripplannerai.exception.member.NotAuthorizeException;
 import com.tripplannerai.exception.member.NotFoundMemberException;
+import com.tripplannerai.mapper.enroll.EnrollFactory;
 import com.tripplannerai.mapper.group.GroupFactory;
+import com.tripplannerai.repository.enroll.EnrollRepository;
 import com.tripplannerai.repository.group.GroupRepository;
 import com.tripplannerai.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 import static com.tripplannerai.util.ConstClass.*;
 
@@ -27,12 +33,14 @@ import static com.tripplannerai.util.ConstClass.*;
 public class GroupService {
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
+    private final EnrollRepository enrollRepository;
     public AddGroupResponse addGroup(AddGroupRequest addGroupRequest,String email) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
-        Group group = GroupFactory.from(addGroupRequest);
+        Group group = GroupFactory.from(addGroupRequest,member);
+        Enroll enroll = EnrollFactory.from(member, group, true);
         groupRepository.save(group);
-        member.setGroup(group);
+        enrollRepository.save(enroll);
         return AddGroupResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,group);
     }
 
@@ -41,9 +49,12 @@ public class GroupService {
                 .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundGroupException("not found group"));
-        boolean participated = member.getGroup().getGroupId().equals(groupId);
-        if(participated) throw new AlreadyParticipateException("already Participate this group!!");
-        member.setGroup(group);
+        Optional<Enroll> optionalEnroll = enrollRepository.findByMemberAndGroup(member, group);
+        if(optionalEnroll.isPresent()) {
+            throw new AlreadyParticipateException("already participate");
+        }
+        Enroll enroll = EnrollFactory.from(member, group, false);
+        enrollRepository.save(enroll);
         return ParticipateGroupResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
@@ -52,9 +63,9 @@ public class GroupService {
                 .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundGroupException("not found group"));
-        boolean participated = member.getGroup().getGroupId().equals(groupId);
-        if(!participated) throw new NotParticipateException("member didn't participate group");
-        member.setGroup(null);
+        Enroll enroll = enrollRepository.findByMemberAndGroupAndAccepted(member, group, true)
+                .orElseThrow(() -> new NotParticipateException("member didn't participate group"));
+        enrollRepository.delete(enroll);
         return LeaveGroupResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
@@ -64,14 +75,43 @@ public class GroupService {
                 .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundGroupException("not found group"));
-        boolean participated = member.getGroup().getGroupId().equals(groupId);
-        if(!participated) throw new NotParticipateException("member didn't participate group");
+        enrollRepository.findByMemberAndGroupAndAccepted(member, group, true)
+                .orElseThrow(() -> new NotParticipateException("member didn't participate group"));
         group.changePoint(point);
         return DonateResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
     private boolean checkPoint(Integer point) {
         return point>0;
+    }
+
+    public ApplyGroupResponse applyGroup(Long groupId, String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
+        Long memberId = member.getId();
+        boolean authorize = group.getMember().getId() == memberId;
+
+        if(!authorize) throw new NotAuthorizeException("not authorized");
+        List<ApplyElement> applyElements = enrollRepository.findByGroupExceptCreated(group,memberId);
+        return ApplyGroupResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,applyElements);
+    }
+
+    public ParticipateGroupResponse permitGroup(Long groupId, String email, Long enrollId) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
+        Long memberId = member.getId();
+        boolean authorize = group.getMember().getId() == memberId;
+
+        if(!authorize) throw new NotAuthorizeException("not authorized");
+        Enroll enroll = enrollRepository.findById(enrollId).orElseThrow(() -> new NotFoundEnrollException("not found Enroll!!"));
+        boolean accepted = enroll.isAccepted();
+        if(accepted) throw new AlreadyParticipateException("already participate");
+        enroll.changeAccepted(true);
+        return ParticipateGroupResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
 

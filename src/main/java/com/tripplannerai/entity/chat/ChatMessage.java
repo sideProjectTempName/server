@@ -26,12 +26,6 @@ public class ChatMessage {
     @JoinColumn(name = "chat_participant_id")
     ChatParticipant chatParticipant;
 
-//    public static ChatMessage of(ChatRoom chatRoom, ChatParticipant chatParticipant, ChatMessageRequest chatMessageRequest){
-//        return ChatMessage.builder()
-//                .chatRoom(chatRoom)
-//                .chatParticipant(chatParticipant)
-//                .content(chatMessageRequest.getContent())
-//                .build();
-//    }
+
 
 }
