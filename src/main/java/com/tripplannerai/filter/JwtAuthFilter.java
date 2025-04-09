@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tripplannerai.dto.JwtSubject;
 import com.tripplannerai.validator.JwtValidator;
 import io.jsonwebtoken.Claims;
+import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,6 +32,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtValidator jwtValidator;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final Filter filter;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

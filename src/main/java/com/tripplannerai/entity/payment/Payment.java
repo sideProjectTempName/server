@@ -1,4 +1,4 @@
-package com.tripplannerai.entity.order;
+package com.tripplannerai.entity.payment;
 
 import jakarta.persistence.*;
 

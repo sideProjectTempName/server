@@ -1,5 +1,6 @@
 package com.tripplannerai.entity.viewlog;
 
+import com.tripplannerai.entity.BaseEntity;
 import com.tripplannerai.entity.destination.Destination;
 import com.tripplannerai.entity.member.Member;
 import jakarta.persistence.*;
