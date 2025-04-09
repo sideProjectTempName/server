@@ -1,6 +1,7 @@
 package com.tripplannerai.entity.member;
 
 import com.tripplannerai.entity.BaseEntity;
+import com.tripplannerai.entity.group.Group;
 import com.tripplannerai.entity.image.Image;
 import jakarta.persistence.*;
 import lombok.*;
@@ -50,4 +51,16 @@ public class Member extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="image_id")
     private Image image;
+
+
+
+    @Column(name = "customer_key")
+    private String customerKey;
+
+    @Column
+    private Integer point;
+
+    public void changePoint(Integer point) {
+        this.point = this.point + point;
+    }
 }

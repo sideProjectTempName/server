@@ -1,13 +1,11 @@
 package com.tripplannerai.service.fail;
 
-import com.tripplannerai.dto.request.EmailCertificationRequest;
+import com.tripplannerai.dto.request.member.EmailCertificationRequest;
 import com.tripplannerai.dto.response.fail.CloseResponse;
 import com.tripplannerai.dto.response.fail.FailResponse;
-import com.tripplannerai.emiitter.EmitterRepository;
-import com.tripplannerai.emiitter.EmitterRepositoryImpl;
+import com.tripplannerai.emitter.EmitterRepositoryImpl;
 import com.tripplannerai.entity.fail.Fail;
 import com.tripplannerai.repository.fail.FailRepository;
-import com.tripplannerai.util.ConstClass;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

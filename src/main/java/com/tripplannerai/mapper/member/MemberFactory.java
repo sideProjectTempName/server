@@ -7,6 +7,8 @@ import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.util.ConstClass;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.UUID;
+
 import static com.tripplannerai.util.ConstClass.*;
 
 public class MemberFactory {
@@ -19,6 +21,7 @@ public class MemberFactory {
                 .nickname(signUpRequest.getNickname())
                 .phoneNumber(signUpRequest.getPhoneNumber())
                 .image(null)
+                .customerKey(UUID.randomUUID().toString())
                 .build();
     }
 
