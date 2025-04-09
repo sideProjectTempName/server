@@ -22,8 +22,9 @@ public class DestinationController {
     }
 
     @GetMapping
-    public ResponseEntity<DestinationsResponse> fetchDestinations(@RequestParam Integer page, @RequestParam Integer size) {
-        DestinationsResponse destinationsResponse = destinationService.fetchDestinations(page,size);
+    public ResponseEntity<DestinationsResponse> fetchDestinations(@RequestParam Integer page, @RequestParam Integer size,
+                                                                  @RequestParam String name,@Username String email) {
+        DestinationsResponse destinationsResponse = destinationService.fetchDestinations(page,size,name,email);
         return new ResponseEntity<>(destinationsResponse, HttpStatus.OK);
     }
 
@@ -36,6 +37,13 @@ public class DestinationController {
     @GetMapping("/total")
     public ResponseEntity<?> fetchDestinationsByTotal() {
         DestinationsResponse destinationsResponse = destinationService.fetchDestinationsByTotal();
+        return new ResponseEntity<>(destinationsResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<DestinationsResponse> fetchMyDestinations(@RequestParam Integer page, @RequestParam Integer size,
+                                                                  @Username String email) {
+        DestinationsResponse destinationsResponse = destinationService.fetchMyDestinations(page,size,email);
         return new ResponseEntity<>(destinationsResponse, HttpStatus.OK);
     }
 }

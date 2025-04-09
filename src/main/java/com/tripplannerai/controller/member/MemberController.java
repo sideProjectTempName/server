@@ -65,4 +65,5 @@ public class MemberController {
         CheckCertificationResponse checkCertificationResponse = memberService.checkCertification(certificationRequest);
         return new ResponseEntity<>(checkCertificationResponse, HttpStatus.OK);
     }
+
 }

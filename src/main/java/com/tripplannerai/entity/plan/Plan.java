@@ -1,5 +1,6 @@
 package com.tripplannerai.entity.plan;
 
+import com.tripplannerai.entity.group.Group;
 import com.tripplannerai.entity.itinerary.Itinerary;
 import com.tripplannerai.entity.member.Member;
 import jakarta.persistence.*;
@@ -30,6 +31,9 @@ public class Plan {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+    @OneToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name = "group_id")
+    private Group group;
 
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Itinerary> itineraries;

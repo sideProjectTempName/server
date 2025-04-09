@@ -10,15 +10,18 @@ import com.tripplannerai.entity.address.Address;
 import com.tripplannerai.entity.category.Category;
 import com.tripplannerai.entity.destination.Destination;
 import com.tripplannerai.entity.member.Member;
+import com.tripplannerai.entity.searchlog.SearchLog;
 import com.tripplannerai.entity.viewlog.ViewLog;
 import com.tripplannerai.exception.destination.NotFoundDDestinationException;
 import com.tripplannerai.exception.member.NotFoundMemberException;
 import com.tripplannerai.mapper.destination.DestinationFactory;
+import com.tripplannerai.mapper.searchlog.SearchLogFactory;
 import com.tripplannerai.mapper.viewlog.ViewLogFactory;
 import com.tripplannerai.repository.address.AddressRepository;
 import com.tripplannerai.repository.category.CategoryRepository;
 import com.tripplannerai.repository.destination.DestinationRepository;
 import com.tripplannerai.repository.member.MemberRepository;
+import com.tripplannerai.repository.searchlog.SearchLogRepository;
 import com.tripplannerai.repository.viewlog.ViewLogRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +30,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -44,6 +48,7 @@ public class DestinationServiceImplement implements DestinationService {
     private final AddressRepository addressRepository;
     private final MemberRepository memberRepository;
     private final ViewLogRepository viewLogRepository;
+    private final SearchLogRepository searchLogRepository;
     @Value("${tourapi.service-key}")
     private String serviceKey;
     @Value("${tourapi.base-url}")
@@ -104,7 +109,12 @@ public class DestinationServiceImplement implements DestinationService {
     }
 
     @Override
-    public DestinationsResponse fetchDestinations(Integer page, Integer size) {
+    public DestinationsResponse fetchDestinations(Integer page, Integer size,String name,String email) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new NotFoundMemberException("not found member"));
+        if(StringUtils.hasText(name)){
+            SearchLog searchLog = SearchLogFactory.from(name, member);
+            searchLogRepository.save(searchLog);
+        }
         int limit = size;
         int offset = (page-1)*limit;
         List<DestinationQuery> destinations = destinationRepository.fetchDestinations(offset, limit);
@@ -127,6 +137,11 @@ public class DestinationServiceImplement implements DestinationService {
     public DestinationsResponse fetchDestinationsByTotal() {
         List<DestinationQuery> destinations = destinationRepository.fetchDestinationsByTotal();
         List<DestinationResponse> content = destinations.stream().map(DestinationResponse::of).toList();
+        return null;
+    }
+
+    @Override
+    public DestinationsResponse fetchMyDestinations(Integer page, Integer size, String email) {
         return null;
     }
 
