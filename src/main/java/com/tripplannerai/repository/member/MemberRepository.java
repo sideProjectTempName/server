@@ -11,4 +11,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmail(String email);
     @Query("select m from Member m left join fetch m.image i where m.id = :memberId")
     Optional<Member> fetchById(Long memberId);
+
+    String id(Long id);
 }

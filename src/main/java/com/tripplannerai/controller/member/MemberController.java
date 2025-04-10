@@ -64,4 +64,10 @@ public class MemberController {
         return new ResponseEntity<>(checkCertificationResponse, HttpStatus.OK);
     }
 
+    @PostMapping("/auth/refresh")
+    public ResponseEntity<RefreshResponse> refresh(@CookieValue(name = "refreshToken",required = false) String refreshToken, HttpServletResponse response) throws JsonProcessingException {
+        RefreshResponse refreshResponse = memberService.refresh(refreshToken,response);
+        return new ResponseEntity<>(refreshResponse, HttpStatus.OK);
+    }
+
 }
