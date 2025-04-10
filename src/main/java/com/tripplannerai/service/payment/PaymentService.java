@@ -19,7 +19,6 @@ import com.tripplannerai.repository.payment.PaymentRepository;
 import com.tripplannerai.repository.payment.TempPaymentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
 import net.minidev.json.parser.ParseException;
 import org.springframework.http.*;
@@ -27,8 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Optional;
@@ -47,8 +44,8 @@ public class PaymentService {
     private String widgetSecretKey = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
     private JSONParser parser = new JSONParser();
 
-    public ConfirmResponse confirm(String impotencyKey, PaymentRequest paymentRequest, String email) throws IOException, ParseException {
-        //TODO : tempPayment 삭제
+    public ConfirmResponse confirm(String impotencyKey, PaymentRequest paymentRequest, String email){
+
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundMemberException("not found member!1"));
         Optional<Impotency> optionalImpotency = impotencyRepository.findByImpotencyKey(impotencyKey);
@@ -74,8 +71,6 @@ public class PaymentService {
             paymentRepository.save(PaymentFactory.from(paymentRequest, member));
             member.changePoint(paymentRequest.getAmount());
         }
-
-        JSONObject jsonObject = (JSONObject) parser.parse(response.getBody());
 
         return ConfirmResponse.of(SUCCESS_CODE, SUCCESS_MESSAGE);
     }
