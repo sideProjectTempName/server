@@ -15,7 +15,7 @@ import java.io.IOException;
 
 import static com.tripplannerai.util.ConstClass.*;
 @Order(2)
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "com.tripplannerai.controller")
 @Slf4j
 public class AdviceController {
 
