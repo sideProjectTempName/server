@@ -89,7 +89,7 @@ public class GroupService {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
         Group group = groupRepository.findById(groupId)
-                .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
+                .orElseThrow(() -> new NotFoundGroupException("not found Group!!"));
         Long memberId = member.getId();
         boolean authorize = group.getMember().getId() == memberId;
 

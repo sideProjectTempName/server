@@ -135,6 +135,7 @@ public class DestinationServiceImplement implements DestinationService {
         int totalCount = destinationRepository.fetchDestinationsCount(pageLimit);
         return DestinationsResponse.of(content,totalCount);
     }
+    //TODO : write logic
     @Override
     public DestinationsResponse fetchDestinationsByTotal() {
         List<DestinationTotalQuery> destinationQueries = destinationRepository.fetchDestinationsByTotal();

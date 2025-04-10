@@ -19,6 +19,13 @@ public class ConstClass {
     public static String PAYMENT_SERVER_ERROR_CODE = "PS";
     public static String NOT_FOUND_TEMP_PAYMENT_CODE = "NT";
     public static String SSE_SEND_ERROR_CODE = "SS";
+    public static String NOT_FOUND_DESTINATION_CODE = "NF";
+    public static String NOT_FOUND_IMAGE_CODE = "NI";
+    public static String NOT_FOUND_GROUP_CODE = "NG";
+    public static String ALREADY_PARTICIPATE_GROUP_CODE = "GG";
+    public static String NOT_PARTICIPATE_GROUP_CODE = "GF";
+    public static String NOT_FOUND_CHAT_PARTICIPANT_CODE = "NP";
+    public static String NOT_FOUND_CHAT_ROOM_CODE = "NR";
     public static String SUCCESS_MESSAGE = "Success";
     public static String NOT_FOUND_MEMBER_MESSAGE = "Not Found Member";
     public static String UN_CORRECT_PASSWORD_MESSAGE = "Un correct Password";
@@ -36,6 +43,13 @@ public class ConstClass {
     public static String PAYMENT_SERVER_ERROR_MESSAGE = "Payment Server Error";
     public static String NOT_FOUND_TEMP_PAYMENT_MESSAGE = "Not Found Temp Payment";
     public static String SSE_SEND_ERROR_MESSAGE = "Sse Send Error";
+    public static String NOT_FOUND_DESTINATION_MESSAGE = "Not Found Destination";
+    public static String NOT_FOUND_IMAGE_MESSAGE = "Not Found Image";
+    public static String NOT_FOUND_GROUP_MESSAGE = "Not Found Group";
+    public static String ALREADY_PARTICIPATE_GROUP_MESSAGE = "Already Participate Group";
+    public static String NOT_PARTICIPATE_GROUP_MESSAGE = "Not Participate Group";
+    public static String NOT_FOUND_CHAT_PARTICIPANT_MESSAGE = "Not Found Chat Participant";
+    public static String NOT_FOUND_CHAT_ROOM_MESSAGE = "Not Found Chat Room";
     //OAuth2 실패
     public static String AUTHENTICATION_FAILED_CODE = "AF";
     public static String AUTHENTICATION_FAILED_MESSAGE = "Authentication Failed";

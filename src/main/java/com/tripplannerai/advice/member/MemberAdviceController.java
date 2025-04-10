@@ -16,14 +16,14 @@ public class MemberAdviceController {
 
     @ExceptionHandler(NotFoundMemberException.class)
     public ResponseEntity<ErrorResponse> handleNotFoundMemberException() {
-        return new ResponseEntity<>(ErrorResponse.of(NOT_FOUND_MEMBER_CODE,NOT_FOUND_MEMBER_MESSAGE), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ErrorResponse.of(NOT_FOUND_MEMBER_CODE,NOT_FOUND_MEMBER_MESSAGE), HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(UnCorrectPasswordException.class)
     public ResponseEntity<ErrorResponse> handleUnCorrectPasswordException() {
         return new ResponseEntity<>(ErrorResponse.of(UN_CORRECT_PASSWORD_CODE,UN_CORRECT_PASSWORD_MESSAGE), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(NotAuthorizeException.class)
-    public ResponseEntity<ErrorResponse> handleNotAuthorizaException() {
+    public ResponseEntity<ErrorResponse> handleNotAuthorizeException() {
         return new ResponseEntity<>(ErrorResponse.of(NOT_AUTHORIZED_CODE,NOT_AUTHORIZED_MESSAGE), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(MemberExistException.class)
@@ -32,7 +32,7 @@ public class MemberAdviceController {
     }
     @ExceptionHandler(NotFoundCertificationException.class)
     public ResponseEntity<ErrorResponse> handleNotFoundCertificationException() {
-        return new ResponseEntity<>(ErrorResponse.of(NOT_FOUND_CERTIFICATION_CODE,NOT_FOUND_CERTIFICATION_MESSAGE), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ErrorResponse.of(NOT_FOUND_CERTIFICATION_CODE,NOT_FOUND_CERTIFICATION_MESSAGE), HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(NotCorrectCertificationException.class)
     public ResponseEntity<ErrorResponse> handleNotCorrectCertificationException() {
