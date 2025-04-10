@@ -14,6 +14,11 @@ public class ConstClass {
     public static String NOT_FOUND_CERTIFICATION_CODE = "CR";
     public static String NOT_VALID_EMAIL_CODE = "NE";
     public static String NOT_CORRECT_CERTIFICATION_CODE = "NC";
+    public static String INVALID_JWT_TOKEN_CODE = "IV";
+    public static String ALREADY_PAYMENT_REQUEST_CODE = "AP";
+    public static String PAYMENT_SERVER_ERROR_CODE = "PS";
+    public static String NOT_FOUND_TEMP_PAYMENT_CODE = "NT";
+    public static String SSE_SEND_ERROR_CODE = "SS";
     public static String SUCCESS_MESSAGE = "Success";
     public static String NOT_FOUND_MEMBER_MESSAGE = "Not Found Member";
     public static String UN_CORRECT_PASSWORD_MESSAGE = "Un correct Password";
@@ -26,6 +31,11 @@ public class ConstClass {
     public static String NOT_FOUND_CERTIFICATION_MESSAGE = "Not Found Certification";
     public static String NOT_VALID_EMAIL_MESSAGE = "Not Valid Email";
     public static String NOT_CORRECT_CERTIFICATION_MESSAGE = "Not correct Certification";
+    public static String INVALID_JWT_TOKEN_MESSAGE = "Invalid JWT Token";
+    public static String ALREADY_PAYMENT_REQUEST_MESSAGE = "Already Payment Request";
+    public static String PAYMENT_SERVER_ERROR_MESSAGE = "Payment Server Error";
+    public static String NOT_FOUND_TEMP_PAYMENT_MESSAGE = "Not Found Temp Payment";
+    public static String SSE_SEND_ERROR_MESSAGE = "Sse Send Error";
     //OAuth2 실패
     public static String AUTHENTICATION_FAILED_CODE = "AF";
     public static String AUTHENTICATION_FAILED_MESSAGE = "Authentication Failed";

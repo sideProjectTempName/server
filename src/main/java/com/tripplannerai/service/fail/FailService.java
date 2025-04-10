@@ -5,6 +5,7 @@ import com.tripplannerai.dto.response.fail.CloseResponse;
 import com.tripplannerai.dto.response.fail.FailResponse;
 import com.tripplannerai.emitter.EmitterRepositoryImpl;
 import com.tripplannerai.entity.fail.Fail;
+import com.tripplannerai.exception.fail.SseSendException;
 import com.tripplannerai.repository.fail.FailRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +58,7 @@ public class FailService {
                     .data(data));
         } catch (IOException exception) {
             emitterRepository.deleteById(clientId);
-            throw new RuntimeException("connect Fail!");
+            throw new SseSendException("sse send fail");
         }
     }
 

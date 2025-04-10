@@ -23,7 +23,7 @@ public class PaymentController {
     private final PaymentService paymentService;
     @PostMapping("/api/confirm")
     public ResponseEntity<?> confirm(@RequestHeader("Idempotency-Key") String impotencyKey,
-                                     @RequestBody PaymentRequest paymentRequest, @Id Long id) throws IOException, ParseException {
+                                     @RequestBody PaymentRequest paymentRequest, @Id Long id){
         ConfirmResponse confirmResponse = paymentService.confirm(impotencyKey,paymentRequest,id);
         return new ResponseEntity<>(confirmResponse, HttpStatus.OK);
     }

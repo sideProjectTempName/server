@@ -1,5 +1,6 @@
 package com.tripplannerai.advice.member;
 
+import com.tripplannerai.controller.member.MemberController;
 import com.tripplannerai.dto.response.ErrorResponse;
 import com.tripplannerai.exception.member.*;
 import org.springframework.core.annotation.Order;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import static com.tripplannerai.util.ConstClass.*;
 @Order(1)
-@RestControllerAdvice
+@RestControllerAdvice(basePackageClasses = MemberController.class)
 public class MemberAdviceController {
 
     @ExceptionHandler(NotFoundMemberException.class)
@@ -36,5 +37,9 @@ public class MemberAdviceController {
     @ExceptionHandler(NotCorrectCertificationException.class)
     public ResponseEntity<ErrorResponse> handleNotCorrectCertificationException() {
         return new ResponseEntity<>(ErrorResponse.of(NOT_CORRECT_CERTIFICATION_CODE,NOT_CORRECT_CERTIFICATION_MESSAGE), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(InvalidJwtTokenException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidJwtTokenException() {
+        return new ResponseEntity<>(ErrorResponse.of(INVALID_JWT_TOKEN_CODE,INVALID_JWT_TOKEN_MESSAGE), HttpStatus.BAD_REQUEST);
     }
 }

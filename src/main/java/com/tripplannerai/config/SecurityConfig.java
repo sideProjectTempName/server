@@ -1,4 +1,4 @@
-package com.tripplannerai.security;
+package com.tripplannerai.config;
 
 import com.tripplannerai.filter.JwtAuthFilter;
 import com.tripplannerai.handler.OAuth2FailureHandler;
