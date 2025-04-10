@@ -36,7 +36,12 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -63,29 +68,48 @@ public class DestinationServiceImplement implements DestinationService {
         if (destinationRepository.count() > 0) {
             return;
         }
+        Map<String, Address> addressCache = addressRepository.findAll().stream()
+                .collect(Collectors.toMap(
+                        addr -> addr.getAreaCode() + "_" + addr.getSigunguCode(),
+                        Function.identity()
+                ));
+
+        Map<String, Category> categoryCache = categoryRepository.findAll().stream()
+                .collect(Collectors.toMap(
+                        cat -> buildCategoryKey(cat),
+                        Function.identity()
+                ));
+
         int pageNo = 1;
         int numOfRows = 1000;
         boolean hasMore = true;
         while (hasMore) {
-            String destinationUrl = baseUrl + "/areaBasedList1?serviceKey=" + serviceKey +
-                    "&numOfRows="+numOfRows+"&pageNo="+pageNo+"&MobileOS=ETC&MobileApp=AppTest&_type=json";
+            String destinationUrl = baseUrl + "/areaBasedList1?_type=json&serviceKey=" + serviceKey +
+                    "&numOfRows="+numOfRows+"&pageNo="+pageNo+"&MobileOS=ETC&MobileApp=AppTest";
             JsonNode responseBody = fetchData(destinationUrl).get("response").path("body");
             JsonNode destinationList = responseBody.path("items").path("item");
+
+            List<Destination> batch =  new ArrayList<>();
+
             for (JsonNode destinationNode : destinationList) {
                 Destination destination = DestinationFactory.fromApiResponse(destinationNode);
                 String cat1 = destinationNode.path("cat1").asText();
                 if(cat1.equals("25")) continue; // 여행코스는 저장하지 않음
                 String cat2 = destinationNode.path("cat2").asText();
                 String cat3 = destinationNode.path("cat3").asText();
-                Category category = categoryRepository.findCategoryByCodes(cat1,cat2,cat3).orElse(null);
+                String categoryKey = cat1 + "_" + cat2 + "_" + cat3;
+                Category category = categoryCache.getOrDefault(categoryKey, null);
+
                 String areaCode = destinationNode.path("areacode").asText();
                 String sigunguCode = destinationNode.path("sigungucode").asText();
-                Address address = addressRepository.findAddressByCodes(areaCode,sigunguCode).orElse(null);
+                String addressKey = areaCode + "_" + sigunguCode;
+                Address address = addressCache.getOrDefault(addressKey, null);
 
                 destination.setCategory(category);
                 destination.setAddress(address);
-                destinationRepository.save(destination);
+                batch.add(destination);
             }
+            destinationRepository.saveAll(batch);
 
             int totalCount = Integer.parseInt(responseBody.path("totalCount").asText());
             int totalPages = (int) Math.ceil((double) totalCount/numOfRows);
@@ -159,5 +183,16 @@ public class DestinationServiceImplement implements DestinationService {
         } catch (Exception e) {
             throw new RuntimeException("API 호출 실패: " + url,e);
         }
+    }
+    private String buildCategoryKey(Category category) {
+        StringBuilder sb = new StringBuilder();
+        if (category.getCategory() != null) {
+            if (category.getCategory().getCategory() != null) {
+                sb.append(category.getCategory().getCategory().getCategoryCode()).append("_");
+            }
+            sb.append(category.getCategory().getCategoryCode()).append("_");
+        }
+        sb.append(category.getCategoryCode());
+        return sb.toString();
     }
 }
