@@ -1,5 +1,6 @@
 package com.tripplannerai.controller.destination;
 
+import com.tripplannerai.annotation.Id;
 import com.tripplannerai.annotation.Username;
 import com.tripplannerai.dto.response.destination.DestinationResponse;
 import com.tripplannerai.dto.response.destination.DestinationsResponse;
@@ -16,15 +17,15 @@ public class DestinationController {
 
     private final DestinationService destinationService;
     @GetMapping("/{destinationId}")
-    public ResponseEntity<DestinationResponse> fetchDestination(@PathVariable Long destinationId, @Username String email) {
-        DestinationResponse destinationResponse = destinationService.fetchDestination(destinationId,email);
+    public ResponseEntity<DestinationResponse> fetchDestination(@PathVariable Long destinationId, @Id Long id) {
+        DestinationResponse destinationResponse = destinationService.fetchDestination(destinationId,id);
         return ResponseEntity.ok(destinationResponse);
     }
 
     @GetMapping
     public ResponseEntity<DestinationsResponse> fetchDestinations(@RequestParam Integer page, @RequestParam Integer size,
-                                                                  @RequestParam String name,@Username String email) {
-        DestinationsResponse destinationsResponse = destinationService.fetchDestinations(page,size,name,email);
+                                                                  @RequestParam String name,@Id Long id) {
+        DestinationsResponse destinationsResponse = destinationService.fetchDestinations(page,size,name,id);
         return new ResponseEntity<>(destinationsResponse, HttpStatus.OK);
     }
 
@@ -42,8 +43,8 @@ public class DestinationController {
 
     @GetMapping("/my")
     public ResponseEntity<DestinationsResponse> fetchMyDestinations(@RequestParam Integer page, @RequestParam Integer size,
-                                                                  @Username String email) {
-        DestinationsResponse destinationsResponse = destinationService.fetchMyDestinations(page,size,email);
+                                                                    @Id Long id) {
+        DestinationsResponse destinationsResponse = destinationService.fetchMyDestinations(page,size,id);
         return new ResponseEntity<>(destinationsResponse, HttpStatus.OK);
     }
 }

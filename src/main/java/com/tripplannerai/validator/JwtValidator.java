@@ -1,5 +1,6 @@
 package com.tripplannerai.validator;
 
+import com.tripplannerai.exception.member.InvalidJwtTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,10 +13,14 @@ public class JwtValidator {
     private String secretKey;
 
     public Claims validateToken(String jwtToken) {
-        return Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(jwtToken)
-                .getBody();
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(jwtToken)
+                    .getBody();
+        }catch (Exception e) {
+            throw new InvalidJwtTokenException("invalid Token!!");
+        }
     }
 }

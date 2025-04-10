@@ -7,8 +7,13 @@ import com.tripplannerai.entity.member.Member;
 public class GroupFactory {
     public static Group from(AddGroupRequest addGroupRequest, Member member) {
         return Group.builder()
-                .name(addGroupRequest.getName())
+                .title(addGroupRequest.getTitle())
+                .description(addGroupRequest.getDescription())
+                .startDate(addGroupRequest.getStartDate())
+                .endDate(addGroupRequest.getEndDate())
                 .member(member)
+                .count(1)
+                .maxCount(addGroupRequest.getMaxCount())
                 .build();
     }
 }

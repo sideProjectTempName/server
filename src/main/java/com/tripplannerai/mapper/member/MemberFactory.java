@@ -22,6 +22,7 @@ public class MemberFactory {
                 .phoneNumber(signUpRequest.getPhoneNumber())
                 .image(null)
                 .customerKey(UUID.randomUUID().toString())
+                .point(0)
                 .build();
     }
 

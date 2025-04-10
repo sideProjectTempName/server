@@ -1,5 +1,6 @@
 package com.tripplannerai.controller.payment;
 
+import com.tripplannerai.annotation.Id;
 import com.tripplannerai.annotation.Username;
 import com.tripplannerai.dto.request.payment.PaymentRequest;
 import com.tripplannerai.dto.request.payment.TempPaymentRequest;
@@ -22,20 +23,20 @@ public class PaymentController {
     private final PaymentService paymentService;
     @PostMapping("/api/confirm")
     public ResponseEntity<?> confirm(@RequestHeader("Idempotency-Key") String impotencyKey,
-                                     @RequestBody PaymentRequest paymentRequest, @Username String email) throws IOException, ParseException {
-        ConfirmResponse confirmResponse = paymentService.confirm(impotencyKey,paymentRequest,email);
+                                     @RequestBody PaymentRequest paymentRequest, @Id Long id){
+        ConfirmResponse confirmResponse = paymentService.confirm(impotencyKey,paymentRequest,id);
         return new ResponseEntity<>(confirmResponse, HttpStatus.OK);
     }
 
     @PostMapping("/api/temp")
-    public ResponseEntity<?> saveTemp(@RequestBody TempPaymentRequest tempPaymentRequest, @Username String email){
-        SaveTempResponse saveTempResponse = paymentService.saveTemp(tempPaymentRequest,email);
+    public ResponseEntity<?> saveTemp(@RequestBody TempPaymentRequest tempPaymentRequest, @Id Long id){
+        SaveTempResponse saveTempResponse = paymentService.saveTemp(tempPaymentRequest,id);
         return new ResponseEntity<>(saveTempResponse, HttpStatus.OK);
     }
 
     @GetMapping("/api/temp")
-    public ResponseEntity<?> checkTemp(@RequestBody TempPaymentRequest tempPaymentRequest, @Username String email){
-        CheckTempResponse checkTempResponse = paymentService.checkTemp(tempPaymentRequest,email);
+    public ResponseEntity<?> checkTemp(@RequestBody TempPaymentRequest tempPaymentRequest, @Id Long id){
+        CheckTempResponse checkTempResponse = paymentService.checkTemp(tempPaymentRequest,id);
         return new ResponseEntity<>(checkTempResponse, HttpStatus.OK);
     }
 }
