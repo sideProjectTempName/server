@@ -3,10 +3,12 @@ package com.tripplannerai.validator;
 import com.tripplannerai.exception.member.InvalidJwtTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class JwtValidator {
 
     @Value("${jwt.secretKey}")
@@ -20,6 +22,7 @@ public class JwtValidator {
                     .parseClaimsJws(jwtToken)
                     .getBody();
         }catch (Exception e) {
+            log.error(e.getMessage(),e);
             throw new InvalidJwtTokenException("invalid Token!!");
         }
     }
