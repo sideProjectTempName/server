@@ -41,8 +41,8 @@ public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final ReadStatusRepository readStatusRepository;
 
-    public AddChatRoomResponse addChatRoom(String roomName, String email) {
-        Member member = memberRepository.findByEmail(email).orElseThrow(()->new NotFoundMemberException("no exist Member!!"));
+    public AddChatRoomResponse addChatRoom(String roomName, Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(()->new NotFoundMemberException("no exist Member!!"));
         ChatRoom chatRoom = ChatRoom.of(roomName, member);
         ChatParticipant chatParticipant = ChatParticipant.of(chatRoom, member,false);
         chatRoomRepository.save(chatRoom);
@@ -50,8 +50,8 @@ public class ChatService {
         return AddChatRoomResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE, chatRoom.getId());
     }
 
-    public LeaveChatResponse leaveChat(Long chatId, String email) {
-        Member member = memberRepository.findByEmail(email).orElseThrow(()->new NotFoundMemberException("no exist Member!!"));
+    public LeaveChatResponse leaveChat(Long chatId, Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(()->new NotFoundMemberException("no exist Member!!"));
 
         ChatRoom chatRoom = chatRoomRepository.findById(chatId)
                 .orElseThrow(() -> new NotFoundChatRoomException("no exist ChatRoom!!"));
@@ -61,10 +61,10 @@ public class ChatService {
         return LeaveChatResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
-    public AttendChatResponse attendChat(Long roomId, String email) {
+    public AttendChatResponse attendChat(Long roomId, Long id) {
         ChatRoom chatRoom = chatRoomRepository.findById(roomId)
                 .orElseThrow(() -> new NotFoundChatRoomException("no exist ChatRoom!!"));
-        Member member = memberRepository.findByEmail(email).orElseThrow(()->new NotFoundMemberException("no exist Member!!"));
+        Member member = memberRepository.findById(id).orElseThrow(()->new NotFoundMemberException("no exist Member!!"));
 
         Optional<ChatParticipant> optionalChatParticipant = chatParticipantRepository.findByChatRoomAndMemberAndStatus(chatRoom,member,false);
 
@@ -74,10 +74,10 @@ public class ChatService {
         return AttendChatResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
-    public ChatMessagesResponse fetchMessages(Long roomId, String email) {
+    public ChatMessagesResponse fetchMessages(Long roomId, Long id) {
         ChatRoom chatRoom = chatRoomRepository.findById(roomId)
                 .orElseThrow(() -> new NotFoundChatRoomException("no exist ChatRoom!!"));
-        Member member = memberRepository.findByEmail(email).orElseThrow(()->new NotFoundMemberException("no exist Member!!"));
+        Member member = memberRepository.findById(id).orElseThrow(()->new NotFoundMemberException("no exist Member!!"));
 
         ChatParticipant chatParticipant = chatParticipantRepository.findByChatRoomAndMemberAndStatus(chatRoom,member,true)
                 .orElseThrow(()->new NotFoundChatParticipantException("no exist ChatParticipant!!"));
@@ -86,8 +86,8 @@ public class ChatService {
         return ChatMessagesResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE, content);
     }
 
-    public ReadChatMessageResponse readChatMessage(Long chatId, String email) {
-        Member member = memberRepository.findByEmail(email).orElseThrow(()->new NotFoundMemberException("no exist Member!!"));
+    public ReadChatMessageResponse readChatMessage(Long chatId, Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(()->new NotFoundMemberException("no exist Member!!"));
 
         ChatRoom chatRoom = chatRoomRepository.findById(chatId)
                 .orElseThrow(() -> new NotFoundChatRoomException("no exist ChatRoom!!"));
@@ -100,8 +100,8 @@ public class ChatService {
         return ReadChatMessageResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
-    public ChatRoomResponse fetchChatRooms(Integer pageNum, String email) {
-        Member member = memberRepository.findByEmail(email).orElseThrow(()->new NotFoundMemberException("no exist Member!!"));
+    public ChatRoomResponse fetchChatRooms(Integer pageNum, Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(()->new NotFoundMemberException("no exist Member!!"));
 
         Long memberId = member.getId();
         PageRequest pageRequest = PageRequest.of(pageNum, 5);
@@ -111,8 +111,8 @@ public class ChatService {
         return ChatRoomResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,content,hasNext);
     }
 
-    public MyChatRoomResponse fetchMyChatRooms(Integer pageNum, String email) {
-        Member member = memberRepository.findByEmail(email).orElseThrow(()->new NotFoundMemberException("no exist Member!!"));
+    public MyChatRoomResponse fetchMyChatRooms(Integer pageNum, Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(()->new NotFoundMemberException("no exist Member!!"));
         Long memberId = member.getId();
         PageRequest pageRequest = PageRequest.of(pageNum, 5);
         Page<MyChatRoomElement> page = chatRoomRepository.fetchMyChatRooms(pageRequest,memberId);

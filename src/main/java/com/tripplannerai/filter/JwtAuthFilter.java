@@ -2,14 +2,13 @@ package com.tripplannerai.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tripplannerai.dto.JwtSubject;
+import com.tripplannerai.security.CustomUserDetails;
 import com.tripplannerai.validator.JwtValidator;
 import io.jsonwebtoken.Claims;
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,8 +43,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_"+claims.get("role")));
             JwtSubject jwtSubject = objectMapper.readValue(claims.getSubject(), JwtSubject.class);
-            UserDetails userDetails = new User(jwtSubject.getEmail(), "", authorities);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+            CustomUserDetails customUserDetails = new CustomUserDetails(jwtSubject, authorities);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(customUserDetails, "", customUserDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);

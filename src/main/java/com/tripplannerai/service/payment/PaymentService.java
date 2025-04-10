@@ -1,6 +1,5 @@
 package com.tripplannerai.service.payment;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tripplannerai.dto.request.payment.PaymentRequest;
 import com.tripplannerai.dto.request.payment.TempPaymentRequest;
 import com.tripplannerai.dto.response.payment.ConfirmResponse;
@@ -20,12 +19,10 @@ import com.tripplannerai.repository.payment.TempPaymentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.parser.JSONParser;
-import net.minidev.json.parser.ParseException;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Optional;
@@ -44,9 +41,9 @@ public class PaymentService {
     private String widgetSecretKey = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
     private JSONParser parser = new JSONParser();
 
-    public ConfirmResponse confirm(String impotencyKey, PaymentRequest paymentRequest, String email){
+    public ConfirmResponse confirm(String impotencyKey, PaymentRequest paymentRequest, Long id){
 
-        Member member = memberRepository.findByEmail(email)
+        Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("not found member!1"));
         Optional<Impotency> optionalImpotency = impotencyRepository.findByImpotencyKey(impotencyKey);
         if (optionalImpotency.isPresent()) {
@@ -75,16 +72,16 @@ public class PaymentService {
         return ConfirmResponse.of(SUCCESS_CODE, SUCCESS_MESSAGE);
     }
 
-    public SaveTempResponse saveTemp(TempPaymentRequest tempPaymentRequest, String email) {
-        Member member = memberRepository.findByEmail(email)
+    public SaveTempResponse saveTemp(TempPaymentRequest tempPaymentRequest, Long id) {
+        Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("not found member!"));
         TempPayment tempPayment = PaymentFactory.from(tempPaymentRequest, member);
         tempPaymentRepository.save(tempPayment);
         return SaveTempResponse.of(SUCCESS_CODE, SUCCESS_MESSAGE);
     }
 
-    public CheckTempResponse checkTemp(TempPaymentRequest tempPaymentRequest, String email) {
-        Member member = memberRepository.findByEmail(email)
+    public CheckTempResponse checkTemp(TempPaymentRequest tempPaymentRequest, Long id) {
+        Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("not found member!"));
         String orderId = tempPaymentRequest.getOrderId();
         Integer amount = tempPaymentRequest.getAmount();

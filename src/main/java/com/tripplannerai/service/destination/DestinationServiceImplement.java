@@ -29,7 +29,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -101,8 +100,8 @@ public class DestinationServiceImplement implements DestinationService {
     }
 
     @Override
-    public DestinationResponse fetchDestination(Long destinationId,String email) {
-        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new NotFoundMemberException("not found member"));
+    public DestinationResponse fetchDestination(Long destinationId, Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new NotFoundMemberException("not found member"));
         Destination destination = destinationRepository.findById(destinationId)
                 .orElseThrow(()-> new NotFoundDDestinationException("not found Destination!!"));
         ViewLog viewLog = ViewLogFactory.from(destination, member);
@@ -111,8 +110,8 @@ public class DestinationServiceImplement implements DestinationService {
     }
 
     @Override
-    public DestinationsResponse fetchDestinations(Integer page, Integer size,String name,String email) {
-        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new NotFoundMemberException("not found member"));
+    public DestinationsResponse fetchDestinations(Integer page, Integer size, String name, Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new NotFoundMemberException("not found member"));
         if(StringUtils.hasText(name)){
             SearchLog searchLog = SearchLogFactory.from(name, member);
             searchLogRepository.save(searchLog);
@@ -144,7 +143,7 @@ public class DestinationServiceImplement implements DestinationService {
     }
 
     @Override
-    public DestinationsResponse fetchMyDestinations(Integer page, Integer size, String email) {
+    public DestinationsResponse fetchMyDestinations(Integer page, Integer size, Long id) {
         return null;
     }
 

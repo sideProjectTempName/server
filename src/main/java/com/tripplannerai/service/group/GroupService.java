@@ -34,8 +34,8 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
     private final EnrollRepository enrollRepository;
-    public AddGroupResponse addGroup(AddGroupRequest addGroupRequest,String email) {
-        Member member = memberRepository.findByEmail(email)
+    public AddGroupResponse addGroup(AddGroupRequest addGroupRequest, Long id) {
+        Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
         Group group = GroupFactory.from(addGroupRequest,member);
         Enroll enroll = EnrollFactory.from(member, group, true);
@@ -44,8 +44,8 @@ public class GroupService {
         return AddGroupResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,group);
     }
 
-    public ParticipateGroupResponse participateGroup(Long groupId, String email) {
-        Member member = memberRepository.findByEmail(email)
+    public ParticipateGroupResponse participateGroup(Long groupId, Long id) {
+        Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundGroupException("not found group"));
@@ -58,8 +58,8 @@ public class GroupService {
         return ParticipateGroupResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
-    public LeaveGroupResponse leaveGroup(Long groupId, String email) {
-        Member member = memberRepository.findByEmail(email)
+    public LeaveGroupResponse leaveGroup(Long groupId, Long id) {
+        Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundGroupException("not found group"));
@@ -69,9 +69,9 @@ public class GroupService {
         return LeaveGroupResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
-    public DonateResponse donateGroup(Long groupId, Integer point, String email) {
+    public DonateResponse donateGroup(Long groupId, Integer point, Long id) {
         if(!checkPoint(point)) throw new InvalidPointException("point have to positive value!!");
-        Member member = memberRepository.findByEmail(email)
+        Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundGroupException("not found group"));
@@ -85,8 +85,8 @@ public class GroupService {
         return point>0;
     }
 
-    public ApplyGroupResponse applyGroup(Long groupId, String email) {
-        Member member = memberRepository.findByEmail(email)
+    public ApplyGroupResponse applyGroup(Long groupId, Long id) {
+        Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
@@ -98,8 +98,8 @@ public class GroupService {
         return ApplyGroupResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,applyElements);
     }
 
-    public ParticipateGroupResponse permitGroup(Long groupId, String email, Long enrollId) {
-        Member member = memberRepository.findByEmail(email)
+    public ParticipateGroupResponse permitGroup(Long groupId, Long id, Long enrollId) {
+        Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));

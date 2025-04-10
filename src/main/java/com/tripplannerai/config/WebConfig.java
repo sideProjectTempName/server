@@ -1,5 +1,6 @@
 package com.tripplannerai.config;
 
+import com.tripplannerai.resolver.IdResolver;
 import com.tripplannerai.resolver.UsernameResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -11,8 +12,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
     private final UsernameResolver usernameResolver;
+    private final IdResolver idResolver;
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(usernameResolver);
+        resolvers.add(idResolver);
     }
 }
