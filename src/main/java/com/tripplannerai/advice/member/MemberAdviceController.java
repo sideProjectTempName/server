@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.IOException;
+
 import static com.tripplannerai.util.ConstClass.*;
 @Order(1)
 @RestControllerAdvice(basePackageClasses = MemberController.class)
@@ -41,5 +43,9 @@ public class MemberAdviceController {
     @ExceptionHandler(InvalidJwtTokenException.class)
     public ResponseEntity<ErrorResponse> handleInvalidJwtTokenException() {
         return new ResponseEntity<>(ErrorResponse.of(INVALID_JWT_TOKEN_CODE,INVALID_JWT_TOKEN_MESSAGE), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<ErrorResponse> handleIOException() {
+        return new ResponseEntity<>(ErrorResponse.of(UPLOAD_FAILED_CODE,UPLOAD_FAILED_MESSAGE), HttpStatus.BAD_REQUEST);
     }
 }
