@@ -20,6 +20,8 @@ import com.tripplannerai.repository.member.MemberRepository;
 import com.tripplannerai.provider.JwtProvider;
 import com.tripplannerai.s3.S3UploadService;
 import com.tripplannerai.service.AsyncService;
+import com.tripplannerai.validator.JwtValidator;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
@@ -47,6 +49,7 @@ public class MemberService {
     private final CertificationRepository certificationRepository;
     private final ImageRepository imageRepository;
     private final JwtProvider jwtProvider;
+    private final JwtValidator jwtValidator;
     private final AsyncService asyncService;
     private final S3UploadService s3UploadService;
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -130,5 +133,19 @@ public class MemberService {
 
     private String getUrl(Image image){
         return serverUrl + image.getImageId();
+    }
+
+    public RefreshResponse refresh(String refreshToken, HttpServletResponse response) throws JsonProcessingException {
+        Claims claims = jwtValidator.validateToken(refreshToken);
+        String subject = claims.getSubject();
+        JwtSubject jwtSubject = objectMapper.readValue(subject, JwtSubject.class);
+        Member member = memberRepository.findById(jwtSubject.getId())
+                .orElseThrow(() -> new NotFoundMemberException("not Found Member"));
+        String accessToken = jwtProvider.createAccessToken(objectMapper.writeValueAsString(jwtSubject),"user");
+        String issuedRefreshToken = jwtProvider.createRefreshToken(objectMapper.writeValueAsString(jwtSubject),"user");
+        Cookie cookie = getCookie("refreshToken",refreshToken,refreshExpiration);
+        response.addCookie(cookie);
+        member.setRefreshToken(issuedRefreshToken);
+        return RefreshResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,accessToken);
     }
 }
