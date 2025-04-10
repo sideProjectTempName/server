@@ -12,6 +12,6 @@ public class ChatMessageElement {
 
     private Long roomId;
     private String content;
-    private String username;
+    private String email;
     private boolean status;
 }

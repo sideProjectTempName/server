@@ -37,6 +37,7 @@ public class MemberFactory {
                 .providerId(member.getProviderId())
                 .isWithdrawn(member.isWithdrawn())
                 .imageUrl(imageUrl)
+                .customerKey(member.getCustomerKey())
                 .build();
     }
 }

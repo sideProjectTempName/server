@@ -13,6 +13,6 @@ public class ChatRoomElement {
     private Long id;
     private String name;
     private int count;
-    private String createdBy;
+    private String email;
     private boolean status;
 }

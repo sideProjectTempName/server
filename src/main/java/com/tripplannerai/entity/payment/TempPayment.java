@@ -10,17 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Payment {
+public class TempPayment {
     @Id
-    @Column(name = "payment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long paymentId;
-    @Column(name = "payment_key")
-    private String paymentKey;
-    private Integer amount;
-    @Column(name = "order_id")
+    @Column(name = "temp_payment_id")
+    private Long tempPaymentId;
     private String orderId;
-    @ManyToOne(fetch = FetchType.LAZY)
+    private Integer amount;
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 }

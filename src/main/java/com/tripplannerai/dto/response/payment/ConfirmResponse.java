@@ -1,4 +1,4 @@
-package com.tripplannerai.dto.response;
+package com.tripplannerai.dto.response.payment;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -19,10 +19,10 @@ public class Enroll {
     @Column(name = "enroll_id")
     private Long enrollId;
     private boolean accepted;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private Group group;
     public void changeAccepted(boolean accepted) {
