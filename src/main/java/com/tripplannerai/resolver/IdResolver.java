@@ -17,7 +17,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 public class IdResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        boolean hasString = parameter.getParameterType().isAssignableFrom(String.class);
+        boolean hasString = parameter.getParameterType().isAssignableFrom(Long.class);
         boolean hasIdAnnotation = parameter.hasParameterAnnotation(Id.class);
         return hasString && hasIdAnnotation;
     }

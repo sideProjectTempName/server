@@ -12,9 +12,8 @@ import lombok.NoArgsConstructor;
 public class CheckCertificationResponse {
     private String code;
     private String message;
-    private String certification;
 
-    public static CheckCertificationResponse of(String code, String message, String certificationNumber) {
-        return new CheckCertificationResponse(code, message, certificationNumber);
+    public static CheckCertificationResponse of(String code, String message) {
+        return new CheckCertificationResponse(code, message);
     }
 }

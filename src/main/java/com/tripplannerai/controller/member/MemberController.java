@@ -58,7 +58,7 @@ public class MemberController {
         return new ResponseEntity<>(sendCertificationResponse, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/check-certification")
+    @PostMapping(value = "/check-certification")
     public ResponseEntity<CheckCertificationResponse> checkCertification(@Valid @RequestBody CertificationRequest certificationRequest) {
         CheckCertificationResponse checkCertificationResponse = memberService.checkCertification(certificationRequest);
         return new ResponseEntity<>(checkCertificationResponse, HttpStatus.OK);
