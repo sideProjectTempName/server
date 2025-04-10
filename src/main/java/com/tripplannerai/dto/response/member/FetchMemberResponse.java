@@ -22,4 +22,5 @@ public class FetchMemberResponse {
     private String providerId;
     private boolean isWithdrawn;
     private String imageUrl;
+    private String customerKey;
 }

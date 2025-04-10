@@ -53,7 +53,6 @@ public class Member extends BaseEntity {
     private Image image;
 
 
-
     @Column(name = "customer_key")
     private String customerKey;
 

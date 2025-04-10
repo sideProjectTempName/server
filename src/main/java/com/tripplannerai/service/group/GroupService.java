@@ -1,7 +1,7 @@
 package com.tripplannerai.service.group;
 
 import com.tripplannerai.dto.request.group.AddGroupRequest;
-import com.tripplannerai.dto.response.DonateResponse;
+import com.tripplannerai.dto.response.group.DonateResponse;
 import com.tripplannerai.dto.response.group.*;
 import com.tripplannerai.entity.enroll.Enroll;
 import com.tripplannerai.entity.group.Group;

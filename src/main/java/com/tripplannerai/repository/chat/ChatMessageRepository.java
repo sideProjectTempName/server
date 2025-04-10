@@ -13,7 +13,7 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
     List<ChatMessage> findChatMessageByChatRoom(ChatRoom chatRoom);
 
     @Query("select new com.tripplannerai.dto.response.chat." +
-            "ChatMessageElement(cm.chatRoom.id,cm.content,p.user.username,r.status) from ChatMessage cm " +
+            "ChatMessageElement(cm.chatRoom.id,cm.content,p.member.email,r.status) from ChatMessage cm " +
             "left join cm.chatParticipant p " +
             "left join ReadStatus r on r.chatMessage.id = cm.id and r.chatParticipant.id = :chatParticipantId " +
             "left join ChatRoom cr on cr.id=cm.chatRoom.id " +
