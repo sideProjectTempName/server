@@ -39,3 +39,5 @@ application.properties
 
 src/main/resources/application-aws.yml
 src/main/resources/application.yml
+src/test/resources/application.yml
+src/test/resources/application-aws.yml

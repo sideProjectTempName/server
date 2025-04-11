@@ -12,5 +12,4 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m from Member m left join fetch m.image i where m.id = :memberId")
     Optional<Member> fetchById(Long memberId);
 
-    String id(Long id);
 }
