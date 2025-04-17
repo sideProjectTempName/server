@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 public class UpdateResponse {
     private String code;
     private String message;
-    private String memberId;
+    private String email;
 
     public static UpdateResponse of(String code, String message, Member member) {
-        return new UpdateResponse(code,message,String.valueOf(member.getId()));
+        return new UpdateResponse(code,message,String.valueOf(member.getEmail()));
     }
 }
