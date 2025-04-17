@@ -41,22 +41,4 @@ public class AiRecommendationController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/plan")
-    public ResponseEntity<List<PlanResponseDto>> getTourPlansByEmail(@Username String email) {
-        return ResponseEntity.ok(planService.getPlanListByUsername(email));
-    }
-
-    @DeleteMapping("/plan/{planId}")
-    public ResponseEntity<DeletePlanResponse> deletePlan(@PathVariable("planId") Long planId) {
-        planService.deletePlanByPlanId(planId);
-        return ResponseEntity.ok(DeletePlanResponse.of(SUCCESS_CODE, SUCCESS_MESSAGE));
-    }
-
-    @GetMapping("/plan/detail/{itineraryId}")
-    public ResponseEntity<DayScheduleDto> getDayScheduleDetails(@PathVariable("itineraryId") Long itineraryId) {
-        DayScheduleDto response = planService.getDayScheduleByItineraryId(itineraryId);
-        return ResponseEntity.ok(response);
-    }
-
-
 }

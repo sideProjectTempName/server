@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Profile(value = "aws")
 @RequiredArgsConstructor
+@Profile("aws")
 public class DbInit {
     private final AddressService addressService;
     private final CategoryService categoryService;
