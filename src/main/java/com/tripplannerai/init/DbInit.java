@@ -7,12 +7,15 @@ import com.tripplannerai.service.destination.DestinationService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Component
+@Profile(value = "aws")
 @RequiredArgsConstructor
+@Profile("aws")
 public class DbInit {
     private final AddressService addressService;
     private final CategoryService categoryService;
