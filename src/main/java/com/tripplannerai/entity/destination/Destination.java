@@ -29,6 +29,12 @@ public class Destination {
     private String longitude; //경도
     private String rating;
 
+    @Column(length=1000)
+    private String originImageUrl;
+    @Column(length=1000)
+    private String thumbnailImageUrl;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;

@@ -13,6 +13,8 @@ public class DestinationFactory {
                 .latitude(destinationNode.path("mapy").asText())
                 .longitude(destinationNode.path("mapx").asText())
                 .name(destinationNode.path("title").asText())
+                .originImageUrl(destinationNode.path("firstimage").asText())
+                .thumbnailImageUrl(destinationNode.path("firstimage2").asText())
                 .build();
 
     }

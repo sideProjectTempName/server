@@ -37,7 +37,6 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -99,7 +98,6 @@ public class DestinationServiceImplement implements DestinationService {
                 String cat3 = destinationNode.path("cat3").asText();
                 String categoryKey = cat1 + "_" + cat2 + "_" + cat3;
                 Category category = categoryCache.getOrDefault(categoryKey, null);
-
                 String areaCode = destinationNode.path("areacode").asText();
                 String sigunguCode = destinationNode.path("sigungucode").asText();
                 String addressKey = areaCode + "_" + sigunguCode;
