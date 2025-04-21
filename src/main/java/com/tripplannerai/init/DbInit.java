@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Component
-@Profile(value = "aws")
 @RequiredArgsConstructor
 @Profile("aws")
 public class DbInit {
