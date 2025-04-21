@@ -24,59 +24,78 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
 
     private final MemberRepository memberRepository;
     private final SocialRepository socialRepository;
-
+    private static final Map<String, SocialType> oauthProviderToSocialTypeMap = Map.of(
+            "kakao", SocialType.KAKAO,
+            "naver", SocialType.NAVER,
+            "google", SocialType.GOOGLE
+    );
     @Override
     public OAuth2User loadUser(OAuth2UserRequest request) throws OAuth2AuthenticationException {
 
         OAuth2User oAuth2User = super.loadUser(request);
         String oauthClientName = request.getClientRegistration().getClientName();
-        String email = null;
-        String nickname = null;
+        String email = extractEmail(oAuth2User,oauthClientName);
+        String nickname = extractNickname(oAuth2User,oauthClientName);
 
-        // 소셜 제공자별 userId와 nickname 설정
-        if (oauthClientName.equals("kakao")) {
-            Map<String, String> properties = (Map<String, String>) oAuth2User.getAttributes().get("properties");
-            email = "kakao_" + oAuth2User.getAttributes().get("id");
-            nickname = properties.get("nickname");
-        } else if (oauthClientName.equals("naver")) {
-            Map<String, String> response = (Map<String, String>) oAuth2User.getAttributes().get("response");
-            email = "naver_" + response.get("id").substring(0, 14);
-            nickname = response.get("nickname");
-        } else if (oauthClientName.equals("google")) {
-            email = "google_" + oAuth2User.getAttributes().get("sub");
-            nickname = (String) oAuth2User.getAttributes().get("name");
-        } else {
-            throw new OAuth2AuthenticationException("Unsupported OAuth provider: " + oauthClientName);
+        Member member = findOrCreateMember(email,nickname,oauthClientName);
+
+        return new CustomOAuth2User(email);
+    }
+
+    private String extractEmail(OAuth2User oAuth2User, String oauthClientName) {
+        switch (oauthClientName) {
+            case "kakao" :
+                return "kakao_"+ oAuth2User.getAttributes().get("id");
+            case "naver" :
+                return "naver_" + ((Map<String, String>) oAuth2User.getAttributes().get("response")).get("id").substring(0, 14);
+            case "google" :
+                return "google_" + oAuth2User.getAttributes().get("sub");
+            default:
+                throw new OAuth2AuthenticationException("Unsupported OAuth provider: " + oauthClientName);
         }
+    }
 
+    private String extractNickname(OAuth2User oAuth2User, String oauthClientName) {
+        switch (oauthClientName) {
+            case "kakao":
+                return ((Map<String, String>) oAuth2User.getAttributes().get("properties")).get("nickname");
+            case "naver":
+                return ((Map<String, String>) oAuth2User.getAttributes().get("response")).get("nickname");
+            case "google":
+                return (String) oAuth2User.getAttributes().get("name");
+            default:
+                throw new OAuth2AuthenticationException("Unsupported OAuth provider: " + oauthClientName);
+        }
+    }
+
+    private Member findOrCreateMember(String email, String nickname, String oauthClientName) {
         // 기존 회원 조회
         Optional<Member> existingMember = memberRepository.findByEmail(email);
-        Member member;
-        if (existingMember.isPresent()) {
-            // 이미 존재하는 경우 기존 회원 사용
-            member = existingMember.get();
-        } else {
-            // 새로운 회원 생성 및 저장
-            member = Member.builder()
+        Member member = existingMember.orElseGet(() -> {
+            Member newMember = Member.builder()
                     .email(email)
                     .nickname(nickname)
-                    .password("password")
+                    .password("") //oauth 로그인 시 비밀번호 필요없음
                     .build();
-            memberRepository.save(member);
+            memberRepository.save(newMember);
 
-            SocialType socialType = switch (oauthClientName) {
-                case "kakao" -> SocialType.KAKAO;
-                case "naver" -> SocialType.NAVER;
-                case "google" -> SocialType.GOOGLE;
-                default -> throw new IllegalStateException("Unexpected provider: " + oauthClientName);
-            };
+            createSocialAccount(newMember, oauthClientName);
+            return newMember;
+        });
+        return member;
+    }
+
+    private void createSocialAccount(Member member, String oauthClientName) {
+        SocialType socialType = oauthProviderToSocialTypeMap.get(oauthClientName);
+        if (socialType != null) {
             Social social = Social.builder()
                     .socialType(socialType)
                     .member(member)
                     .build();
             socialRepository.save(social);
+        } else {
+            throw new OAuth2AuthenticationException("Unsupported OAuth provider: " + oauthClientName);
         }
-
-        return new CustomOAuth2User(email);
     }
+
 }
