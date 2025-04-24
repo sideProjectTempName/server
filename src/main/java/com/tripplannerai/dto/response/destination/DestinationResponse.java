@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class DestinationResponse {
+//    private String code;
+//    private String message;
     private String contentId;
 
     public static DestinationResponse of(DestinationQuery destinationQuery) {
