@@ -1,4 +1,4 @@
-package com.tripplannerai.mapper.address;
+package com.tripplannerai.mapper;
 
 import com.tripplannerai.entity.address.Address;
 

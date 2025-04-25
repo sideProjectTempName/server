@@ -1,4 +1,4 @@
-package com.tripplannerai.mapper.image;
+package com.tripplannerai.mapper;
 
 import com.tripplannerai.entity.image.Image;
 

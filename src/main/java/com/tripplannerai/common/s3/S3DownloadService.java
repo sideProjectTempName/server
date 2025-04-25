@@ -1,4 +1,4 @@
-package com.tripplannerai.s3;
+package com.tripplannerai.common.s3;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;

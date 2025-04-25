@@ -1,7 +1,6 @@
 package com.tripplannerai.controller.payment;
 
-import com.tripplannerai.annotation.Id;
-import com.tripplannerai.annotation.Username;
+import com.tripplannerai.common.annotation.Id;
 import com.tripplannerai.dto.request.payment.PaymentRequest;
 import com.tripplannerai.dto.request.payment.TempPaymentRequest;
 import com.tripplannerai.dto.response.payment.ConfirmResponse;
@@ -9,12 +8,9 @@ import com.tripplannerai.dto.response.payment.CheckTempResponse;
 import com.tripplannerai.dto.response.payment.SaveTempResponse;
 import com.tripplannerai.service.payment.PaymentService;
 import lombok.RequiredArgsConstructor;
-import net.minidev.json.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor

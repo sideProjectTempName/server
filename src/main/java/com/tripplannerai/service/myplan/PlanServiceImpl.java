@@ -1,13 +1,12 @@
 package com.tripplannerai.service.myplan;
 
 import com.tripplannerai.dto.response.plan.PlanResponseDto;
-import com.tripplannerai.dto.response.recommend.Accommodation;
 import com.tripplannerai.dto.response.recommend.DayScheduleDto;
 import com.tripplannerai.dto.response.recommend.SpotDto;
 import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.entity.plan.Plan;
 import com.tripplannerai.entity.tourspot.TourSpot;
-import com.tripplannerai.exception.member.NotFoundMemberException;
+import com.tripplannerai.common.exception.member.NotFoundMemberException;
 import com.tripplannerai.repository.itinerary.ItineraryRepository;
 import com.tripplannerai.repository.member.MemberRepository;
 import com.tripplannerai.repository.plan.PlanRepository;

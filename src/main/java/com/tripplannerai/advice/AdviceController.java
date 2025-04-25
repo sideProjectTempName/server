@@ -1,7 +1,6 @@
 package com.tripplannerai.advice;
 
 import com.tripplannerai.dto.response.ErrorResponse;
-import com.tripplannerai.exception.member.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package com.tripplannerai.controller.festival;
 
-import com.tripplannerai.annotation.Id;
+import com.tripplannerai.common.annotation.Id;
 import com.tripplannerai.dto.request.festival.FestivalBookmarkRequest;
 import com.tripplannerai.dto.response.festival.FestivalLikeResponse;
 import com.tripplannerai.service.festival.FestivalBookmarkService;

@@ -1,4 +1,4 @@
-package com.tripplannerai.mapper.viewlog;
+package com.tripplannerai.mapper;
 
 import com.tripplannerai.entity.destination.Destination;
 import com.tripplannerai.entity.member.Member;

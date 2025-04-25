@@ -3,21 +3,18 @@ package com.tripplannerai.service.destination;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tripplannerai.dto.response.destination.DestinationQuery;
-import com.tripplannerai.dto.response.destination.DestinationResponse;
-import com.tripplannerai.dto.response.destination.DestinationTotalQuery;
-import com.tripplannerai.dto.response.destination.DestinationsResponse;
+import com.tripplannerai.dto.response.destination.*;
 import com.tripplannerai.entity.address.Address;
 import com.tripplannerai.entity.category.Category;
 import com.tripplannerai.entity.destination.Destination;
 import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.entity.searchlog.SearchLog;
 import com.tripplannerai.entity.viewlog.ViewLog;
-import com.tripplannerai.exception.destination.NotFoundDDestinationException;
-import com.tripplannerai.exception.member.NotFoundMemberException;
-import com.tripplannerai.mapper.destination.DestinationFactory;
-import com.tripplannerai.mapper.searchlog.SearchLogFactory;
-import com.tripplannerai.mapper.viewlog.ViewLogFactory;
+import com.tripplannerai.common.exception.destination.NotFoundDDestinationException;
+import com.tripplannerai.common.exception.member.NotFoundMemberException;
+import com.tripplannerai.mapper.DestinationFactory;
+import com.tripplannerai.mapper.SearchLogFactory;
+import com.tripplannerai.mapper.ViewLogFactory;
 import com.tripplannerai.repository.address.AddressRepository;
 import com.tripplannerai.repository.category.CategoryRepository;
 import com.tripplannerai.repository.destination.DestinationRepository;
@@ -41,6 +38,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static com.tripplannerai.util.ConstClass.*;
 
 @Slf4j
 @Service
@@ -128,7 +127,7 @@ public class DestinationServiceImplement implements DestinationService {
                 .orElseThrow(()-> new NotFoundDDestinationException("not found Destination!!"));
         ViewLog viewLog = ViewLogFactory.from(destination, member);
         viewLogRepository.save(viewLog);
-        return DestinationResponse.of(destination);
+        return DestinationResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,destination);
     }
 
     @Override
@@ -148,21 +147,40 @@ public class DestinationServiceImplement implements DestinationService {
     }
 
     @Override
-    public DestinationsResponse fetchDestinationByCategory(Integer page, Integer size, String category) {
+    public DestinationsCategoryResponse fetchDestinationByCategory(Integer page, Integer size, Long categoryId) {
         int limit = size;
         int offset = (page-1)*limit;
         int pageLimit = PageLimitCalculator.calculatePageLimit(page, size, 10);
-        List<DestinationQuery> destinationQueries = destinationRepository.fetchDestinationByCategory(offset,limit,category);
-        List<DestinationResponse> content = destinationQueries.stream().map(DestinationResponse::of).toList();
-        int totalCount = destinationRepository.fetchDestinationsCount(pageLimit);
-        return DestinationsResponse.of(content,totalCount);
+        List<DestinationCategoryQuery> destinationCategoryQueries = destinationRepository.fetchDestinationByCategory(offset, limit, categoryId);
+        List<DestinationCategoryDto> content = toDestinationCategoryDto(destinationCategoryQueries);
+        int totalCount = destinationRepository.fetchDestinationsCategoryCount(categoryId,pageLimit);
+        return DestinationsCategoryResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,content,totalCount);
     }
-    //TODO : write logic
-    @Override
-    public DestinationsResponse fetchDestinationsByTotal() {
-        List<DestinationTotalQuery> destinationQueries = destinationRepository.fetchDestinationsByTotal();
 
-        return null;
+    private List<DestinationCategoryDto> toDestinationCategoryDto(List<DestinationCategoryQuery> destinationCategoryQueries) {
+        return destinationCategoryQueries.stream()
+                .map(query -> DestinationCategoryDto.of(query))
+                .toList();
+    }
+
+    @Override
+    public TotalDestinationResponse fetchDestinationsByTotal() {
+        List<DestinationTotalQuery> destinationQueries = destinationRepository.fetchDestinationsByTotal();
+        List<DestinationTotalDto> destinationTotalDtoList = toDestinationTotalDtoList(destinationQueries);
+        Map<String, List<DestinationTotalDto>> map = groupByMiddleCategory(destinationTotalDtoList);
+        return TotalDestinationResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,map);
+    }
+
+    private List<DestinationTotalDto> toDestinationTotalDtoList(List<DestinationTotalQuery> destinationQueries) {
+        return destinationQueries.stream()
+                .map(DestinationTotalDto::of)
+                .toList();
+    }
+    private  Map<String, List<DestinationTotalDto>> groupByMiddleCategory(List<DestinationTotalDto> destinationTotalDtoList) {
+
+
+        return destinationTotalDtoList.stream()
+                .collect(Collectors.groupingBy(DestinationTotalDto::getMiddleCategoryId));
     }
 
     @Override

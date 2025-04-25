@@ -1,9 +1,8 @@
-package com.tripplannerai.advice.destination;
+package com.tripplannerai.advice;
 
 import com.tripplannerai.dto.response.ErrorResponse;
-import com.tripplannerai.exception.destination.NotFoundDDestinationException;
-import com.tripplannerai.exception.member.NotFoundMemberException;
-import com.tripplannerai.util.ConstClass;
+import com.tripplannerai.common.exception.destination.NotFoundDDestinationException;
+import com.tripplannerai.common.exception.member.NotFoundMemberException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

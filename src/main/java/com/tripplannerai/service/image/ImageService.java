@@ -1,9 +1,9 @@
 package com.tripplannerai.service.image;
 
 import com.tripplannerai.entity.image.Image;
-import com.tripplannerai.exception.image.NotFoundImageException;
+import com.tripplannerai.common.exception.image.NotFoundImageException;
 import com.tripplannerai.repository.image.ImageRepository;
-import com.tripplannerai.s3.S3DownloadService;
+import com.tripplannerai.common.s3.S3DownloadService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

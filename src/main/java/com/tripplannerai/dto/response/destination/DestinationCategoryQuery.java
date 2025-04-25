@@ -1,6 +1,6 @@
 package com.tripplannerai.dto.response.destination;
 
-public interface DestinationTotalQuery {
+public interface DestinationCategoryQuery {
     String getMiddleCategoryId();
     String getSubCategoryId();
     String getMiddleCategoryName();

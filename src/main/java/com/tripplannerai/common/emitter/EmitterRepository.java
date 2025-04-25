@@ -1,4 +1,4 @@
-package com.tripplannerai.emitter;
+package com.tripplannerai.common.emitter;
 
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 

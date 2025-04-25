@@ -1,4 +1,4 @@
-package com.tripplannerai.mapper.group;
+package com.tripplannerai.mapper;
 
 import com.tripplannerai.dto.request.group.AddGroupRequest;
 import com.tripplannerai.entity.group.Group;

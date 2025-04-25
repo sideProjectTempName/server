@@ -1,6 +1,6 @@
 package com.tripplannerai.service.oauth;
 
-import com.tripplannerai.entity.member.CustomOAuth2User;
+import com.tripplannerai.common.security.CustomOAuth2User;
 import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.entity.social.Social;
 import com.tripplannerai.entity.social.SocialType;

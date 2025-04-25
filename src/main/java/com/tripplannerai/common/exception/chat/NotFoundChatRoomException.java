@@ -1,4 +1,4 @@
-package com.tripplannerai.exception.chat;
+package com.tripplannerai.common.exception.chat;
 
 public class NotFoundChatRoomException extends RuntimeException{
 

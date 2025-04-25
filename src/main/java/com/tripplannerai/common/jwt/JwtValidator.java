@@ -1,6 +1,6 @@
-package com.tripplannerai.validator;
+package com.tripplannerai.common.jwt;
 
-import com.tripplannerai.exception.member.InvalidJwtTokenException;
+import com.tripplannerai.common.exception.member.InvalidJwtTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
