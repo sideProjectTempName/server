@@ -1,10 +1,8 @@
-package com.tripplannerai.advice.fail;
+package com.tripplannerai.advice;
 
 import com.tripplannerai.controller.fail.FailController;
-import com.tripplannerai.controller.payment.PaymentController;
 import com.tripplannerai.dto.response.ErrorResponse;
-import com.tripplannerai.exception.fail.SseSendException;
-import com.tripplannerai.util.ConstClass;
+import com.tripplannerai.common.exception.fail.SseSendException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

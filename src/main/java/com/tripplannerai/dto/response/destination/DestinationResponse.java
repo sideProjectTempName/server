@@ -11,15 +11,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class DestinationResponse {
-//    private String code;
-//    private String message;
+    private String code;
+    private String message;
     private String contentId;
 
     public static DestinationResponse of(DestinationQuery destinationQuery) {
-        return new DestinationResponse(destinationQuery.getContentId());
+        return DestinationResponse.builder()
+                .contentId(destinationQuery.getContentId())
+                .build();
     }
 
-    public static DestinationResponse of(Destination destination) {
-        return new DestinationResponse(destination.getContentId());
+    public static DestinationResponse of(String code, String message,Destination destination) {
+        return new DestinationResponse(code, message,destination.getContentId());
     }
 }

@@ -1,4 +1,4 @@
-package com.tripplannerai.exception.payment;
+package com.tripplannerai.common.exception.payment;
 
 public class NotFoundTempPaymentException extends RuntimeException{
 

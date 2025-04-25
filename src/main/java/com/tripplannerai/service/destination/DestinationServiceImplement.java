@@ -13,17 +13,18 @@ import com.tripplannerai.entity.destination.Destination;
 import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.entity.searchlog.SearchLog;
 import com.tripplannerai.entity.viewlog.ViewLog;
-import com.tripplannerai.exception.destination.NotFoundDDestinationException;
-import com.tripplannerai.exception.member.NotFoundMemberException;
-import com.tripplannerai.mapper.destination.DestinationFactory;
-import com.tripplannerai.mapper.searchlog.SearchLogFactory;
-import com.tripplannerai.mapper.viewlog.ViewLogFactory;
+import com.tripplannerai.common.exception.destination.NotFoundDDestinationException;
+import com.tripplannerai.common.exception.member.NotFoundMemberException;
+import com.tripplannerai.mapper.DestinationFactory;
+import com.tripplannerai.mapper.SearchLogFactory;
+import com.tripplannerai.mapper.ViewLogFactory;
 import com.tripplannerai.repository.address.AddressRepository;
 import com.tripplannerai.repository.category.CategoryRepository;
 import com.tripplannerai.repository.destination.DestinationRepository;
 import com.tripplannerai.repository.member.MemberRepository;
 import com.tripplannerai.repository.searchlog.SearchLogRepository;
 import com.tripplannerai.repository.viewlog.ViewLogRepository;
+import com.tripplannerai.util.ConstClass;
 import com.tripplannerai.util.PageLimitCalculator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static com.tripplannerai.util.ConstClass.*;
 
 @Slf4j
 @Service
@@ -128,7 +131,7 @@ public class DestinationServiceImplement implements DestinationService {
                 .orElseThrow(()-> new NotFoundDDestinationException("not found Destination!!"));
         ViewLog viewLog = ViewLogFactory.from(destination, member);
         viewLogRepository.save(viewLog);
-        return DestinationResponse.of(destination);
+        return DestinationResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,destination);
     }
 
     @Override

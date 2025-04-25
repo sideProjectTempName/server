@@ -15,6 +15,7 @@ public interface DestinationRepository extends JpaRepository<Destination, Long> 
     @Query(value = "select d.contentId from destination order by destination_id asc limit :limit offset :offset"
             ,nativeQuery = true)
     List<DestinationQuery> fetchDestinations(int offset, int limit);
+
     @Query(value = "select d.contentId from " +
             "(select destination_id " +
             "from destination left join category " +
@@ -22,14 +23,16 @@ public interface DestinationRepository extends JpaRepository<Destination, Long> 
             "left join t.destination_id = destination.destination_id"
             ,nativeQuery = true)
     List<DestinationQuery> fetchDestinationByCategory(int offset,int limit,String category);
+
     @Query(value = "select id,category from ( " +
             "  select d.destination_id as id, ca.name as category, " +
             "         row_number() over (partition by ca.category_id) as rownum " +
             "  from destination d " +
             "  left join category ca on d.category_id = ca.id " +
             ") as subquery " +
-            "where rownum between 1 and 11", nativeQuery = true)
+            "where rownum between 1 and 9", nativeQuery = true)
     List<DestinationTotalQuery> fetchDestinationsByTotal();
+
     @Query(value = "select count(*) from (select destination_id from destination limit :limit) t"
             ,nativeQuery = true)
     int fetchDestinationsCount(int limit);

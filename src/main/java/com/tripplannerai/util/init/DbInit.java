@@ -1,6 +1,5 @@
-package com.tripplannerai.init;
+package com.tripplannerai.util.init;
 
-import com.tripplannerai.mapper.category.CategoryFactory;
 import com.tripplannerai.service.address.AddressService;
 import com.tripplannerai.service.category.CategoryService;
 import com.tripplannerai.service.destination.DestinationService;

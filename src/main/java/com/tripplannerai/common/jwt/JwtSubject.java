@@ -1,6 +1,5 @@
-package com.tripplannerai.dto;
+package com.tripplannerai.common.jwt;
 
-import com.tripplannerai.entity.image.Image;
 import com.tripplannerai.entity.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.tripplannerai.mapper.payment;
+package com.tripplannerai.mapper;
 
 import com.tripplannerai.dto.request.payment.PaymentRequest;
 import com.tripplannerai.dto.request.payment.TempPaymentRequest;

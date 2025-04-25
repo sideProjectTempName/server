@@ -1,7 +1,6 @@
 package com.tripplannerai.controller.destination;
 
-import com.tripplannerai.annotation.Id;
-import com.tripplannerai.annotation.Username;
+import com.tripplannerai.common.annotation.Id;
 import com.tripplannerai.dto.response.destination.DestinationResponse;
 import com.tripplannerai.dto.response.destination.DestinationsResponse;
 import com.tripplannerai.service.destination.DestinationService;

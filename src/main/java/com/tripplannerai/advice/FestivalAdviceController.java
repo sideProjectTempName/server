@@ -1,9 +1,9 @@
-package com.tripplannerai.advice.festival;
+package com.tripplannerai.advice;
 
 
 import com.tripplannerai.controller.festival.FestivalController;
 import com.tripplannerai.dto.response.ErrorResponse;
-import com.tripplannerai.exception.member.NotAuthorizeException;
+import com.tripplannerai.common.exception.member.NotAuthorizeException;
 import com.tripplannerai.util.ConstClass;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

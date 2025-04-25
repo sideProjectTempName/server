@@ -1,4 +1,4 @@
-package com.tripplannerai.exception.group;
+package com.tripplannerai.common.exception.group;
 
 public class NotFoundGroupException extends RuntimeException {
     public NotFoundGroupException() {

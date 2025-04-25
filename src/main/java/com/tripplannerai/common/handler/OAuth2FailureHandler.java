@@ -1,4 +1,4 @@
-package com.tripplannerai.handler;
+package com.tripplannerai.common.handler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

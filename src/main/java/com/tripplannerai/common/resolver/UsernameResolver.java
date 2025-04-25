@@ -1,8 +1,7 @@
-package com.tripplannerai.resolver;
+package com.tripplannerai.common.resolver;
 
-import com.tripplannerai.annotation.Id;
-import com.tripplannerai.annotation.Username;
-import com.tripplannerai.exception.member.NotAuthorizeException;
+import com.tripplannerai.common.annotation.Username;
+import com.tripplannerai.common.exception.member.NotAuthorizeException;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

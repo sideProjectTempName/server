@@ -1,4 +1,4 @@
-package com.tripplannerai.mapper.searchlog;
+package com.tripplannerai.mapper;
 
 import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.entity.searchlog.SearchLog;

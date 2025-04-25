@@ -1,6 +1,6 @@
-package com.tripplannerai.security;
+package com.tripplannerai.common.security;
 
-import com.tripplannerai.dto.JwtSubject;
+import com.tripplannerai.common.jwt.JwtSubject;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,4 @@
-package com.tripplannerai.exception.enroll;
+package com.tripplannerai.common.exception.enroll;
 
 public class NotFoundEnrollException extends RuntimeException {
 

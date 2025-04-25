@@ -1,6 +1,6 @@
-package com.tripplannerai.handler;
+package com.tripplannerai.common.handler;
 
-import com.tripplannerai.exception.member.NotAuthorizeException;
+import com.tripplannerai.common.exception.member.NotAuthorizeException;
 import com.tripplannerai.service.chat.ChatService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
