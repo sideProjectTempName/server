@@ -1,6 +1,7 @@
 package com.tripplannerai.controller.member;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tripplannerai.common.annotation.Id;
 import com.tripplannerai.dto.request.member.CertificationRequest;
 import com.tripplannerai.dto.request.member.EmailCertificationRequest;
 import com.tripplannerai.dto.request.member.EmailCheckoutRequest;
@@ -41,8 +42,8 @@ public class MemberController {
         UpdateResponse updateResponse = memberService.update(updateRequest,file,memberId);
         return new ResponseEntity<>(updateResponse, HttpStatus.OK);
     }
-    @GetMapping(value = "/member/{memberId}")
-    public ResponseEntity<FetchMemberResponse> fetch(@PathVariable Long memberId){
+    @GetMapping(value = "/member")
+    public ResponseEntity<FetchMemberResponse> fetch(@Id Long memberId){
         FetchMemberResponse fetchMemberResponse = memberService.fetch(memberId);
         return new ResponseEntity<>(fetchMemberResponse, HttpStatus.OK);
     }
