@@ -3,10 +3,7 @@ package com.tripplannerai.service.destination;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tripplannerai.dto.response.destination.DestinationQuery;
-import com.tripplannerai.dto.response.destination.DestinationResponse;
-import com.tripplannerai.dto.response.destination.DestinationTotalQuery;
-import com.tripplannerai.dto.response.destination.DestinationsResponse;
+import com.tripplannerai.dto.response.destination.*;
 import com.tripplannerai.entity.address.Address;
 import com.tripplannerai.entity.category.Category;
 import com.tripplannerai.entity.destination.Destination;
@@ -24,7 +21,6 @@ import com.tripplannerai.repository.destination.DestinationRepository;
 import com.tripplannerai.repository.member.MemberRepository;
 import com.tripplannerai.repository.searchlog.SearchLogRepository;
 import com.tripplannerai.repository.viewlog.ViewLogRepository;
-import com.tripplannerai.util.ConstClass;
 import com.tripplannerai.util.PageLimitCalculator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -151,21 +147,40 @@ public class DestinationServiceImplement implements DestinationService {
     }
 
     @Override
-    public DestinationsResponse fetchDestinationByCategory(Integer page, Integer size, String category) {
+    public DestinationsCategoryResponse fetchDestinationByCategory(Integer page, Integer size, Long categoryId) {
         int limit = size;
         int offset = (page-1)*limit;
         int pageLimit = PageLimitCalculator.calculatePageLimit(page, size, 10);
-        List<DestinationQuery> destinationQueries = destinationRepository.fetchDestinationByCategory(offset,limit,category);
-        List<DestinationResponse> content = destinationQueries.stream().map(DestinationResponse::of).toList();
-        int totalCount = destinationRepository.fetchDestinationsCount(pageLimit);
-        return DestinationsResponse.of(content,totalCount);
+        List<DestinationCategoryQuery> destinationCategoryQueries = destinationRepository.fetchDestinationByCategory(offset, limit, categoryId);
+        List<DestinationCategoryDto> content = toDestinationCategoryDto(destinationCategoryQueries);
+        int totalCount = destinationRepository.fetchDestinationsCategoryCount(categoryId,pageLimit);
+        return DestinationsCategoryResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,content,totalCount);
     }
-    //TODO : write logic
-    @Override
-    public DestinationsResponse fetchDestinationsByTotal() {
-        List<DestinationTotalQuery> destinationQueries = destinationRepository.fetchDestinationsByTotal();
 
-        return null;
+    private List<DestinationCategoryDto> toDestinationCategoryDto(List<DestinationCategoryQuery> destinationCategoryQueries) {
+        return destinationCategoryQueries.stream()
+                .map(query -> DestinationCategoryDto.of(query))
+                .toList();
+    }
+
+    @Override
+    public TotalDestinationResponse fetchDestinationsByTotal() {
+        List<DestinationTotalQuery> destinationQueries = destinationRepository.fetchDestinationsByTotal();
+        List<DestinationTotalDto> destinationTotalDtoList = toDestinationTotalDtoList(destinationQueries);
+        Map<String, List<DestinationTotalDto>> map = groupByMiddleCategory(destinationTotalDtoList);
+        return TotalDestinationResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,map);
+    }
+
+    private List<DestinationTotalDto> toDestinationTotalDtoList(List<DestinationTotalQuery> destinationQueries) {
+        return destinationQueries.stream()
+                .map(DestinationTotalDto::of)
+                .toList();
+    }
+    private  Map<String, List<DestinationTotalDto>> groupByMiddleCategory(List<DestinationTotalDto> destinationTotalDtoList) {
+
+
+        return destinationTotalDtoList.stream()
+                .collect(Collectors.groupingBy(DestinationTotalDto::getMiddleCategoryId));
     }
 
     @Override

@@ -14,6 +14,7 @@ public class DestinationResponse {
     private String code;
     private String message;
     private String contentId;
+    private String thumbnailImageUrl;
 
     public static DestinationResponse of(DestinationQuery destinationQuery) {
         return DestinationResponse.builder()
@@ -22,6 +23,6 @@ public class DestinationResponse {
     }
 
     public static DestinationResponse of(String code, String message,Destination destination) {
-        return new DestinationResponse(code, message,destination.getContentId());
+        return new DestinationResponse(code, message,destination.getContentId(),destination.getThumbnailImageUrl());
     }
 }
