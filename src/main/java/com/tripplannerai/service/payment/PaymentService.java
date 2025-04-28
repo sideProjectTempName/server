@@ -63,7 +63,7 @@ public class PaymentService {
             ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
             if (response.getStatusCode() == HttpStatus.OK) {
                 paymentRepository.save(PaymentFactory.from(paymentRequest, member));
-                member.changePoint(paymentRequest.getAmount());
+                memberRepository.updatePoint(id, paymentRequest.getAmount());
             }
         }catch (Exception e){
             throw new PaymentServerErrorException("payment Server error!!");

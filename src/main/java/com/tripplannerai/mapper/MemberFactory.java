@@ -38,6 +38,7 @@ public class MemberFactory {
                 .isWithdrawn(member.isWithdrawn())
                 .imageUrl(imageUrl)
                 .customerKey(member.getCustomerKey())
+                .point(member.getPoint())
                 .build();
     }
 }

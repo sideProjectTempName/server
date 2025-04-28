@@ -30,7 +30,7 @@ public class PaymentController {
         return new ResponseEntity<>(saveTempResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/api/temp")
+    @PostMapping("/api/temp/check")
     public ResponseEntity<?> checkTemp(@RequestBody TempPaymentRequest tempPaymentRequest, @Id Long id){
         CheckTempResponse checkTempResponse = paymentService.checkTemp(tempPaymentRequest,id);
         return new ResponseEntity<>(checkTempResponse, HttpStatus.OK);
