@@ -1,6 +1,6 @@
 package com.tripplannerai.config;
 
-import com.tripplannerai.handler.StompHandler;
+import com.tripplannerai.common.handler.StompHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;

@@ -1,4 +1,4 @@
-package com.tripplannerai.provider;
+package com.tripplannerai.common.email;
 
 import com.tripplannerai.entity.certification.Certification;
 import com.tripplannerai.repository.certification.CertificationRepository;

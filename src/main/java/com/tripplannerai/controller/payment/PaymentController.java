@@ -1,7 +1,7 @@
 package com.tripplannerai.controller.payment;
 
-import com.tripplannerai.annotation.Id;
-import com.tripplannerai.annotation.Username;
+import com.tripplannerai.common.annotation.Id;
+import com.tripplannerai.common.annotation.Username;
 import com.tripplannerai.dto.request.payment.PaymentRequest;
 import com.tripplannerai.dto.request.payment.TempPaymentRequest;
 import com.tripplannerai.dto.response.payment.ConfirmResponse;

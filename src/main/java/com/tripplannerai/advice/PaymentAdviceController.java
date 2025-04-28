@@ -1,11 +1,11 @@
-package com.tripplannerai.advice.payment;
+package com.tripplannerai.advice;
 
 import com.tripplannerai.controller.payment.PaymentController;
 import com.tripplannerai.dto.response.ErrorResponse;
-import com.tripplannerai.exception.member.*;
-import com.tripplannerai.exception.payment.AlreadyPaymentRequestException;
-import com.tripplannerai.exception.payment.NotFoundTempPaymentException;
-import com.tripplannerai.exception.payment.PaymentServerErrorException;
+import com.tripplannerai.common.exception.member.*;
+import com.tripplannerai.common.exception.payment.AlreadyPaymentRequestException;
+import com.tripplannerai.common.exception.payment.NotFoundTempPaymentException;
+import com.tripplannerai.common.exception.payment.PaymentServerErrorException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

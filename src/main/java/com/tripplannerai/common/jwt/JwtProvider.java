@@ -1,4 +1,4 @@
-package com.tripplannerai.provider;
+package com.tripplannerai.common.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

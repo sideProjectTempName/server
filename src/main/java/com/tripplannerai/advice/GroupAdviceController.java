@@ -1,13 +1,12 @@
-package com.tripplannerai.advice.group;
+package com.tripplannerai.advice;
 
 import com.tripplannerai.controller.group.GroupController;
-import com.tripplannerai.controller.payment.PaymentController;
 import com.tripplannerai.dto.response.ErrorResponse;
-import com.tripplannerai.exception.group.AlreadyParticipateException;
-import com.tripplannerai.exception.group.NotFoundGroupException;
-import com.tripplannerai.exception.group.NotParticipateException;
-import com.tripplannerai.exception.member.NotAuthorizeException;
-import com.tripplannerai.exception.member.NotFoundMemberException;
+import com.tripplannerai.common.exception.group.AlreadyParticipateException;
+import com.tripplannerai.common.exception.group.NotFoundGroupException;
+import com.tripplannerai.common.exception.group.NotParticipateException;
+import com.tripplannerai.common.exception.member.NotAuthorizeException;
+import com.tripplannerai.common.exception.member.NotFoundMemberException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

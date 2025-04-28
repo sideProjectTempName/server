@@ -1,15 +1,14 @@
-package com.tripplannerai.mapper.member;
+package com.tripplannerai.mapper;
 
 import com.tripplannerai.dto.request.member.SignUpRequest;
 import com.tripplannerai.dto.response.member.FetchMemberResponse;
-import com.tripplannerai.entity.image.Image;
 import com.tripplannerai.entity.member.Member;
-import com.tripplannerai.util.ConstClass;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.UUID;
 
-import static com.tripplannerai.util.ConstClass.*;
+import static com.tripplannerai.util.ConstClass.SUCCESS_CODE;
+import static com.tripplannerai.util.ConstClass.SUCCESS_MESSAGE;
 
 public class MemberFactory {
 

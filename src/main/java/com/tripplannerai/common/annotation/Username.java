@@ -1,4 +1,4 @@
-package com.tripplannerai.annotation;
+package com.tripplannerai.common.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

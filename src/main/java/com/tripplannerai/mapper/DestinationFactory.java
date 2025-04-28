@@ -1,4 +1,4 @@
-package com.tripplannerai.mapper.destination;
+package com.tripplannerai.mapper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.tripplannerai.entity.destination.Destination;

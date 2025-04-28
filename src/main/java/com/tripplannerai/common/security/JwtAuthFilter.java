@@ -1,9 +1,8 @@
-package com.tripplannerai.filter;
+package com.tripplannerai.common.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tripplannerai.dto.JwtSubject;
-import com.tripplannerai.security.CustomUserDetails;
-import com.tripplannerai.validator.JwtValidator;
+import com.tripplannerai.common.jwt.JwtSubject;
+import com.tripplannerai.common.jwt.JwtValidator;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,8 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 

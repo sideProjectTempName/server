@@ -1,11 +1,11 @@
-package com.tripplannerai.handler;
+package com.tripplannerai.common.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tripplannerai.dto.JwtSubject;
-import com.tripplannerai.entity.member.CustomOAuth2User;
+import com.tripplannerai.common.jwt.JwtSubject;
+import com.tripplannerai.common.security.CustomOAuth2User;
 import com.tripplannerai.entity.member.Member;
-import com.tripplannerai.exception.member.NotFoundMemberException;
-import com.tripplannerai.provider.JwtProvider;
+import com.tripplannerai.common.exception.member.NotFoundMemberException;
+import com.tripplannerai.common.jwt.JwtProvider;
 import com.tripplannerai.repository.member.MemberRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;

@@ -1,4 +1,4 @@
-package com.tripplannerai.exception.fail;
+package com.tripplannerai.common.exception.fail;
 
 public class SseSendException extends RuntimeException {
 

@@ -1,7 +1,7 @@
 package com.tripplannerai.controller.plan;
 
 
-import com.tripplannerai.annotation.Username;
+import com.tripplannerai.common.annotation.Username;
 import com.tripplannerai.dto.response.plan.DeletePlanResponse;
 import com.tripplannerai.dto.response.plan.PlanResponseDto;
 import com.tripplannerai.dto.response.recommend.DayScheduleDto;

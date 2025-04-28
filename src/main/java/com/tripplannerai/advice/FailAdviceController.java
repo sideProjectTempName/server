@@ -1,17 +1,16 @@
-package com.tripplannerai.advice.fail;
+package com.tripplannerai.advice;
 
 import com.tripplannerai.controller.fail.FailController;
-import com.tripplannerai.controller.payment.PaymentController;
 import com.tripplannerai.dto.response.ErrorResponse;
-import com.tripplannerai.exception.fail.SseSendException;
-import com.tripplannerai.util.ConstClass;
+import com.tripplannerai.common.exception.fail.SseSendException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import static com.tripplannerai.util.ConstClass.*;
+import static com.tripplannerai.util.ConstClass.SSE_SEND_ERROR_CODE;
+import static com.tripplannerai.util.ConstClass.SSE_SEND_ERROR_MESSAGE;
 
 @Order(1)
 @RestControllerAdvice(basePackageClasses = FailController.class)

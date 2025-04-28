@@ -1,4 +1,4 @@
-package com.tripplannerai.mapper.chat;
+package com.tripplannerai.mapper;
 
 import com.tripplannerai.entity.chat.ChatMessage;
 import com.tripplannerai.entity.chat.ChatParticipant;

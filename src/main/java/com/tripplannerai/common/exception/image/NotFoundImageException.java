@@ -1,4 +1,4 @@
-package com.tripplannerai.exception.image;
+package com.tripplannerai.common.exception.image;
 
 public class NotFoundImageException extends RuntimeException {
     public NotFoundImageException() {

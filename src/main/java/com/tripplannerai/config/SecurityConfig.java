@@ -1,8 +1,8 @@
 package com.tripplannerai.config;
 
-import com.tripplannerai.filter.JwtAuthFilter;
-import com.tripplannerai.handler.OAuth2FailureHandler;
-import com.tripplannerai.handler.OAuth2SuccessHandler;
+import com.tripplannerai.common.security.JwtAuthFilter;
+import com.tripplannerai.common.handler.OAuth2FailureHandler;
+import com.tripplannerai.common.handler.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +28,7 @@ public class SecurityConfig {
             "/auth/login","/auth/sign-up",
             "/v3/api-docs/**","/swagger-ui/**", "/api/post/**","/api/posts","/swagger-resources/**", "/webjars/**","/oauth2/**"
             ,"/email-check","/check-certification","/subscribe/**","close/**","/certification","/image/**","/auth/refresh",
-            "/api/festival/favorites-count"
+            "/api/festival/favorites-count", "/api/course/**"
     };
 
     private final JwtAuthFilter jwtAuthFilter;

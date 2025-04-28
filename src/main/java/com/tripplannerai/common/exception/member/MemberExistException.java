@@ -1,4 +1,4 @@
-package com.tripplannerai.exception.member;
+package com.tripplannerai.common.exception.member;
 
 public class MemberExistException extends RuntimeException {
     public MemberExistException() {

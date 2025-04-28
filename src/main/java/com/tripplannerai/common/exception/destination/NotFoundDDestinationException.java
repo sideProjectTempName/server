@@ -1,4 +1,4 @@
-package com.tripplannerai.exception.destination;
+package com.tripplannerai.common.exception.destination;
 
 public class NotFoundDDestinationException extends RuntimeException {
     public NotFoundDDestinationException() {

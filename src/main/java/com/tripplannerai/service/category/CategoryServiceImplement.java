@@ -3,7 +3,7 @@ package com.tripplannerai.service.category;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tripplannerai.entity.category.Category;
-import com.tripplannerai.mapper.category.CategoryFactory;
+import com.tripplannerai.mapper.CategoryFactory;
 import com.tripplannerai.repository.category.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

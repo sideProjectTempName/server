@@ -1,11 +1,10 @@
-package com.tripplannerai.advice.chat;
+package com.tripplannerai.advice;
 
 import com.tripplannerai.controller.chat.ChatController;
-import com.tripplannerai.controller.payment.PaymentController;
 import com.tripplannerai.dto.response.ErrorResponse;
-import com.tripplannerai.exception.chat.NotFoundChatParticipantException;
-import com.tripplannerai.exception.chat.NotFoundChatRoomException;
-import com.tripplannerai.exception.member.NotFoundMemberException;
+import com.tripplannerai.common.exception.chat.NotFoundChatParticipantException;
+import com.tripplannerai.common.exception.chat.NotFoundChatRoomException;
+import com.tripplannerai.common.exception.member.NotFoundMemberException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

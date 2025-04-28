@@ -1,8 +1,6 @@
 package com.tripplannerai.controller.chat;
 
-import com.tripplannerai.annotation.Id;
-import com.tripplannerai.annotation.Username;
-import com.tripplannerai.dto.response.chat.ChatResponseDto;
+import com.tripplannerai.common.annotation.Id;
 import com.tripplannerai.service.chat.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.tripplannerai.mapper.enroll;
+package com.tripplannerai.mapper;
 
 import com.tripplannerai.entity.enroll.Enroll;
 import com.tripplannerai.entity.group.Group;

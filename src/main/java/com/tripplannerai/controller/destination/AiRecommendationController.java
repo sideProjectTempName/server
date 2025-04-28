@@ -1,7 +1,7 @@
 package com.tripplannerai.controller.destination;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.tripplannerai.annotation.Username;
+import com.tripplannerai.common.annotation.Username;
 import com.tripplannerai.dto.request.recommend.RecommendRequestDto;
 import com.tripplannerai.dto.request.recommend.SaveRecommendRequest;
 import com.tripplannerai.dto.response.plan.DeletePlanResponse;
