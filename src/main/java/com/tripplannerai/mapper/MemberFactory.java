@@ -7,7 +7,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.UUID;
 
-import static com.tripplannerai.util.ConstClass.*;
+import static com.tripplannerai.util.ConstClass.SUCCESS_CODE;
+import static com.tripplannerai.util.ConstClass.SUCCESS_MESSAGE;
 
 public class MemberFactory {
 

@@ -9,7 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import static com.tripplannerai.util.ConstClass.*;
+import static com.tripplannerai.util.ConstClass.SSE_SEND_ERROR_CODE;
+import static com.tripplannerai.util.ConstClass.SSE_SEND_ERROR_MESSAGE;
 
 @Order(1)
 @RestControllerAdvice(basePackageClasses = FailController.class)

@@ -2,6 +2,7 @@ package com.tripplannerai.util.init;
 
 import com.tripplannerai.service.address.AddressService;
 import com.tripplannerai.service.category.CategoryService;
+import com.tripplannerai.service.course.CourseService;
 import com.tripplannerai.service.destination.DestinationService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class DbInit {
     private final AddressService addressService;
     private final CategoryService categoryService;
     private final DestinationService destinationService;
-
+    private final CourseService courseService;
     @PostConstruct
     public void init() {
         try {
@@ -41,5 +42,10 @@ public class DbInit {
         log.info("관광지 데이터 저장 시작...");
         destinationService.saveDestinationFromApi();
         log.info("관광지 데이터 저장 완료");
+
+        log.info("코스 데이터 저장 시작...");
+        courseService.saveCourseData();
+        log.info("코스 데이터 저장 완료");
+
     }
 }

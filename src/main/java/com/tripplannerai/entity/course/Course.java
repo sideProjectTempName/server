@@ -1,34 +1,40 @@
 package com.tripplannerai.entity.course;
 
-import com.tripplannerai.entity.image.Image;
+import com.tripplannerai.entity.destination.Destination;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 @Entity
 @Getter
-@Table(name = "course")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long courseId;
+    private String contentId;
     private String title;
-    private String region;
-    private String duration;
-    @Lob
-    private String description;
-    private String transportation;
-    private Integer budget;
-    private Float rating;
-    private Long likeCount;
-    private LocalDateTime createdAt;
-    @OneToOne
-    @JoinColumn(name = "image_id")
-    private Image thumbnailImage;
+
+    @Column(columnDefinition = "text")
+    private String overview;
+    private String areaName;
+    private String duration; //예상체류시간
+    private String distance; //총 코스 거리
+
+    @Builder.Default
+    @ColumnDefault("0.0")
+    private Double rating = 0.0;
+
+    @Builder.Default
+    @ColumnDefault("0")
+    private Integer likeCount=0;
+
 
 }

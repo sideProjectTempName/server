@@ -8,21 +8,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Getter
-@Table(name = "course_review")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class CourseReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long courseReviewId;
+    private Long reviewId;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-    @ManyToOne
-    @JoinColumn(name = "course_id")
+    @JoinColumn(name="course_id")
     private Course course;
-    private String title;
-    private String description;
-    private Float rating;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="member_id")
+    private Member member;
+
+    private int rating;  // 1~5
+
+    @Column(length = 1000)
+    private String review;
 }
