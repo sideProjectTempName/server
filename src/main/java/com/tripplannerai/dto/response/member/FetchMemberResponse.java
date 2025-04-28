@@ -23,4 +23,5 @@ public class FetchMemberResponse {
     private boolean isWithdrawn;
     private String imageUrl;
     private String customerKey;
+    private Integer point;
 }
