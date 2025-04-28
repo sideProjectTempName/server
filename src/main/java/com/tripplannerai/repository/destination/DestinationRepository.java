@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DestinationRepository extends JpaRepository<Destination, Long> {
 
@@ -82,4 +83,20 @@ public interface DestinationRepository extends JpaRepository<Destination, Long> 
             "limit :limit) t"
             ,nativeQuery = true)
     int fetchDestinationsCategoryCount(Long categoryId,int limit);
+
+
+    @Query(value = """
+    SELECT *
+    FROM (
+        SELECT *, ROW_NUMBER() OVER (PARTITION BY address_id ORDER BY destination_id desc) AS rn
+        FROM destination
+        WHERE category_id>=172
+          AND LENGTH(origin_image_url) > 0
+          AND address_id IS NOT NULL
+    ) sub
+    WHERE rn <= 1
+    """, nativeQuery = true)
+    List<Destination> findAllCourses();
+
+    Optional<Destination> findByContentId(String contentId);
 }
