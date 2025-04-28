@@ -34,8 +34,8 @@ jobs:
             echo "$APPLICATION_MAIN_AWS_PROPERTIES" > src/main/resources/application-aws.yml
             echo "$APPLICATION_TEST_PROPERTIES" > src/test/resources/application.yml
             echo "$APPLICATION_TEST_AWS_PROPERTIES" > src/test/resources/application-test.yml
-            chmod +x ./gradlew
-            ./gradlew clean build -x test
-            sudo fuser -k -n tcp 8080 || true # || true 
-            nohup java -jar build/libs/*SNAPSHOT.jar > ./output.log 2>&1 &
+#            chmod +x ./gradlew
+#            ./gradlew clean build -x test
+#            sudo fuser -k -n tcp 80 || true # || true
+#            nohup java -jar build/libs/*SNAPSHOT.jar > ./output.log 2>&1 &
             
