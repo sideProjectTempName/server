@@ -1,13 +1,15 @@
 package com.tripplannerai.entity.address;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "address")
+@Builder
+@Table(name = "address", uniqueConstraints = @UniqueConstraint(columnNames = {"area_code", "sigungu_code"}))
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
