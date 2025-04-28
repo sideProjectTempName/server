@@ -17,8 +17,8 @@ jobs:
       - name: JDK 21버전 설치
         uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: 21
+          distribution: corretto
+          java-version: 21g
 
       - name: application.yml 파일 만들기
         run: |
