@@ -1,4 +1,4 @@
-name: deploy
+name: Deploy To EC2
 
 on:
   push:
@@ -9,21 +9,28 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch Github Repository
-        uses: actions/checkout@v4
+      - name: SSH로 EC2에 접속하기
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          APPLICATION_MAIN_PROPERTIES: ${{ secrets.APPLICATION_MAIN_PROPERTIES }}
+          APPLICATION_MAIN_AWS_PROPERTIES: ${{ secrets.APPLICATION_MAIN_AWS_PROPERTIES }}
+          APPLICATION_TEST_PROPERTIES: ${{ secrets.APPLICATION_TEST_PROPERTIES }}
+          APPLICATION_TEST_AWS_PROPERTIES: ${{ secrets.APPLICATION_TEST_AWS_PROPERTIES }}
 
-      - name: install jdk 21
-        uses: actions/setup-java@v4
         with:
-          distribution: corretto
-          java-version: 21
-
-      - name: create application.yml
-        run: echo "${{ secrets.APPLICATION_MAIN_PROPERTIES }}"
-      - name: create application-aws.yml
-        run: echo "${{ secrets.APPLICATION_MAIN_AWS_PROPERTIES }}"
-      - name: create application-test.yml
-        run: echo "${{ secrets.APPLICATION_TEST_PROPERTIES }}"
-      - name: create application-test-aws.yml
-        run: echo "${{ secrets.APPLICATION_TEST_AWS_PROPERTIES }}"
-
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          envs: APPLICATION_PROPERTIES
+          script_stop: true
+          script: |
+            cd /home/ubuntu/server # 여기 경로는 자신의 EC2에 맞는 경로로 재작성하기
+            rm -rf src/main/resources/application.yml
+            rm -rf src/main/resources/application-aws.yml
+            rm -rf src/test/resources/application.yml
+            rm -rf src/test/resources/application-test.yml
+            git pull origin main
+            echo "$APPLICATION_MAIN_PROPERTIES" > src/main/resources/application.yml
+            echo "$APPLICATION_MAIN_AWS_PROPERTIES" > src/main/resources/application-aws.yml
+            echo "$APPLICATION_TEST_PROPERTIES" > src/main/resources/application.yml
+            echo "$APPLICATION_TEST_AWS_PROPERTIES" > src/main/resources/application-test.yml
