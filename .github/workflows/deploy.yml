@@ -11,6 +11,11 @@ jobs:
     steps:
       - name: SSH로 EC2에 접속하기
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          APPLICATION_MAIN_PROPERTIES: ${{ secrets.APPLICATION_MAIN_PROPERTIES }}
+          APPLICATION_MAIN_AWS_PROPERTIES: ${{ secrets.APPLICATION_MAIN_AWS_PROPERTIES }}
+          APPLICATION_TEST_PROPERTIES: ${{ secrets.APPLICATION_TEST_PROPERTIES }}
+          APPLICATION_TEST_AWS_PROPERTIES: ${{ secrets.APPLICATION_TEST_AWS_PROPERTIES }}
 
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -25,12 +30,13 @@ jobs:
             rm -rf src/test/resources/application.yml
             rm -rf src/test/resources/application-test.yml
             git pull origin main
-            echo "${{ secrets.APPLICATION_MAIN_PROPERTIES }}" > src/main/resources/application.yml
-            echo "${{ secrets.APPLICATION_MAIN_AWS_PROPERTIES }}" > src/main/resources/application-aws.yml
-            echo "${{ secrets.APPLICATION_TEST_PROPERTIES }}" > src/test/resources/application.yml
-            echo "${{ secrets.APPLICATION_TEST_AWS_PROPERTIES }}" > src/test/resources/application-test.yml
-#              chmod +x ./gradlew
-#              ./gradlew clean build -x test
-#              sudo fuser -k -n tcp 80 || true # || true
-#              nohup java -jar build/libs/*SNAPSHOT.jar > ./output.log 2>&1 &
+            echo "$APPLICATION_MAIN_PROPERTIES" > src/main/resources/application.yml
+            echo "$APPLICATION_MAIN_AWS_PROPERTIES" > src/main/resources/application-aws.yml
+            echo "$APPLICATION_TEST_PROPERTIES" > src/test/resources/application.yml
+            echo "$APPLICATION_TEST_AWS_PROPERTIES" > src/test/resources/application-test.yml
+
+#            chmod +x ./gradlew
+#            ./gradlew clean build -x test
+#            sudo fuser -k -n tcp 80 || true # || true
+#            nohup java -jar build/libs/*SNAPSHOT.jar > ./output.log 2>&1 &
             
