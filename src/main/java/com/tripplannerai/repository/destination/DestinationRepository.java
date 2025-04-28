@@ -84,6 +84,7 @@ public interface DestinationRepository extends JpaRepository<Destination, Long> 
             ,nativeQuery = true)
     int fetchDestinationsCategoryCount(Long categoryId,int limit);
 
+
     @Query(value = """
     SELECT *
     FROM (
@@ -98,6 +99,4 @@ public interface DestinationRepository extends JpaRepository<Destination, Long> 
     List<Destination> findAllCourses();
 
     Optional<Destination> findByContentId(String contentId);
-
-
 }
