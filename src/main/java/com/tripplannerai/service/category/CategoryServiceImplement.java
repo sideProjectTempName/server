@@ -2,17 +2,25 @@ package com.tripplannerai.service.category;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tripplannerai.dto.category.CategoryElement;
+import com.tripplannerai.dto.category.TotalCategoryResponse;
 import com.tripplannerai.entity.category.Category;
 import com.tripplannerai.mapper.CategoryFactory;
 import com.tripplannerai.repository.category.CategoryRepository;
+import com.tripplannerai.util.ConstClass;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.tripplannerai.util.ConstClass.*;
 
 @Service
 @RequiredArgsConstructor
@@ -66,6 +74,17 @@ public class CategoryServiceImplement implements CategoryService {
                 }
             }
         }
+    }
+
+    @Override
+    public TotalCategoryResponse fetchTotalCategory(Long categoryId) {
+        List<CategoryElement> content = null;
+        if(categoryId == null){
+            content =  categoryRepository.fetchTotalCategory();
+        }else{
+            content = categoryRepository.fetchTotalCategory(categoryId);
+        }
+        return TotalCategoryResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,content);
     }
 
     private JsonNode fetchData(String url) throws Exception{

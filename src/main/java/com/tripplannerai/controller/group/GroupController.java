@@ -1,7 +1,6 @@
 package com.tripplannerai.controller.group;
 
 import com.tripplannerai.common.annotation.Id;
-import com.tripplannerai.common.annotation.Username;
 import com.tripplannerai.dto.request.group.AddGroupRequest;
 import com.tripplannerai.dto.response.group.DonateResponse;
 import com.tripplannerai.dto.response.group.AddGroupResponse;

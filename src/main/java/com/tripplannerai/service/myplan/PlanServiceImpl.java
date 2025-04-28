@@ -1,7 +1,6 @@
 package com.tripplannerai.service.myplan;
 
 import com.tripplannerai.dto.response.plan.PlanResponseDto;
-import com.tripplannerai.dto.response.recommend.Accommodation;
 import com.tripplannerai.dto.response.recommend.DayScheduleDto;
 import com.tripplannerai.dto.response.recommend.SpotDto;
 import com.tripplannerai.entity.member.Member;

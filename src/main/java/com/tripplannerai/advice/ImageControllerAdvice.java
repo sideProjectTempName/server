@@ -9,8 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import static com.tripplannerai.util.ConstClass.NOT_FOUND_IMAGE_CODE;
-import static com.tripplannerai.util.ConstClass.NOT_FOUND_IMAGE_MESSAGE;
+import static com.tripplannerai.util.ConstClass.*;
 @Order(1)
 @RestControllerAdvice(basePackageClasses = ImageController.class)
 public class ImageControllerAdvice {

@@ -1,8 +1,8 @@
 package com.tripplannerai.advice;
 
+import com.tripplannerai.common.exception.member.NotFoundMemberException;
 import com.tripplannerai.controller.payment.PaymentController;
 import com.tripplannerai.dto.response.ErrorResponse;
-import com.tripplannerai.common.exception.member.*;
 import com.tripplannerai.common.exception.payment.AlreadyPaymentRequestException;
 import com.tripplannerai.common.exception.payment.NotFoundTempPaymentException;
 import com.tripplannerai.common.exception.payment.PaymentServerErrorException;

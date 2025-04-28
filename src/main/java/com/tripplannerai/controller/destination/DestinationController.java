@@ -1,9 +1,10 @@
 package com.tripplannerai.controller.destination;
 
 import com.tripplannerai.common.annotation.Id;
-import com.tripplannerai.common.annotation.Username;
 import com.tripplannerai.dto.response.destination.DestinationResponse;
+import com.tripplannerai.dto.response.destination.DestinationsCategoryResponse;
 import com.tripplannerai.dto.response.destination.DestinationsResponse;
+import com.tripplannerai.dto.response.destination.TotalDestinationResponse;
 import com.tripplannerai.service.destination.DestinationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,15 +31,15 @@ public class DestinationController {
     }
 
     @GetMapping("/category")
-    public ResponseEntity<?> fetchDestinationsByCategory(@RequestParam Integer page, @RequestParam Integer size,@RequestParam String category) {
-        DestinationsResponse destinationsResponse = destinationService.fetchDestinationByCategory(page,size,category);
-        return new ResponseEntity<>(destinationsResponse, HttpStatus.OK);
+    public ResponseEntity<DestinationsCategoryResponse> fetchDestinationsByCategory(@RequestParam Integer page, @RequestParam Integer size, Long categoryId) {
+        DestinationsCategoryResponse destinationsCategoryResponse = destinationService.fetchDestinationByCategory(page,size,categoryId);
+        return new ResponseEntity<>(destinationsCategoryResponse, HttpStatus.OK);
     }
 
     @GetMapping("/total")
-    public ResponseEntity<?> fetchDestinationsByTotal() {
-        DestinationsResponse destinationsResponse = destinationService.fetchDestinationsByTotal();
-        return new ResponseEntity<>(destinationsResponse, HttpStatus.OK);
+    public ResponseEntity<TotalDestinationResponse> fetchDestinationsByTotal() {
+        TotalDestinationResponse totalDestinationResponse = destinationService.fetchDestinationsByTotal();
+        return new ResponseEntity<>(totalDestinationResponse, HttpStatus.OK);
     }
 
     @GetMapping("/my")

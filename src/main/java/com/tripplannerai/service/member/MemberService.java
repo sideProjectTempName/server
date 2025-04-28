@@ -2,6 +2,7 @@ package com.tripplannerai.service.member;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tripplannerai.common.exception.member.*;
 import com.tripplannerai.common.jwt.JwtSubject;
 import com.tripplannerai.dto.request.member.CertificationRequest;
 import com.tripplannerai.dto.request.member.EmailCertificationRequest;
@@ -12,7 +13,6 @@ import com.tripplannerai.dto.request.member.UpdateRequest;
 import com.tripplannerai.dto.response.member.*;
 import com.tripplannerai.entity.image.Image;
 import com.tripplannerai.entity.member.Member;
-import com.tripplannerai.common.exception.member.*;
 import com.tripplannerai.mapper.MemberFactory;
 import com.tripplannerai.repository.certification.CertificationRepository;
 import com.tripplannerai.repository.image.ImageRepository;

@@ -1,7 +1,7 @@
 package com.tripplannerai.service;
 
-import com.tripplannerai.common.email.EmailProvider;
 import com.tripplannerai.dto.request.member.EmailCertificationRequest;
+import com.tripplannerai.common.email.EmailProvider;
 import com.tripplannerai.service.fail.FailService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;

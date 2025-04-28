@@ -4,23 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tripplannerai.common.annotation.Username;
 import com.tripplannerai.dto.request.recommend.RecommendRequestDto;
 import com.tripplannerai.dto.request.recommend.SaveRecommendRequest;
-import com.tripplannerai.dto.response.plan.DeletePlanResponse;
-import com.tripplannerai.dto.response.plan.PlanResponseDto;
-import com.tripplannerai.dto.response.recommend.DayScheduleDto;
 import com.tripplannerai.dto.response.recommend.RecommendationResponse;
-import com.tripplannerai.entity.plan.Plan;
 import com.tripplannerai.service.myplan.PlanService;
 import com.tripplannerai.service.recommend.AiRecommendationService;
-import com.tripplannerai.service.recommend.AiRecommendationServiceImpl;
-import com.tripplannerai.util.ConstClass;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import static com.tripplannerai.util.ConstClass.*;
 
 @RestController
 @RequiredArgsConstructor
