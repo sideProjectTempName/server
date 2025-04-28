@@ -4,22 +4,30 @@ import com.tripplannerai.entity.course.Course;
 import com.tripplannerai.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
+
 @Entity
-@Getter
-@Table(name = "course_like")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Builder
 public class CourseLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long courseReviewId;
+    private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id")
+    private Course course;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-    @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course;
+
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime likedAt;
 }
