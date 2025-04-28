@@ -9,34 +9,38 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: SSH로 EC2에 접속하기
-        uses: appleboy/ssh-action@v1.0.3
-        env:
-          APPLICATION_MAIN_PROPERTIES: ${{ secrets.APPLICATION_MAIN_PROPERTIES }}
-          APPLICATION_MAIN_AWS_PROPERTIES: ${{ secrets.APPLICATION_MAIN_AWS_PROPERTIES }}
-          APPLICATION_TEST_PROPERTIES: ${{ secrets.APPLICATION_TEST_PROPERTIES }}
-          APPLICATION_TEST_AWS_PROPERTIES: ${{ secrets.APPLICATION_TEST_AWS_PROPERTIES }}
+      - name: Github Repository 파일 불러오기
+        uses: actions/checkout@v4
+        with:
+          ref: main
 
+      - name: JDK 21버전 설치
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: application.yml 파일 만들기
+        run: echo "${{ secrets.APPLICATION_MAIN_PROPERTIES }}" > ./src/main/resources/application.yml
+      - name: application-aws.yml 파일 만들기
+        run: echo "${{ secrets.APPLICATION_MAIN_AWS_PROPERTIES }}" > ./src/main/resources/application-aws.yml
+      - name: application.yml 파일 만들기
+        run: echo "${{ secrets.APPLICATION_TEST_PROPERTIES }}" > ./src/test/resources/application.yml
+      - name: application.yml 파일 만들기
+        run: echo "${{ secrets.APPLICATION_TEST_AWS_PROPERTIES }}" > ./src/test/resources/application-test.yml
+
+      - name: 테스트 및 빌드하기
+        run: ./gradlew clean build -x test
+
+      - name: 빌드된 파일 이름 변경하기
+        run: mv ./build/libs/*SNAPSHOT.jar ./project.jar
+
+      - name: SCP로 EC2에 빌드된 파일 전송하기
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          envs: APPLICATION_PROPERTIES
-          script_stop: true
-          script: |
-            cd /home/ubuntu/server # 여기 경로는 자신의 EC2에 맞는 경로로 재작성하기
-            rm -rf src/main/resources/application.yml
-            rm -rf src/main/resources/application-aws.yml
-            rm -rf src/test/resources/application.yml
-            rm -rf src/test/resources/application-test.yml
-            git pull origin main
-            echo "$APPLICATION_MAIN_PROPERTIES" > src/main/resources/application.yml
-            echo "$APPLICATION_MAIN_AWS_PROPERTIES" > src/main/resources/application-aws.yml
-            echo "$APPLICATION_TEST_PROPERTIES" > src/test/resources/application.yml
-            echo "$APPLICATION_TEST_AWS_PROPERTIES" > src/test/resources/application-test.yml
+          source: project.jar
+          target: /home/ubuntu/server/temp
 
-#            chmod +x ./gradlew
-#            ./gradlew clean build -x test
-#            sudo fuser -k -n tcp 80 || true # || true
-#            nohup java -jar build/libs/*SNAPSHOT.jar > ./output.log 2>&1 &
-            
