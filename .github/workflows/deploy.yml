@@ -29,11 +29,11 @@ jobs:
             rm -rf src/main/resources/application-aws.yml
             rm -rf src/test/resources/application.yml
             rm -rf src/test/resources/application-test.yml
-            git pull origin main
-            echo "$APPLICATION_MAIN_PROPERTIES" > src/main/resources/application.yml
-            echo "$APPLICATION_MAIN_AWS_PROPERTIES" > src/main/resources/application-aws.yml
-            echo "$APPLICATION_TEST_PROPERTIES" > src/test/resources/application.yml
-            echo "$APPLICATION_TEST_AWS_PROPERTIES" > src/test/resources/application-test.yml
+#            git pull origin main
+#            echo "$APPLICATION_MAIN_PROPERTIES" > src/main/resources/application.yml
+#            echo "$APPLICATION_MAIN_AWS_PROPERTIES" > src/main/resources/application-aws.yml
+#            echo "$APPLICATION_TEST_PROPERTIES" > src/test/resources/application.yml
+#            echo "$APPLICATION_TEST_AWS_PROPERTIES" > src/test/resources/application-test.yml
 
 #            chmod +x ./gradlew
 #            ./gradlew clean build -x test
