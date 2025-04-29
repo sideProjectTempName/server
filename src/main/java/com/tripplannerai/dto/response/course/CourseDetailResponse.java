@@ -12,10 +12,11 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class CourseDetailResponse {
-    private Long courseID;
+    private Long courseId;
     private String title;
     private String overview;
     private List<CourseSpotDto> spots;
+    private int likeCount;
 
 
 }

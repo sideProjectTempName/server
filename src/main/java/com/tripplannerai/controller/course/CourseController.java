@@ -24,4 +24,6 @@ public class CourseController {
     public ResponseEntity<CourseDetailResponse> getCourseDetail(@PathVariable Long courseId) {
         return ResponseEntity.ok(courseService.getCourseDetails(courseId));
     }
+
+
 }

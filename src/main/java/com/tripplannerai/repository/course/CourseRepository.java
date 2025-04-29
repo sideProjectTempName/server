@@ -15,5 +15,4 @@ public interface CourseRepository extends JpaRepository<Course,Long> {
     @Modifying
     void updateLikeCount(int val, Long courseId);
 
-
 }
