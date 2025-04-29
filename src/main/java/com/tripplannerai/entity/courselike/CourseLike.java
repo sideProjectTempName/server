@@ -16,6 +16,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Builder
+@Table(
+        name = "course_like",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"course_id", "member_id"})
+)
 public class CourseLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

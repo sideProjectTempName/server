@@ -17,5 +17,6 @@ public class CourseResponse {
     private String title;
     private String area;
     private int likeCount;
+    private double rating;
 
 }

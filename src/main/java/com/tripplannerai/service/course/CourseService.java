@@ -9,6 +9,5 @@ public interface CourseService {
     void saveCourseData() throws Exception;
     List<CourseResponse> recommendCourses();
     CourseDetailResponse getCourseDetails(Long courseId);
-    void addLikeCourse(Long courseId, Long userId);
-    void removeLikeCourse(Long courseId, Long userId);
+
 }
