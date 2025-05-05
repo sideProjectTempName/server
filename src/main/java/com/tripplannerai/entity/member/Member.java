@@ -57,9 +57,7 @@ public class Member extends BaseEntity {
     private String customerKey;
 
     @Column
-    private Integer point;
+    private Integer ticket;
 
-    public void changePoint(Integer point) {
-        this.point = this.point + point;
-    }
+
 }
