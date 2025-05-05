@@ -18,5 +18,7 @@ public class CourseResponse {
     private String area;
     private int likeCount;
     private double rating;
+    private int reviewCount;
+
 
 }
