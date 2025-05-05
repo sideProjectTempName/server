@@ -19,6 +19,7 @@ public class EmailProvider {
     public boolean sendCertificationMail(String email,String certificationNumber) throws MessagingException {
 
         MimeMessage message = javaMailSender.createMimeMessage();
+
         MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
         String htmlContent = getCertificationMessage(certificationNumber);
         messageHelper.setTo(email);
