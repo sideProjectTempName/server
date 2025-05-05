@@ -13,6 +13,7 @@ public class PaymentFactory {
                 .orderId(paymentRequest.getOrderId())
                 .amount(paymentRequest.getAmount())
                 .paymentKey(paymentRequest.getPaymentKey())
+                .cancelled(false)
                 .build();
     }
 

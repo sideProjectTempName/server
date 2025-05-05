@@ -2,10 +2,9 @@ package com.tripplannerai.controller.payment;
 
 import com.tripplannerai.common.annotation.Id;
 import com.tripplannerai.dto.request.payment.PaymentRequest;
+import com.tripplannerai.dto.request.payment.Reason;
 import com.tripplannerai.dto.request.payment.TempPaymentRequest;
-import com.tripplannerai.dto.response.payment.ConfirmResponse;
-import com.tripplannerai.dto.response.payment.CheckTempResponse;
-import com.tripplannerai.dto.response.payment.SaveTempResponse;
+import com.tripplannerai.dto.response.payment.*;
 import com.tripplannerai.service.payment.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +21,17 @@ public class PaymentController {
                                      @RequestBody PaymentRequest paymentRequest, @Id Long id){
         ConfirmResponse confirmResponse = paymentService.confirm(impotencyKey,paymentRequest,id);
         return new ResponseEntity<>(confirmResponse, HttpStatus.OK);
+    }
+    @PostMapping("/api/cancel")
+    public ResponseEntity<CancelResponse> cancel(@RequestHeader("Idempotency-Key") String impotencyKey,
+                                                 @RequestBody Reason reason, @Id Long id,@RequestParam String paymentKey){
+        CancelResponse cancelResponse = paymentService.cancel(impotencyKey,id,reason,paymentKey);
+        return new ResponseEntity<>(cancelResponse, HttpStatus.OK);
+    }
+    @GetMapping("/api/payments")
+    public ResponseEntity<FetchPaymentsResponse> fetchPayments(@Id Long id, @RequestParam Integer pageNum){
+        FetchPaymentsResponse fetchPaymentsResponse = paymentService.fetchPayments(id,pageNum);
+        return new ResponseEntity<>(fetchPaymentsResponse,HttpStatus.OK);
     }
 
     @PostMapping("/api/temp")
