@@ -1,12 +1,13 @@
 package com.tripplannerai.service.payment;
 
+import com.tripplannerai.common.exception.payment.NotFoundPaymentException;
 import com.tripplannerai.dto.request.payment.PaymentRequest;
+import com.tripplannerai.dto.request.payment.Reason;
 import com.tripplannerai.dto.request.payment.TempPaymentRequest;
-import com.tripplannerai.dto.response.payment.ConfirmResponse;
-import com.tripplannerai.dto.response.payment.CheckTempResponse;
-import com.tripplannerai.dto.response.payment.SaveTempResponse;
+import com.tripplannerai.dto.response.payment.*;
 import com.tripplannerai.entity.impotency.Impotency;
 import com.tripplannerai.entity.member.Member;
+import com.tripplannerai.entity.payment.Payment;
 import com.tripplannerai.entity.payment.TempPayment;
 import com.tripplannerai.common.exception.member.NotFoundMemberException;
 import com.tripplannerai.common.exception.payment.AlreadyPaymentRequestException;
@@ -20,12 +21,15 @@ import com.tripplannerai.repository.payment.TempPaymentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 import static com.tripplannerai.util.ConstClass.*;
@@ -43,6 +47,8 @@ public class PaymentService {
     private String widgetSecretKey;
     @Value("${toss.server.url}")
     private String url;
+    @Value("${toss.cancel.url}")
+    private String cancelUrl;
 
     public ConfirmResponse confirm(String impotencyKey, PaymentRequest paymentRequest, Long id){
 
@@ -63,7 +69,7 @@ public class PaymentService {
             ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
             if (response.getStatusCode() == HttpStatus.OK) {
                 paymentRepository.save(PaymentFactory.from(paymentRequest, member));
-                memberRepository.updatePoint(id, paymentRequest.getAmount());
+                memberRepository.updateTicket(id, paymentRequest.getAmount());
             }
         }catch (Exception e){
             throw new PaymentServerErrorException("payment Server error!!");
@@ -96,5 +102,43 @@ public class PaymentService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Basic " + encodedAuth);
         return headers;
+    }
+
+
+    public CancelResponse cancel(String impotencyKey, Long id, Reason reason,String paymentKey) {
+        memberRepository.findById(id)
+                .orElseThrow(() -> new NotFoundMemberException("not found member!!"));
+        Optional<Impotency> optionalImpotency = impotencyRepository.findByImpotencyKey(impotencyKey);
+        if (optionalImpotency.isPresent()) {
+            throw new AlreadyPaymentRequestException("already request payment!!");
+        }
+        Payment payment = paymentRepository.findByPaymentKey(paymentKey)
+                .orElseThrow(() -> new NotFoundPaymentException("Not Found Payment"));
+        Impotency impotency = Impotency.of(impotencyKey);
+        impotencyRepository.save(impotency);
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = getHeaders();
+        HttpEntity<Reason> reasonHttpEntity = new HttpEntity<>(reason, headers);
+
+        try {
+            ResponseEntity<String> response = restTemplate.postForEntity(cancelUrl.formatted(paymentKey), reasonHttpEntity, String.class);
+            if (response.getStatusCode() == HttpStatus.OK) {
+                payment.changeCancelled();
+                memberRepository.updateTicket(id,payment.getAmount());
+            }
+        }catch (Exception e){
+            throw new PaymentServerErrorException("payment Server error!!");
+        }
+        return CancelResponse.of(SUCCESS_CODE, SUCCESS_MESSAGE);
+    }
+
+    public FetchPaymentsResponse fetchPayments(Long id, Integer pageNum) {
+        memberRepository.findById(id)
+                .orElseThrow(() -> new NotFoundMemberException("not found member!!"));
+        PageRequest pageRequest = PageRequest.of(pageNum - 1, 10);
+        Page<PaymentElement> page = paymentRepository.fetchPayments(pageRequest, id);
+        boolean hasNext = page.hasNext();
+        List<PaymentElement> content = page.getContent();
+        return FetchPaymentsResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,content,hasNext);
     }
 }
