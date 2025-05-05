@@ -21,7 +21,7 @@ public class MemberFactory {
                 .phoneNumber(signUpRequest.getPhoneNumber())
                 .image(null)
                 .customerKey(UUID.randomUUID().toString())
-                .point(0)
+                .ticket(10)
                 .build();
     }
 
@@ -38,7 +38,7 @@ public class MemberFactory {
                 .isWithdrawn(member.isWithdrawn())
                 .imageUrl(imageUrl)
                 .customerKey(member.getCustomerKey())
-                .point(member.getPoint())
+                .ticket(member.getTicket())
                 .build();
     }
 }
