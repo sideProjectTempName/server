@@ -124,7 +124,7 @@ public class PaymentService {
             ResponseEntity<String> response = restTemplate.postForEntity(cancelUrl.formatted(paymentKey), reasonHttpEntity, String.class);
             if (response.getStatusCode() == HttpStatus.OK) {
                 payment.changeCancelled();
-                memberRepository.updateTicket(id,payment.getAmount());
+                memberRepository.updateTicket(id,(-1)*payment.getAmount());
             }
         }catch (Exception e){
             throw new PaymentServerErrorException("payment Server error!!");
