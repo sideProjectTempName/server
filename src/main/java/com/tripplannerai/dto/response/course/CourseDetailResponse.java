@@ -17,6 +17,9 @@ public class CourseDetailResponse {
     private String overview;
     private List<CourseSpotDto> spots;
     private int likeCount;
+    private double rating;
+    private int reviewCount;
+    private List<CourseReviewResponse> reviewList;
 
 
 }
