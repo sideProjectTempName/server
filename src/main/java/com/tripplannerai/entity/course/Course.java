@@ -1,14 +1,11 @@
 package com.tripplannerai.entity.course;
 
-import com.tripplannerai.entity.destination.Destination;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-
-import java.math.BigDecimal;
 
 @Entity
 @Getter
@@ -36,5 +33,8 @@ public class Course {
     @ColumnDefault("0")
     private Integer likeCount=0;
 
+    @Builder.Default
+    @ColumnDefault("0")
+    private Integer reviewCount=0;
 
 }

@@ -4,6 +4,7 @@ import com.tripplannerai.service.address.AddressService;
 import com.tripplannerai.service.category.CategoryService;
 import com.tripplannerai.service.course.CourseService;
 import com.tripplannerai.service.destination.DestinationService;
+import com.tripplannerai.service.kindplace.KindPlaceService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ public class DbInit {
     private final CategoryService categoryService;
     private final DestinationService destinationService;
     private final CourseService courseService;
+    private final KindPlaceService kindPlaceService;
     @PostConstruct
     public void init() {
         try {
@@ -46,6 +48,10 @@ public class DbInit {
         log.info("코스 데이터 저장 시작...");
         courseService.saveCourseData();
         log.info("코스 데이터 저장 완료");
+
+        log.info("착한 업소 저장 시작...");
+        kindPlaceService.saveKindPlace();
+        log.info("착한 업소 저장 완료");
 
     }
 }

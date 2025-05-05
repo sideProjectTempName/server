@@ -2,21 +2,20 @@ package com.tripplannerai.service.course;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tripplannerai.common.exception.course.NotFoundCourseException;
 import com.tripplannerai.dto.response.course.CourseDetailResponse;
 import com.tripplannerai.dto.response.course.CourseResponse;
+import com.tripplannerai.dto.response.course.CourseReviewResponse;
 import com.tripplannerai.dto.response.course.CourseSpotDto;
 import com.tripplannerai.entity.address.Address;
 import com.tripplannerai.entity.course.Course;
-import com.tripplannerai.entity.courselike.CourseLike;
 import com.tripplannerai.entity.coursespot.CourseSpot;
 import com.tripplannerai.entity.destination.Destination;
-import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.repository.address.AddressRepository;
-import com.tripplannerai.repository.course.CourseLikeRepository;
 import com.tripplannerai.repository.course.CourseRepository;
+import com.tripplannerai.repository.course.CourseReviewRepository;
 import com.tripplannerai.repository.course.CourseSpotRepository;
 import com.tripplannerai.repository.destination.DestinationRepository;
-import com.tripplannerai.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,8 +35,7 @@ public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
     private final CourseSpotRepository courseSpotRepository;
     private final AddressRepository addressRepository;
-    private final MemberRepository memberRepository;
-    private final CourseLikeRepository courseLikeRepository;
+    private final CourseReviewRepository courseReviewRepository;
     @Value("${tourapi.service-key}")
     private String serviceKey;
     @Value("${tourapi.base-url}")
@@ -117,6 +115,8 @@ public class CourseServiceImpl implements CourseService {
                             .courseId(course.getCourseId())
                             .thumbnailUrl(d.getThumbnailImageUrl())
                             .likeCount(course.getLikeCount())
+                            .rating(course.getRating())
+                            .reviewCount(course.getReviewCount())
                             .contentId(course.getContentId())
                             .title(course.getTitle())
                     .build());
@@ -127,7 +127,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseDetailResponse getCourseDetails(Long courseId) {
         List<CourseSpot> spots = courseSpotRepository.findByCourseId(courseId);
-        Course course = courseRepository.findById(courseId).orElseThrow();
+        Course course = courseRepository.findById(courseId).orElseThrow(()->new NotFoundCourseException("Course not found"));
         List<CourseSpotDto> spotDtoList = new ArrayList<>();
         for(CourseSpot s : spots) {
             Optional<Destination> d = destinationRepository.findByContentId(s.getDestinationContentId());
@@ -142,29 +142,21 @@ public class CourseServiceImpl implements CourseService {
                     .build();
             spotDtoList.add(spotDto);
         }
+        List<CourseReviewResponse> reviewList = courseReviewRepository.findByCourse(course)
+                .stream()
+                .map(CourseReviewResponse::fromEntity)
+                .toList();
+
         return CourseDetailResponse.builder()
-                .courseID(courseId)
+                .courseId(courseId)
                 .title(course.getTitle())
                 .overview(course.getOverview())
                 .spots(spotDtoList)
+                .likeCount(course.getLikeCount())
+                .rating(course.getRating())
+                .reviewCount(course.getReviewCount())
+                .reviewList(reviewList)
                 .build();
-    }
-
-    @Override
-    public void addLikeCourse(Long courseId, Long userId) {
-        Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
-        Member member = memberRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        CourseLike courseLike = CourseLike.builder()
-                .course(course)
-                .member(member)
-                .build();
-        courseLikeRepository.save(courseLike);
-        courseRepository.updateLikeCount(1,courseId);
-    }
-
-    @Override
-    public void removeLikeCourse(Long courseId, Long userId) {
-
     }
 
 

@@ -28,7 +28,7 @@ public class SecurityConfig {
             "/auth/login","/auth/sign-up",
             "/v3/api-docs/**","/swagger-ui/**", "/api/post/**","/api/posts","/swagger-resources/**", "/webjars/**","/oauth2/**"
             ,"/email-check","/check-certification","/subscribe/**","close/**","/certification","/image/**","/auth/refresh",
-            "/api/festival/favorites-count","/api/category/total","/api/destination/**","/api/course/**","/health"
+            "/api/festival/favorites-count","/api/category/total","/api/destination/**","/api/course/**","/health","/kindplace"
     };
 
     private final JwtAuthFilter jwtAuthFilter;
@@ -68,7 +68,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
-        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("https://tripplai.vercel.app");
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",configuration);

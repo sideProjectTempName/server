@@ -62,5 +62,14 @@ public class ConstClass {
     //클라이언트 ID/시크릿 오류.
     public static String OAUTH_INVALID_CLIENT_CODE = "OI";
     public static String OAUTH_INVALID_CLIENT_MESSAGE = "OAuth Invalid Client";
+    //course not found
+    public static String NOT_FOUND_COURSE_CODE = "NF";
+    public static String NOT_FOUND_COURSE_MESSAGE = "Not Found Course";
+    //courselike not found
+    public static String NOT_FOUND_COURSE_LIKE_CODE = "NF";
+    public static String NOT_FOUND_COURSE_LIKE_MESSAGE = "누른 좋아요가 없습니다.";
+    //already liked
+    public static String ALREADY_LIKED_COURSE_CODE = "AL";
+    public static String ALREADY_LIKED_COURSE_MESSAGE = "이미 좋아요를 누른 코스입니다.";
 
 }
