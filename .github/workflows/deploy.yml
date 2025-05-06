@@ -40,6 +40,19 @@ jobs:
           mkdir -p ./src/test/resources
           echo "${{ secrets.APPLICATION_TEST_AWS_PROPERTIES }}" > ./src/test/resources/application-test.yml
 
+      - name: TLS 키스토어 생성 및 복사
+        run: |
+          keytool -genkeypair \
+            -alias tomcat \
+            -storetype PKCS12 \
+            -keyalg RSA \
+            -keysize 2048 \
+            -keystore ./src/main/resources/keystore.p12 \
+            -validity 4000 \
+            -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
+            -keypass ${{ secrets.KEYSTORE_PASSWORD }} \
+            -dname "CN=localhost, OU=Dev, O=Company, L=City, S=State, C=KR"
+
       - name: 권한 주기
         run: chmod +x ./gradlew
 
