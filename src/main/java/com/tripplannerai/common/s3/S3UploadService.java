@@ -39,11 +39,30 @@ public class S3UploadService {
         if (file.isEmpty()) {
             return null;
         }
+        String originalFilename = file.getOriginalFilename();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String fileName = changeFileName() + extension;
+
         ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType(file.getContentType());
+        metadata.setContentType(determineContentType(extension));
         metadata.setContentLength(file.getSize());
-        String fileName = changeFileName();
+
         s3Client.putObject(bucket, fileName, file.getInputStream(), metadata);
         return s3Client.getUrl(bucket,fileName).toString();
     }
+
+    private String determineContentType(String extension) {
+        switch (extension.toLowerCase()) {
+            case ".jpg":
+            case ".jpeg":
+                return "image/jpeg";
+            case ".png":
+                return "image/png";
+            case ".gif":
+                return "image/gif";
+            default:
+                return "application/octet-stream";
+        }
+    }
+
 }
