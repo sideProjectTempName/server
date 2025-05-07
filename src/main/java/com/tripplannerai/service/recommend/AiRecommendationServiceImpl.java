@@ -14,19 +14,17 @@ import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.entity.plan.Plan;
 import com.tripplannerai.entity.tourspot.TourSpot;
 import com.tripplannerai.repository.destination.DestinationRepository;
-import com.tripplannerai.repository.itinerary.ItineraryRepository;
 import com.tripplannerai.repository.member.MemberRepository;
 import com.tripplannerai.repository.plan.PlanRepository;
-import com.tripplannerai.repository.tourspot.TourSpotRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-
 
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -43,7 +41,8 @@ public class AiRecommendationServiceImpl implements AiRecommendationService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
     private static final Logger logger = LoggerFactory.getLogger(AiRecommendationServiceImpl.class);
-    private final String FASTAPI_URL = "http://localhost:8000/api/v1/recommendations/";
+    @Value("${fastAPI.url}")
+    private String FASTAPI_URL;
 
     @Override
     public RecommendationResponse getRecommendation(RecommendRequestDto requestDto) throws JsonProcessingException {
