@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -71,4 +70,5 @@ jobs:
             mkdir /home/ubuntu/server/current
             mv /home/ubuntu/server/temp/project.jar /home/ubuntu/server/current/project.jar
             cd /home/ubuntu/server/current
+            sudo fuser -k -n tcp 80 || true
             sudo nohup java -jar project.jar > ./output.log 2>&1 &
