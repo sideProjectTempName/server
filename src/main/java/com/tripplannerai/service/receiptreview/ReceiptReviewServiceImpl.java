@@ -41,10 +41,12 @@ public class ReceiptReviewServiceImpl implements ReceiptReviewService{
         if(images != null){
             for (MultipartFile file : images) {
                 String imageUrl = s3UploadService.uploadReceiptReviewImage(file);
+                String originalFilename = file.getOriginalFilename();
+                String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
                 ReceiptReviewImage image = ReceiptReviewImage.builder()
                         .imageUrl(imageUrl)
                         .review(review)
-                        .contentType(file.getContentType())
+                        .contentType(determineContentType(extension))
                         .build();
                 review.addImage(image);
             }
@@ -63,5 +65,19 @@ public class ReceiptReviewServiceImpl implements ReceiptReviewService{
         ReceiptReview review = reviewRepository.findByIdWithImagesAndMember(id)
                 .orElseThrow(() -> new EntityNotFoundException("리뷰를 찾을 수 없습니다."));
         return ReceiptReviewResponse.fromEntity(review);
+    }
+
+    private String determineContentType(String extension) {
+        switch (extension.toLowerCase()) {
+            case ".jpg":
+            case ".jpeg":
+                return "image/jpeg";
+            case ".png":
+                return "image/png";
+            case ".gif":
+                return "image/gif";
+            default:
+                return "application/octet-stream";
+        }
     }
 }
