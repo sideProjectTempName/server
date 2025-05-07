@@ -20,6 +20,7 @@ public class DestinationController {
     @GetMapping("/{destinationId}")
     public ResponseEntity<DestinationResponse> fetchDestination(@PathVariable Long destinationId, @Id Long id) {
         DestinationResponse destinationResponse = destinationService.fetchDestination(destinationId,id);
+
         return ResponseEntity.ok(destinationResponse);
     }
 
