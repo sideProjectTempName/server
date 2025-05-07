@@ -34,4 +34,16 @@ public class S3UploadService {
     private String changeFileName() {
         return UUID.randomUUID().toString();
     }
+
+    public String uploadReceiptReviewImage(MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            return null;
+        }
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(file.getContentType());
+        metadata.setContentLength(file.getSize());
+        String fileName = changeFileName();
+        s3Client.putObject(bucket, fileName, file.getInputStream(), metadata);
+        return s3Client.getUrl(bucket,fileName).toString();
+    }
 }
