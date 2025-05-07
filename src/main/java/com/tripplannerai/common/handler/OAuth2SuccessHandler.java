@@ -32,6 +32,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private int refreshExpiration;
     @Value("${jwt.access.expiration}")
     private int accessExpiration;
+    @Value("${oauth2SuccessRedirectUrl}")
+    private String oauth2SuccessRedirectUrl;
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -64,7 +66,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         response.addCookie(refreshTokenCookie);
 
         //프론트엔드로 리다이렉트
-        String redirectUrl = "http://localhost:3000/oauth2/redirect" + "?status=success";
+        String redirectUrl = oauth2SuccessRedirectUrl + "?status=success";
         response.sendRedirect(redirectUrl);
     }
 }
