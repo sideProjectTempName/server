@@ -20,6 +20,7 @@ public class CategoryController {
     @GetMapping("/total")
     public ResponseEntity<TotalCategoryResponse> fetchTotalCategory(@RequestParam(required = false) Long categoryId){
         TotalCategoryResponse totalCategoryResponse = categoryService.fetchTotalCategory(categoryId);
+
         return new ResponseEntity<>(totalCategoryResponse, HttpStatus.OK);
     }
 
