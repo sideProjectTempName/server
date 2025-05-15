@@ -20,6 +20,7 @@ import com.tripplannerai.repository.payment.PaymentRepository;
 import com.tripplannerai.repository.payment.TempPaymentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +38,7 @@ import static com.tripplannerai.util.ConstClass.*;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
@@ -72,6 +74,7 @@ public class PaymentService {
                 memberRepository.updateTicket(id, paymentRequest.getAmount());
             }
         }catch (Exception e){
+            log.error(e.getMessage(),e);
             throw new PaymentServerErrorException("payment Server error!!");
         }
 
