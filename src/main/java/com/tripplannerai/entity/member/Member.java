@@ -60,4 +60,6 @@ public class Member extends BaseEntity {
     private Integer ticket;
 
 
+
+
 }
