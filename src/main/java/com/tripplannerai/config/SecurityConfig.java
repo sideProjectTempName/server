@@ -28,7 +28,7 @@ public class SecurityConfig {
             "/auth/login","/auth/sign-up",
             "/v3/api-docs/**","/swagger-ui/**", "/api/post/**","/api/posts","/swagger-resources/**", "/webjars/**","/oauth2/**"
             ,"/email-check","/check-certification","/subscribe/**","close/**","/certification","/image/**","/auth/refresh",
-            "/api/festival/favorites-count","/api/category/total","/api/destination/**","/api/course/**","/health","/kindplace"
+            "/api/festival/favorites-count","/api/category/total","/api/destination/**","/api/course/**","/health","/kindplace","/api/receiptReview/reviews","/api/receiptReview/reviews/*"
     };
 
     private final JwtAuthFilter jwtAuthFilter;
