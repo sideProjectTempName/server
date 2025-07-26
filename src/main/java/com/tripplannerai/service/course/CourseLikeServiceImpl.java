@@ -3,6 +3,7 @@ package com.tripplannerai.service.course;
 import com.tripplannerai.common.exception.course.NotFoundCourseException;
 import com.tripplannerai.common.exception.course.NotFoundCourseLikeException;
 import com.tripplannerai.common.exception.member.NotFoundMemberException;
+import com.tripplannerai.dto.response.course.CourseInfoResponse;
 import com.tripplannerai.entity.course.Course;
 import com.tripplannerai.entity.courselike.CourseLike;
 import com.tripplannerai.entity.member.Member;
@@ -12,6 +13,10 @@ import com.tripplannerai.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +56,17 @@ public class CourseLikeServiceImpl implements CourseLikeService{
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new NotFoundCourseException("Course not found"));
         Member member = memberRepository.findById(userId).orElseThrow(() -> new NotFoundMemberException("User not found"));
         return courseLikeRepository.existsByCourseAndMember(course,member);
+    }
+
+    @Override
+    public List<CourseInfoResponse> getLikedCourses(Long memberId) {
+        List<Long> courseIds = courseLikeRepository.findCourseIdsByMemberId(memberId);
+        List<Course> courseList = courseRepository.findAllById(courseIds);
+        List<CourseInfoResponse> courseInfoResponseList = courseList.stream()
+                .map(CourseInfoResponse::fromEntity)
+                .toList();
+        return courseInfoResponseList;
+
     }
 
 

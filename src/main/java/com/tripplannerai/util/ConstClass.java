@@ -71,5 +71,7 @@ public class ConstClass {
     //already liked
     public static String ALREADY_LIKED_COURSE_CODE = "AL";
     public static String ALREADY_LIKED_COURSE_MESSAGE = "이미 좋아요를 누른 코스입니다.";
+    public static String GET_COURSES_LIKED_CODE = "SUCCESS";
+    public static String GET_COURSES_LIKED_MESSAGE = "찜한 코스 목록 조회 성공";
 
 }
