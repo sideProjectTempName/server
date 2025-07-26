@@ -188,6 +188,14 @@ public class DestinationServiceImplement implements DestinationService {
         return null;
     }
 
+    @Override
+    public List<DestinationInfoResponse> getDestinationsByContentIds(List<String> contentIds) {
+        List<Destination> destinations = destinationRepository.findAllByContentIdIn(contentIds);
+        return destinations.stream()
+                .map(DestinationInfoResponse::fromEntity)
+                .toList();
+    }
+
     private JsonNode fetchData(String url) throws Exception{
         try {
             restTemplate.getMessageConverters()

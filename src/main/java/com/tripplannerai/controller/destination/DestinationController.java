@@ -1,15 +1,21 @@
 package com.tripplannerai.controller.destination;
 
 import com.tripplannerai.common.annotation.Id;
-import com.tripplannerai.dto.response.destination.DestinationResponse;
-import com.tripplannerai.dto.response.destination.DestinationsCategoryResponse;
-import com.tripplannerai.dto.response.destination.DestinationsResponse;
-import com.tripplannerai.dto.response.destination.TotalDestinationResponse;
+import com.tripplannerai.dto.request.destination.DestinationSearchRequest;
+import com.tripplannerai.dto.response.course.ResponseDto;
+import com.tripplannerai.dto.response.destination.*;
 import com.tripplannerai.service.destination.DestinationService;
+import com.tripplannerai.util.ConstClass;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/destination")
@@ -48,5 +54,20 @@ public class DestinationController {
                                                                     @Id Long id) {
         DestinationsResponse destinationsResponse = destinationService.fetchMyDestinations(page,size,id);
         return new ResponseEntity<>(destinationsResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<ResponseDto> getDestinationList(@RequestBody DestinationSearchRequest destinationSearchRequest) {
+        List<DestinationInfoResponse> destinations = destinationService.getDestinationsByContentIds(destinationSearchRequest.getContentIdList());
+        Map<String, DestinationInfoResponse> responseData = destinations.stream()
+                .collect(Collectors.toMap(
+                        DestinationInfoResponse::getDestinationContentId,
+                        Function.identity()
+                ));
+        return ResponseEntity.ok(ResponseDto.builder()
+                .code(ConstClass.GET_DESTINATIONS_BY_CONTENT_ID_CODE)
+                .message(ConstClass.GET_DESTINATIONS_BY_CONTENT_ID_MESSAGE)
+                .data(responseData)
+                .build());
     }
 }

@@ -1,9 +1,8 @@
 package com.tripplannerai.service.destination;
 
-import com.tripplannerai.dto.response.destination.DestinationResponse;
-import com.tripplannerai.dto.response.destination.DestinationsCategoryResponse;
-import com.tripplannerai.dto.response.destination.DestinationsResponse;
-import com.tripplannerai.dto.response.destination.TotalDestinationResponse;
+import com.tripplannerai.dto.response.destination.*;
+
+import java.util.List;
 
 public interface DestinationService {
     void saveDestinationFromApi() throws Exception;
@@ -17,4 +16,6 @@ public interface DestinationService {
     TotalDestinationResponse fetchDestinationsByTotal();
 
     DestinationsResponse fetchMyDestinations(Integer page, Integer size, Long id);
+
+    List<DestinationInfoResponse> getDestinationsByContentIds(List<String> contentIds);
 }
