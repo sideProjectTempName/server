@@ -2,7 +2,9 @@ package com.tripplannerai.controller.course;
 
 
 import com.tripplannerai.common.annotation.Id;
+import com.tripplannerai.dto.response.course.ResponseDto;
 import com.tripplannerai.service.course.CourseLikeService;
+import com.tripplannerai.util.ConstClass;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +34,14 @@ public class CourseLikeController {
         boolean liked = courseLikeService.isLiked(courseId, userId);
         return ResponseEntity.ok(liked);
     }
-
-
+    @GetMapping("/liked")
+    public ResponseEntity<ResponseDto> getLikedCourses(@Id Long memberId) {
+        return ResponseEntity.ok(ResponseDto.builder()
+                .code(ConstClass.GET_COURSES_LIKED_CODE)
+                .message(ConstClass.GET_COURSES_LIKED_MESSAGE)
+                .data(courseLikeService.getLikedCourses(memberId))
+                .build());
+    }
 
 
 }

@@ -19,4 +19,6 @@ public interface CourseRepository extends JpaRepository<Course,Long> {
     @Modifying
     @Query("UPDATE Course c SET c.rating = :avgRating, c.reviewCount = :count WHERE c.courseId = :courseId")
     void updateRating(@Param("courseId") Long courseId, @Param("avgRating") double avgRating, @Param("count") int count);
+
+
 }
