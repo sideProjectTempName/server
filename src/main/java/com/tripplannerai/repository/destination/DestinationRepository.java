@@ -99,4 +99,5 @@ public interface DestinationRepository extends JpaRepository<Destination, Long> 
     List<Destination> findAllCourses();
 
     Optional<Destination> findByContentId(String contentId);
+    List<Destination> findAllByContentIdIn(List<String> contentIds);
 }
