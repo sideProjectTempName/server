@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 class MemberRepositoryTest {
-
     @Autowired
     MemberRepository memberRepository;
 
