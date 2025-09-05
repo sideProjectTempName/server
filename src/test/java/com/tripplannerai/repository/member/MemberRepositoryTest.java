@@ -13,6 +13,7 @@ class MemberRepositoryTest {
 
     @Autowired
     MemberRepository memberRepository;
+
     @Test
     void updateTicket() {
 //        Member member = Member.dummy();
