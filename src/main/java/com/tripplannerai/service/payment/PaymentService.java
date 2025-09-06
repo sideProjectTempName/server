@@ -61,6 +61,7 @@ public class PaymentService {
         Optional<Impotency> optionalImpotency = impotencyRepository.findByImpotencyKey(impotencyKey);
         System.out.println(optionalImpotency.get());
         if (optionalImpotency.isPresent()) {
+
             throw new AlreadyPaymentRequestException("already request payment!!");
         }
         Impotency impotency = Impotency.of(impotencyKey);
