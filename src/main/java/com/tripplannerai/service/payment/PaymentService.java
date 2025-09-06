@@ -71,7 +71,7 @@ public class PaymentService {
             ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
             if (response.getStatusCode() == HttpStatus.OK) {
                 paymentRepository.save(PaymentFactory.from(paymentRequest, member));
-                memberRepository.updateTicket(id, paymentRequest.getAmount()/200);
+                memberRepository.updateTicket(paymentRequest.getAmount(), id);
             }
         }catch (Exception e){
             log.error(e.getMessage(),e);
@@ -126,7 +126,7 @@ public class PaymentService {
             ResponseEntity<String> response = restTemplate.postForEntity(cancelUrl.formatted(paymentKey), reasonHttpEntity, String.class);
             if (response.getStatusCode() == HttpStatus.OK) {
                 payment.changeCancelled();
-                memberRepository.updateTicket(id,(-1)*payment.getAmount());
+                memberRepository.updateTicket((-1)*payment.getAmount(),id);
             }
         }catch (Exception e){
             throw new PaymentServerErrorException("payment Server error!!");
