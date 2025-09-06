@@ -13,7 +13,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmail(String email);
     @Query("select m from Member m left join fetch m.image i where m.id = :memberId")
     Optional<Member> fetchById(Long memberId);
-    @Query(value = "update member  set ticket = :val where member_id = :userId"
+    @Query(value = "update member set ticket = :val where member_id = :userId"
             ,nativeQuery = true)
     @Modifying
     void updateTicket(@Param("userId") Long userId, @Param("val") int val);
