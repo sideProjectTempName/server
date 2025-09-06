@@ -71,7 +71,7 @@ public class PaymentService {
             ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
             if (response.getStatusCode() == HttpStatus.OK) {
                 paymentRepository.save(PaymentFactory.from(paymentRequest, member));
-                memberRepository.updateTicket(paymentRequest.getAmount(), id);
+                memberRepository.updateTicket(paymentRequest.getAmount() / 200, id);
             }
         }catch (Exception e){
             log.error(e.getMessage(),e);
