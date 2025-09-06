@@ -56,7 +56,10 @@ public class PaymentService {
 
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("not found member!!"));
+        System.out.println(paymentRequest);
+        System.out.println(impotencyKey);
         Optional<Impotency> optionalImpotency = impotencyRepository.findByImpotencyKey(impotencyKey);
+        System.out.println(optionalImpotency.get());
         if (optionalImpotency.isPresent()) {
             throw new AlreadyPaymentRequestException("already request payment!!");
         }
@@ -106,7 +109,6 @@ public class PaymentService {
         headers.set("Authorization", "Basic " + encodedAuth);
         return headers;
     }
-
 
     public CancelResponse cancel(String impotencyKey, Long id, Reason reason,String paymentKey) {
         memberRepository.findById(id)
