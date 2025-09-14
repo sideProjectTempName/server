@@ -1,6 +1,6 @@
 package com.tripplannerai.repository.impotency;
 
-import com.tripplannerai.entity.impotency.Impotency;
+import com.tripplannerai.entity.pay.impotency.Impotency;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;

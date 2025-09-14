@@ -27,9 +27,11 @@ public class ReceiptReview {
     @Column(length = 3000)
     private String content;
     private int rating;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
     private Member member;   // 작성자
+
     @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;

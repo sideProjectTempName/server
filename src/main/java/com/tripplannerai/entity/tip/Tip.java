@@ -22,6 +22,4 @@ public class Tip {
     private String content;
     private Integer displayOrder;
 
-
-
 }

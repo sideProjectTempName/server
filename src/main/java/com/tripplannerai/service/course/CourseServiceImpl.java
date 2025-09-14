@@ -56,7 +56,7 @@ public class CourseServiceImpl implements CourseService {
         List<CourseSpot> courseSpotBatch = new ArrayList<>();
         for(Destination d : courseList) {
             String contentId = d.getContentId();
-            String commonUrl = baseUrl + "/detailCommon1"+"?_type=json&ServiceKey=" + serviceKey +
+            String commonUrl = baseUrl + "/detailCommon2"+"?_type=json&ServiceKey=" + serviceKey +
                     "&contentTypeId=25&contentId=" + contentId +
                     "&MobileOS=ETC&MobileApp=AppTest&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y";
             JsonNode responseCommon = fetchData(commonUrl).get("response").path("body").path("items").path("item").get(0);

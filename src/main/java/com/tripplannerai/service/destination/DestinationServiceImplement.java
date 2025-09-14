@@ -82,10 +82,11 @@ public class DestinationServiceImplement implements DestinationService {
         int numOfRows = 1000;
         boolean hasMore = true;
         while (hasMore) {
-            String destinationUrl = baseUrl + "/areaBasedList1?_type=json&serviceKey=" + serviceKey +
+            String destinationUrl = baseUrl + "/areaBasedList2?_type=json&serviceKey=" + serviceKey +
                     "&numOfRows="+numOfRows+"&pageNo="+pageNo+"&MobileOS=ETC&MobileApp=AppTest";
             JsonNode responseBody = fetchData(destinationUrl).get("response").path("body");
             JsonNode destinationList = responseBody.path("items").path("item");
+
 
             List<Destination> batch =  new ArrayList<>();
 

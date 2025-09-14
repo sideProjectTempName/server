@@ -41,7 +41,7 @@ public class CategoryServiceImplement implements CategoryService {
             return;
         }
         //대분류 코드 가져오기
-        String cat1Url = baseUrl + "/categoryCode1?serviceKey=" + serviceKey +
+        String cat1Url = baseUrl + "/categoryCode2?serviceKey=" + serviceKey +
                 "&numOfRows=10000&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json";
         JsonNode cat1List = fetchData(cat1Url).get("response").path("body").path("items").path("item");
         for (JsonNode cat1 : cat1List) {
