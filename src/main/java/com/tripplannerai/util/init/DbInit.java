@@ -34,21 +34,21 @@ public class DbInit {
     @Transactional
     public void initializeData() throws Exception {
 
-//        log.info("주소 데이터 저장 시작...");
-//        addressService.saveAddressFromApi();
-//        log.info("주소 데이터 저장 완료");
-//
-//        log.info("카테고리 데이터 저장 시작...");
-//        categoryService.saveCategoryFromApi();
-//        log.info("카테고리 데이터 저장 완료");
-//
-//        log.info("관광지 데이터 저장 시작...");
-//        destinationService.saveDestinationFromApi();
-//        log.info("관광지 데이터 저장 완료");
-//
-//        log.info("코스 데이터 저장 시작...");
-//        courseService.saveCourseData();
-//        log.info("코스 데이터 저장 완료");
+        log.info("주소 데이터 저장 시작...");
+        addressService.saveAddressFromApi();
+        log.info("주소 데이터 저장 완료");
+
+        log.info("카테고리 데이터 저장 시작...");
+        categoryService.saveCategoryFromApi();
+        log.info("카테고리 데이터 저장 완료");
+
+        log.info("관광지 데이터 저장 시작...");
+        destinationService.saveDestinationFromApi();
+        log.info("관광지 데이터 저장 완료");
+
+        log.info("코스 데이터 저장 시작...");
+        courseService.saveCourseData();
+        log.info("코스 데이터 저장 완료");
 
         log.info("착한 업소 저장 시작...");
         kindPlaceService.saveKindPlace();

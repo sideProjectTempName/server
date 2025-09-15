@@ -55,13 +55,13 @@ public class GroupController {
         DeleteGroupResponse deleteGroupResponse = groupService.deleteGroup(groupId,id);
         return new ResponseEntity<>(deleteGroupResponse, HttpStatus.OK);
     }
-    @PostMapping("/{groupId}")
+    @PostMapping("/{groupId}/like")
     public ResponseEntity<GroupLikeResponse> groupLike(@PathVariable Long groupId, @Id Long id){
         GroupLikeResponse groupLikeResponse = groupService.groupLike(groupId,id);
         return new ResponseEntity<>(groupLikeResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{groupId}")
+    @DeleteMapping("/{groupId}/like")
     public ResponseEntity<GroupLikeResponse> deleteGroupLike(@PathVariable Long groupId, @Id Long id){
         GroupLikeResponse groupLikeResponse = groupService.deleteGroupLike(groupId,id);
         return new ResponseEntity<>(groupLikeResponse, HttpStatus.OK);

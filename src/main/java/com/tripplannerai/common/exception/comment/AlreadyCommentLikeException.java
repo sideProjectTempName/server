@@ -1,4 +1,4 @@
-package com.tripplannerai.common.comment;
+package com.tripplannerai.common.exception.comment;
 
 public class AlreadyCommentLikeException extends RuntimeException {
     public AlreadyCommentLikeException() {

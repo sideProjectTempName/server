@@ -1,8 +1,7 @@
 package com.tripplannerai.service.comment;
-import com.amazonaws.services.ec2.model.transform.LaunchTemplateElasticInferenceAcceleratorStaxUnmarshaller;
-import com.tripplannerai.common.comment.AlreadyCommentLikeException;
-import com.tripplannerai.common.comment.NotFoundCommentException;
-import com.tripplannerai.common.comment.NotFoundCommentLikeException;
+import com.tripplannerai.common.exception.comment.AlreadyCommentLikeException;
+import com.tripplannerai.common.exception.comment.NotFoundCommentException;
+import com.tripplannerai.common.exception.comment.NotFoundCommentLikeException;
 import com.tripplannerai.common.exception.comment.NotFoundReceiptReviewExeption;
 import com.tripplannerai.common.exception.member.NotAuthorizeException;
 import com.tripplannerai.common.exception.member.NotFoundMemberException;

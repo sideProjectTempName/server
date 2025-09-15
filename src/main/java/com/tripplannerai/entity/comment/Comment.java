@@ -37,7 +37,8 @@ public class Comment extends BaseEntity {
     private ReceiptReview receiptReview;
     private boolean isDeleted;
     private int depth;
-
+    private String path;
+    
     public static Comment of(Member member, ReceiptReview receiptReview, String content, Comment parentComment) {
         return Comment.builder()
                 .member(member)

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EnrollRepository extends JpaRepository<Enroll, Long> {
+    @Query("select e from Enroll e left join e.member m left join e.group g where m = :member and g = :group")
     Optional<Enroll> findByMemberAndGroupAndAccepted(Member member, Group group);
 
 
