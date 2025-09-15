@@ -1,5 +1,6 @@
 package com.tripplannerai.entity.group;
 
+import com.tripplannerai.entity.destination.Destination;
 import com.tripplannerai.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,20 +28,41 @@ public class Group {
     @Lob
     private String description;
     private int count;
+    private int participateCount;
+    private int groupLikeCount;
     @Column(name = "max_count")
     private int maxCount;
-    private int point;
     @Column(name = "start_date")
     private LocalDateTime startDate;
     @Column(name = "end_date")
     private LocalDateTime endDate;
-    @Column(name = "area_code")
-    private String areaCode;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "destination_id")
+    private Destination destination;
     @OneToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public void changePoint(int point){
-        this.point = this.point + point;
+    public void plusCount(){
+        this.count++;
     }
+    public void minusCount(){
+        this.count--;
+    }
+    public void plusParticipateCount(){
+        this.participateCount++;
+    }
+    public void minusParticipateCount(){
+        this.participateCount--;
+    }
+    public void plusGroupLikeCount(){
+        this.groupLikeCount++;
+    }
+    public void minusGroupLikeCount(){
+        this.groupLikeCount--;
+    }
+
+
+
+
 }

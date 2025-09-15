@@ -1,7 +1,7 @@
 package com.tripplannerai.repository.payment;
 
 import com.tripplannerai.dto.response.payment.PaymentElement;
-import com.tripplannerai.entity.payment.Payment;
+import com.tripplannerai.entity.pay.payment.Payment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;

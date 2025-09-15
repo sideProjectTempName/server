@@ -33,6 +33,7 @@ public class DbInit {
 
     @Transactional
     public void initializeData() throws Exception {
+
         log.info("주소 데이터 저장 시작...");
         addressService.saveAddressFromApi();
         log.info("주소 데이터 저장 완료");

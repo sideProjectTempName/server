@@ -11,13 +11,24 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EnrollRepository extends JpaRepository<Enroll, Long> {
-    Optional<Enroll> findByMemberAndGroupAndAccepted(Member member, Group group,boolean accepted);
+    @Query("select e from Enroll e left join e.member m left join e.group g where m = :member and g = :group")
+    Optional<Enroll> findByMemberAndGroupAndAccepted(Member member, Group group);
+
+
 
     Optional<Enroll> findByMemberAndGroup(Member member, Group group);
 
     @Query("select new com.tripplannerai.dto.response.group.ApplyElement(e.enrollId,m.nickname,e.accepted) " +
             "from Enroll e " +
             "left join e.group g " +
-            "left join e.member m where e.member.id != :memberId")
-    List<ApplyElement> findByGroupExceptCreated(Group group, Long memberId);
+            "left join e.member m where e.accepted = false")
+    List<ApplyElement> findByGroupAndApply(Group group);
+
+    @Query("select new com.tripplannerai.dto.response.group.ApplyElement(e.enrollId,m.nickname,e.accepted) " +
+            "from Enroll e " +
+            "left join e.group g " +
+            "left join e.member m where e.accepted = true")
+    List<ApplyElement> findByGroupAndParticipate(Group group);
+
+    List<Enroll> findByGroup(Group group);
 }

@@ -1,4 +1,4 @@
-package com.tripplannerai.entity.impotency;
+package com.tripplannerai.entity.pay.impotency;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

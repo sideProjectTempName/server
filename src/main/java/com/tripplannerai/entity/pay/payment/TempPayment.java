@@ -1,4 +1,4 @@
-package com.tripplannerai.entity.payment;
+package com.tripplannerai.entity.pay.payment;
 
 import com.tripplannerai.entity.member.Member;
 import jakarta.persistence.*;

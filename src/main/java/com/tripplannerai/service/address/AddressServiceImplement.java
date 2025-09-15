@@ -34,8 +34,7 @@ public class AddressServiceImplement implements AddressService{
         if (addressRepository.count() > 0) {
             return;
         }
-        String areaCodeUrl = baseUrl + "/areaCode1?serviceKey=" + serviceKey +
-                "&numOfRows=100&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json";
+        String areaCodeUrl = baseUrl + "/areaCode2?numOfRows=100&pageNo=1&MobileOS=WEB&MobileApp=AppTest&_type=json&serviceKey=" + serviceKey;
         JsonNode areas = fetchData(areaCodeUrl).path("response").path("body").path("items").path("item");
 
         if (areas.isMissingNode()) {
@@ -46,7 +45,7 @@ public class AddressServiceImplement implements AddressService{
             String areaCode = area.path("code").asText();
             String areaName = area.path("name").asText();
             addressRepository.save(AddressFactory.of(areaCode,areaName,null));
-            String sigunguUrl = baseUrl + "/areaCode1?serviceKey=" + serviceKey +
+            String sigunguUrl = baseUrl + "/areaCode2?serviceKey=" + serviceKey +
                     "&areaCode=" + areaCode +
                     "&numOfRows=1000&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json";
             JsonNode sigungus = fetchData(sigunguUrl).path("response").path("body").path("items").path("item");
@@ -68,8 +67,8 @@ public class AddressServiceImplement implements AddressService{
                     .add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
             URI uri = new URI(url);
             String response = restTemplate.getForObject(uri, String.class);
-
             return objectMapper.readTree(response);
+
         } catch (Exception e) {
             throw new RuntimeException("API 호출 실패: " + url,e);
         }

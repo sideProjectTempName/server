@@ -3,8 +3,8 @@ package com.tripplannerai.mapper;
 import com.tripplannerai.dto.request.payment.PaymentRequest;
 import com.tripplannerai.dto.request.payment.TempPaymentRequest;
 import com.tripplannerai.entity.member.Member;
-import com.tripplannerai.entity.payment.Payment;
-import com.tripplannerai.entity.payment.TempPayment;
+import com.tripplannerai.entity.pay.payment.Payment;
+import com.tripplannerai.entity.pay.payment.TempPayment;
 
 public class PaymentFactory {
     public static Payment from(PaymentRequest paymentRequest, Member member){
