@@ -26,6 +26,13 @@ public class ConstClass {
     public static String NOT_PARTICIPATE_GROUP_CODE = "GF";
     public static String NOT_FOUND_CHAT_PARTICIPANT_CODE = "NP";
     public static String NOT_FOUND_CHAT_ROOM_CODE = "NR";
+    public static String NOT_FOUND_KEEP_CODE = "NF";
+    public static String NOT_FOUND_ENROLL_CODE = "NR";
+    public static String ALREADY_GROUP_LIKE_CODE = "AL";
+    public static String NOT_FOUND_COMMENT_CODE = "NC";
+    public static String ALREADY_COMMENT_LIKE_CODE = "AC";
+    public static String NOT_FOUND_COMMENT_LIKE_CODE = "NF";
+    public static String NOT_FOUND_RECEIPT_REVIEW_CODE = "NF";
     public static String SUCCESS_MESSAGE = "Success";
     public static String NOT_FOUND_MEMBER_MESSAGE = "Not Found Member";
     public static String UN_CORRECT_PASSWORD_MESSAGE = "Un correct Password";
@@ -50,6 +57,13 @@ public class ConstClass {
     public static String NOT_PARTICIPATE_GROUP_MESSAGE = "Not Participate Group";
     public static String NOT_FOUND_CHAT_PARTICIPANT_MESSAGE = "Not Found Chat Participant";
     public static String NOT_FOUND_CHAT_ROOM_MESSAGE = "Not Found Chat Room";
+    public static String NOT_FOUND_KEEP_MESSAGE = "Not Fount Keep";
+    public static String NOT_FOUND_ENROLL_MESSAGE = "Not Found Enroll";
+    public static String ALREADY_GROUP_LIKE_MESSAGE = "Already Group Like";
+    public static String NOT_FOUND_COMMENT_MESSAGE = "Not Fount Comment";
+    public static String ALREADY_COMMENT_LIKE_MESSAGE = "Already Comment Like";
+    public static String NOT_FOUND_RECEIPT_REVIEW_MESSAGE = "Not Found Receipt Review";
+    public static String NOT_FOUND_COMMENT_LIKE_MESSAGE = "Not Fount CommentLike";
     //OAuth2 실패
     public static String AUTHENTICATION_FAILED_CODE = "AF";
     public static String AUTHENTICATION_FAILED_MESSAGE = "Authentication Failed";
