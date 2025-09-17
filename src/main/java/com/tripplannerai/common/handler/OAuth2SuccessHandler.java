@@ -8,7 +8,6 @@ import com.tripplannerai.common.exception.member.NotFoundMemberException;
 import com.tripplannerai.common.jwt.JwtProvider;
 import com.tripplannerai.repository.member.MemberRepository;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
-import static com.tripplannerai.util.CookieUtil.getCookie;
+import static com.tripplannerai.util.CookieUtil.addCrossDomainCookie;
 
 @Component
 @RequiredArgsConstructor
@@ -56,14 +55,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         member.setRefreshToken(refreshToken);
         memberRepository.save(member);
 
-        // 쿠키 설정
-        Cookie accessTokenCookie = getCookie("accessToken", accessToken, accessExpiration);
-        accessTokenCookie.setHttpOnly(false);
-
-        Cookie refreshTokenCookie =getCookie("refreshToken",refreshToken,refreshExpiration);
-
-        response.addCookie(accessTokenCookie);
-        response.addCookie(refreshTokenCookie);
+        // 크로스 도메인 쿠키 설정
+        addCrossDomainCookie(response, "accessToken", accessToken, accessExpiration, false);
+        addCrossDomainCookie(response, "refreshToken", refreshToken, refreshExpiration, true);
 
         //프론트엔드로 리다이렉트
         String redirectUrl = oauth2SuccessRedirectUrl + "?status=success";
