@@ -58,15 +58,16 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         // 쿠키 설정
         Cookie accessTokenCookie = getCookie("accessToken", accessToken, accessExpiration);
-        accessTokenCookie.setHttpOnly(false);
+        accessTokenCookie.setHttpOnly(true);
 
         Cookie refreshTokenCookie =getCookie("refreshToken",refreshToken,refreshExpiration);
-
+        refreshTokenCookie.setHttpOnly(true);
         response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
 
         //프론트엔드로 리다이렉트
         String redirectUrl = oauth2SuccessRedirectUrl + "?status=success";
         response.sendRedirect(redirectUrl);
+
     }
 }
