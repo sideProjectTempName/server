@@ -21,6 +21,9 @@ import com.tripplannerai.repository.group.GroupRepository;
 import com.tripplannerai.repository.member.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -136,7 +139,7 @@ public class GroupService {
         if(!authorize) throw new NotAuthorizeException("not authorized");
         List<Enroll> enrolls = enrollRepository.findByGroup(group);
         enrollRepository.deleteAll(enrolls);
-        groupRepository.delete(group);
+        group.changeStatus(false);
         return DeleteGroupResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
@@ -164,5 +167,15 @@ public class GroupService {
         groupLikeRepository.save(groupLike);
         group.minusGroupLikeCount();
         return GroupLikeResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
+    }
+
+    public GroupsResponse groups(Integer pageNum, Integer pageSize, Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
+        PageRequest pageRequest = PageRequest.of(pageNum - 1, pageSize,Sort.by(Sort.Direction.ASC,"groupId"));
+        Page<GroupElement> page = groupRepository.groups(pageRequest);
+        List<GroupElement> content = page.getContent();
+        boolean hasNext = page.hasNext();
+        return GroupsResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,content,hasNext);
     }
 }

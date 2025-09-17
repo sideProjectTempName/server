@@ -66,6 +66,14 @@ public class GroupController {
         GroupLikeResponse groupLikeResponse = groupService.deleteGroupLike(groupId,id);
         return new ResponseEntity<>(groupLikeResponse, HttpStatus.OK);
     }
+    @GetMapping
+    public ResponseEntity<?> groups(@RequestParam(defaultValue = "1") Integer pageNum,
+                                    @RequestParam(defaultValue = "10") Integer pageSize,
+                                    @Id Long id){
+        GroupsResponse groupsResponse = groupService.groups(pageNum,pageSize,id);
+        return new ResponseEntity<>(groupsResponse,HttpStatus.OK);
+
+    }
 
 
 }
