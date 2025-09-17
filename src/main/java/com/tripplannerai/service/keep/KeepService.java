@@ -28,22 +28,22 @@ public class KeepService {
     private final DestinationRepository destinationRepository;
     private final KeepRepository keepRepository;
 
-    public CreateKeepResponse createKeep(Long destinationId, Long id) {
+    public CreateKeepResponse createKeep(String contentId, Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
-        Destination destination = destinationRepository.findById(destinationId)
+        Destination destination = destinationRepository.findByContentId(contentId)
                 .orElseThrow(() -> new NotFoundDDestinationException("not found Destination!!"));
         Keep keep = Keep.of(destination,member);
         keepRepository.save(keep);
         return CreateKeepResponse.of(SUCCESS_CODE, SUCCESS_MESSAGE);
     }
 
-    public DeleteKeepResponse deleteKeep(Long destinationId, Long id) {
+    public DeleteKeepResponse deleteKeep(String contentId, Long id) {
         memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
-        destinationRepository.findById(destinationId)
+        destinationRepository.findByContentId(contentId)
                 .orElseThrow(() -> new NotFoundDDestinationException("not found Destination!!"));
-        Keep keep = keepRepository.findByMemberAndDestination(destinationId,id)
+        Keep keep = keepRepository.findByMemberAndDestination(contentId,id)
                 .orElseThrow(()-> new NotFoundKeepException("Not Found Keep!!"));
         keepRepository.delete(keep);
         return DeleteKeepResponse.of(SUCCESS_CODE, SUCCESS_MESSAGE);
@@ -59,12 +59,12 @@ public class KeepService {
         return new KeepsResponse(SUCCESS_CODE,SUCCESS_MESSAGE,keeps,hasNext);
     }
 
-    public DetailKeepResponse detailKeep(Long destinationId, Long id) {
+    public DetailKeepResponse detailKeep(String contentId, Long id) {
         memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
-        destinationRepository.findById(destinationId)
+        destinationRepository.findByContentId(contentId)
                 .orElseThrow(() -> new NotFoundDDestinationException("not found Destination!!"));
-        KeepElement keepElement = keepRepository.fetchKeep(destinationId,id);
+        KeepElement keepElement = keepRepository.fetchKeep(contentId,id);
         return DetailKeepResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,keepElement);
     }
 }

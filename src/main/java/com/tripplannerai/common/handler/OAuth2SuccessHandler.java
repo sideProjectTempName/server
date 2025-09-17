@@ -55,12 +55,15 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         member.setRefreshToken(refreshToken);
         memberRepository.save(member);
 
+
         // 크로스 도메인 쿠키 설정
         addCrossDomainCookie(response, "accessToken", accessToken, accessExpiration, false);
         addCrossDomainCookie(response, "refreshToken", refreshToken, refreshExpiration, true);
 
+
         //프론트엔드로 리다이렉트
         String redirectUrl = oauth2SuccessRedirectUrl + "?status=success";
         response.sendRedirect(redirectUrl);
+
     }
 }

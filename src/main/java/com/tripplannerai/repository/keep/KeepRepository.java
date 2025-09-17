@@ -13,20 +13,20 @@ import java.util.List;
 import java.util.Optional;
 
 public interface KeepRepository extends JpaRepository<Keep, Long> {
-    @Query("select new com.tripplannerai.dto.response.keep.KeepElement(d.destinationId) " +
+    @Query("select new com.tripplannerai.dto.response.keep.KeepElement(d.contentId) " +
             "from Keep k " +
             "left join k.member m " +
             "left join k.destination d " +
             "where m.id = :id")
     Page<KeepElement> fetchKeeps(Long id, Pageable pageable);
-    @Query("select new com.tripplannerai.dto.response.keep.KeepElement(d.destinationId) " +
+    @Query("select new com.tripplannerai.dto.response.keep.KeepElement(d.contentId) " +
             "from Keep k " +
             "left join k.member m " +
             "left join k.destination d " +
-            "where m.id = :id and d.destinationId = :destinationId")
-    KeepElement fetchKeep(Long destinationId, Long id);
+            "where m.id = :id and d.contentId = :contentId")
+    KeepElement fetchKeep(String contentId, Long id);
 
-    @Query("select k from Keep k left join k.member m left join k.destination d where m.id = :id and d.destinationId = :destinationId")
-    Optional<Keep> findByMemberAndDestination(Long destinationId, Long id);
+    @Query("select k from Keep k left join k.member m left join k.destination d where m.id = :id and d.contentId = :contentId")
+    Optional<Keep> findByMemberAndDestination(String contentId, Long id);
 
 }

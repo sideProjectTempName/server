@@ -63,6 +63,7 @@ public class Group {
     }
 
 
-
-
+    public void changeStatus(boolean status) {
+        this.status = status;
+    }
 }
