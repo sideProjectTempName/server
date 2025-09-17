@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.*;
 public class KeepController {
     private final KeepService keepService;
 
-    @PostMapping("/api/destination/{destinationId}/create")
-    public ResponseEntity<CreateKeepResponse> createKeep(@PathVariable Long destinationId, @Id Long id){
-        CreateKeepResponse createKeepResponse = keepService.createKeep(destinationId,id);
+    @PostMapping("/api/destination/{contentId}/create")
+    public ResponseEntity<CreateKeepResponse> createKeep(@PathVariable String contentId, @Id Long id){
+        CreateKeepResponse createKeepResponse = keepService.createKeep(contentId,id);
         return new ResponseEntity<>(createKeepResponse, HttpStatus.OK);
     }
-    @PostMapping("/api/destination/{destinationId}/delete")
-    public ResponseEntity<DeleteKeepResponse> deleteKeep(@PathVariable Long destinationId, @Id Long id){
-        DeleteKeepResponse deleteKeepResponse = keepService.deleteKeep(destinationId,id);
+    @PostMapping("/api/destination/{contentId}/delete")
+    public ResponseEntity<DeleteKeepResponse> deleteKeep(@PathVariable String contentId, @Id Long id){
+        DeleteKeepResponse deleteKeepResponse = keepService.deleteKeep(contentId,id);
         return new ResponseEntity<>(deleteKeepResponse, HttpStatus.OK);
     }
     @GetMapping("/api/destination/keeps")
@@ -33,9 +33,9 @@ public class KeepController {
         KeepsResponse keepsResponse = keepService.keeps(id,pageNum,pageSize);
         return new ResponseEntity<>(keepsResponse, HttpStatus.OK);
     }
-    @GetMapping("/api/destination/{destinationId}/keep")
-    public ResponseEntity<DetailKeepResponse> detailKeep(@PathVariable Long destinationId, @Id Long id){
-        DetailKeepResponse detailKeepResponse = keepService.detailKeep(destinationId,id);
+    @GetMapping("/api/destination/{contentId}/keep")
+    public ResponseEntity<DetailKeepResponse> detailKeep(@PathVariable String contentId, @Id Long id){
+        DetailKeepResponse detailKeepResponse = keepService.detailKeep(contentId,id);
         return new ResponseEntity<>(detailKeepResponse, HttpStatus.OK);
     }
 
