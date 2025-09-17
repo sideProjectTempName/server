@@ -16,6 +16,7 @@ public class GroupFactory {
                 .count(1)
                 .maxCount(addGroupRequest.getMaxCount())
                 .destination(destination)
+                .status(true)
                 .build();
     }
 }
