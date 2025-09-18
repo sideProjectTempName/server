@@ -1,9 +1,6 @@
 package com.tripplannerai.service.comment;
 
-import com.tripplannerai.common.exception.comment.AlreadyCommentLikeException;
-import com.tripplannerai.common.exception.comment.NotFoundCommentException;
-import com.tripplannerai.common.exception.comment.NotFoundCommentLikeException;
-import com.tripplannerai.common.exception.comment.NotFoundReceiptReviewExeption;
+import com.tripplannerai.common.exception.comment.*;
 import com.tripplannerai.common.exception.group.NotFoundGroupException;
 import com.tripplannerai.common.exception.member.NotAuthorizeException;
 import com.tripplannerai.common.exception.member.NotFoundMemberException;
@@ -13,6 +10,7 @@ import com.tripplannerai.dto.response.comment.*;
 import com.tripplannerai.entity.comment.Comment;
 import com.tripplannerai.entity.comment.CommentLike;
 import com.tripplannerai.entity.comment.GroupComment;
+import com.tripplannerai.entity.comment.GroupCommentLike;
 import com.tripplannerai.entity.group.Group;
 import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.entity.receiptreview.ReceiptReview;
@@ -44,7 +42,7 @@ public class GroupCommentService {
     private final GroupCommentRepository groupCommentRepository;
     private final GroupCommentLikeRepository groupCommentLikeRepository;
     private final GroupRepository groupRepository;
-    public AddCommentResponse addComment(Long groupId, AddCommentRequest addCommentRequest, Long id,Long parentCommentId) {
+    public AddCommentResponse addComment(Long groupId, AddCommentRequest addCommentRequest,Long id) {
 
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("Not Found Member!!"));
@@ -56,71 +54,71 @@ public class GroupCommentService {
         return AddCommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
-    public LikeCommentResponse likeComment(Long commentId, Long id) {
+    public UpdateCommentResponse updateComment(Long groupId, Long groupCommentId, UpdateCommentRequest updateCommentRequest, Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("Not Found Member!!"));
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(()-> new NotFoundCommentException("Not Found Comment!!"));
-        Optional<CommentLike> optionalCommentLike = commentLikeRepository.findByCommentAndMember(comment, member);
-        if(optionalCommentLike.isPresent()) throw new AlreadyCommentLikeException("Already CommentLike!!");
-        CommentLike commentLike = CommentLike.of(comment, member);
-        commentLikeRepository.save(commentLike);
-        comment.plusCount();
-        return LikeCommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
-    }
-
-    public LikeCommentResponse deleteLikeComment(Long commentId, Long id) {
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new NotFoundMemberException("Not Found Member!!"));
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(()-> new NotFoundCommentException("Not Found Comment!!"));
-        CommentLike commentLike = commentLikeRepository.findByCommentAndMember(comment, member)
-                .orElseThrow(() -> new NotFoundCommentLikeException("Not Found CommentLike!!"));
-        commentLikeRepository.delete(commentLike);
-        comment.minusCount();
-        return LikeCommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
-    }
-
-    public UpdateCommentResponse updateComment(Long reviewId, Long commentId, UpdateCommentRequest updateCommentRequest, Long id) {
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new NotFoundMemberException("Not Found Member!!"));
-        reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new NotFoundReceiptReviewExeption("Not Found ReceiptReview!!"));
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(()-> new NotFoundCommentException("Not Found Comment!!"));
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new NotFoundGroupException("Not Found Group!!"));
+        GroupComment groupComment = groupCommentRepository.findById(groupCommentId)
+                .orElseThrow(()-> new NotFoundGroupCommentException("Not Found GroupComment!!"));
         String content = updateCommentRequest.getContent();
-        Long commentMemberId = comment.getMember().getId();
+        Long groupCommentMemberId = groupComment.getMember().getId();
         Long memberId = member.getId();
-        boolean authorize = commentMemberId.equals(memberId);
+        boolean authorize = groupCommentMemberId.equals(memberId);
         if(!authorize) throw new NotAuthorizeException("Not Authorize!!");
-        comment.changeContent(content);
+        groupComment.changeContent(content);
         return UpdateCommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
-    public DeleteCommentResponse deleteComment(Long reviewId, Long commentId, Long id) {
+    public DeleteCommentResponse deleteComment(Long groupId, Long groupCommentId, Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("Not Found Member!!"));
-        reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new NotFoundReceiptReviewExeption("Not Found ReceiptReview!!"));
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(()-> new NotFoundCommentException("Not Found Comment!!"));
-        Long commentMemberId = comment.getMember().getId();
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new NotFoundGroupException("Not Found Group!!"));
+        GroupComment groupComment = groupCommentRepository.findById(groupCommentId)
+                .orElseThrow(()-> new NotFoundGroupCommentException("Not Found GroupComment!!"));
+        Long commentMemberId = groupComment.getMember().getId();
         Long memberId = member.getId();
         boolean authorize = commentMemberId.equals(memberId);
         if(!authorize) throw new NotAuthorizeException("Not Authorize!!");
-        comment.changeStatus(true);
+        groupComment.changeStatus(true);
         return DeleteCommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
-    public CommentResponse comments(Long reviewId, Long id, Integer pageNum, Integer pageSize) {
-        reviewRepository.findById(reviewId)
-                .orElseThrow(()-> new NotFoundReceiptReviewExeption("Not Found Review!!"));
+    public CommentResponse comments(Long groupId, Long id, Integer pageNum, Integer pageSize) {
         memberRepository.findById(id)
                 .orElseThrow(()->new NotFoundMemberException("Not Found Member!!"));
-        PageRequest pageRequest = PageRequest.of(pageNum - 1, pageSize, Sort.Direction.ASC, "comment_id");
-        Page<CommentElement> page = commentRepository.findCommentsByReceiptReview(reviewId, pageRequest);
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new NotFoundGroupException("Not Found Group!!"));
+        PageRequest pageRequest = PageRequest.of(pageNum - 1, pageSize, Sort.Direction.ASC, "group_comment_id");
+        Page<CommentElement> page = groupCommentRepository.findCommentsByGroup(groupId, pageRequest);
         List<CommentElement> comments = page.getContent();
         boolean hasNext = page.hasNext();
         return CommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,comments,hasNext);
+    }
+
+    public LikeCommentResponse likeComment(Long groupCommentId, Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new NotFoundMemberException("Not Found Member!!"));
+        GroupComment groupComment = groupCommentRepository.findById(groupCommentId)
+                .orElseThrow(()-> new NotFoundGroupCommentException("Not Found GroupComment!!"));
+        Optional<GroupCommentLike> optionalCommentLike = groupCommentLikeRepository.findByGroupCommentAndMember(groupComment, member);
+        if(optionalCommentLike.isPresent()) throw new AlreadyCommentLikeException("Already CommentLike!!");
+        GroupCommentLike groupCommentLike = GroupCommentLike.of(groupComment, member);
+        groupCommentLikeRepository.save(groupCommentLike);
+        groupComment.plusCount();
+        return LikeCommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
+    }
+
+    public LikeCommentResponse deleteLikeComment(Long groupCommentId, Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new NotFoundMemberException("Not Found Member!!"));
+        GroupComment groupComment = groupCommentRepository.findById(groupCommentId)
+                .orElseThrow(()-> new NotFoundGroupCommentException("Not Found GroupComment!!"));
+        GroupCommentLike groupCommentLike = groupCommentLikeRepository.findByGroupCommentAndMember(groupComment, member)
+                .orElseThrow(() -> new NotFoundCommentLikeException("Not Found CommentLike!!"));
+        groupCommentLikeRepository.delete(groupCommentLike);
+        groupComment.minusCount();
+        return LikeCommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 }

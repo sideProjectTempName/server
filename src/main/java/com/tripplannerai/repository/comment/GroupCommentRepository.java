@@ -12,6 +12,14 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface GroupCommentRepository extends JpaRepository<GroupComment, Long> {
 
+    @Query("select new com.tripplannerai.dto.response.comment.CommentElement" +
+            "(c.id,c.content,m.id,m.nickname,c.createdAt,c.updatedAt,c.isDeleted,c.count) " +
+            "from GroupComment c " +
+            "left join c.member m " +
+            "left join c.group g " +
+            "where g.groupId = :groupId")
+    Page<CommentElement> findCommentsByGroup(Long groupId, Pageable pageable);
+
 
 
 }

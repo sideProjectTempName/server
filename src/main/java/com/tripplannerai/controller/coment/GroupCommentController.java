@@ -15,43 +15,43 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class GroupCommentController {
     private final GroupCommentService groupCommentService;
-    @PostMapping("/api/group/{groupId}/comment/{parentCommentId}")
+    @PostMapping("/api/group/{groupId}/comment")
     public ResponseEntity<AddCommentResponse> addComment(@PathVariable Long groupId
             , @RequestBody AddCommentRequest addCommentRequest
-            ,@Id Long id,@RequestParam(required = false) Long parentCommentId){
-        AddCommentResponse addCommentResponse = groupCommentService.addComment(groupId,addCommentRequest,id,parentCommentId);
+            ,@Id Long id){
+        AddCommentResponse addCommentResponse = groupCommentService.addComment(groupId,addCommentRequest,id);
         return new ResponseEntity<>(addCommentResponse, HttpStatus.OK);
     }
-    @PutMapping("/api/review/{reviewId}/comment/{commentId}")
-    public ResponseEntity<UpdateCommentResponse> updateComment(@PathVariable Long reviewId, @PathVariable Long commentId,
+    @PutMapping("/api/group/{groupId}/comment/{groupCommentId}")
+    public ResponseEntity<UpdateCommentResponse> updateComment(@PathVariable Long groupId, @PathVariable Long groupCommentId,
                                                                @RequestBody UpdateCommentRequest updateCommentRequest, @Id Long id){
-        UpdateCommentResponse updateCommentResponse = commentService.updateComment(reviewId,commentId,updateCommentRequest,id);
+        UpdateCommentResponse updateCommentResponse = groupCommentService.updateComment(groupId,groupCommentId,updateCommentRequest,id);
         return new ResponseEntity<>(updateCommentResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/review/{reviewId}/comment/{commentId}")
-    public ResponseEntity<DeleteCommentResponse> updateComment(@PathVariable Long reviewId, @PathVariable Long commentId,
+    @DeleteMapping("/api/group/{groupId}/comment/{groupCommentId}")
+    public ResponseEntity<DeleteCommentResponse> updateComment(@PathVariable Long groupId, @PathVariable Long groupCommentId,
                                                                @Id Long id){
-        DeleteCommentResponse deleteCommentResponse = commentService.deleteComment(reviewId,commentId,id);
+        DeleteCommentResponse deleteCommentResponse = groupCommentService.deleteComment(groupId,groupCommentId,id);
         return new ResponseEntity<>(deleteCommentResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/api/review/{reviewId}/comments")
-    public ResponseEntity<CommentResponse> comments(@PathVariable Long reviewId,@Id Long id
+    @GetMapping("/api/group/{groupId}/comments")
+    public ResponseEntity<CommentResponse> comments(@PathVariable Long groupId,@Id Long id
             ,@RequestParam(defaultValue = "1") Integer page
             , @RequestParam(defaultValue = "10") Integer pageSize){
-        CommentResponse commentResponse = commentService.comments(reviewId,id,page,pageSize);
+        CommentResponse commentResponse = groupCommentService.comments(groupId,id,page,pageSize);
         return new ResponseEntity<>(commentResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/api/review/comment/{commentId}/like")
-    public ResponseEntity<LikeCommentResponse> likeComment(@PathVariable Long commentId, @Id Long id){
+    @PostMapping("/api/groupComment/{groupCommentId}/like")
+    public ResponseEntity<LikeCommentResponse> likeComment(@PathVariable Long groupCommentId, @Id Long id){
         LikeCommentResponse likeCommentResponse = commentService.likeComment(commentId,id);
         return new ResponseEntity<>(likeCommentResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/review/comment/{commentId}/like")
-    public ResponseEntity<LikeCommentResponse> deleteLikeComment(@PathVariable Long commentId, @Id Long id){
+    @DeleteMapping("/api/groupComment/{groupCommentId}/like")
+    public ResponseEntity<LikeCommentResponse> deleteLikeComment(@PathVariable Long groupCommentId, @Id Long id){
         LikeCommentResponse likeCommentResponse = commentService.deleteLikeComment(commentId,id);
         return new ResponseEntity<>(likeCommentResponse, HttpStatus.OK);
     }

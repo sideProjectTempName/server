@@ -29,11 +29,28 @@ public class GroupComment extends BaseEntity {
     @JoinColumn(name = "group_id")
     private Group group;
     private boolean isDeleted;
-    private int depth;
-    private String path;
 
     public static GroupComment of(Member member, Group group, String content) {
         return GroupComment.builder()
+                .member(member)
+                .count(0)
+                .group(group)
+                .isDeleted(false)
                 .build();
+    }
+
+    public void changeContent(String content) {
+        this.content = content;
+    }
+
+    public void changeStatus(boolean status) {
+        this.isDeleted = status;
+    }
+
+    public void plusCount() {
+        this.count++;
+    }
+    public void minusCount() {
+        this.count--;
     }
 }
