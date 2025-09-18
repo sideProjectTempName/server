@@ -46,13 +46,13 @@ public class GroupCommentController {
 
     @PostMapping("/api/groupComment/{groupCommentId}/like")
     public ResponseEntity<LikeCommentResponse> likeComment(@PathVariable Long groupCommentId, @Id Long id){
-        LikeCommentResponse likeCommentResponse = commentService.likeComment(commentId,id);
+        LikeCommentResponse likeCommentResponse = groupCommentService.likeComment(groupCommentId,id);
         return new ResponseEntity<>(likeCommentResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("/api/groupComment/{groupCommentId}/like")
     public ResponseEntity<LikeCommentResponse> deleteLikeComment(@PathVariable Long groupCommentId, @Id Long id){
-        LikeCommentResponse likeCommentResponse = commentService.deleteLikeComment(commentId,id);
+        LikeCommentResponse likeCommentResponse = groupCommentService.deleteLikeComment(groupCommentId,id);
         return new ResponseEntity<>(likeCommentResponse, HttpStatus.OK);
     }
 
