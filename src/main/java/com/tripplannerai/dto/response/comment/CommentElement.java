@@ -21,5 +21,4 @@ public class CommentElement {
     private LocalDateTime updatedAt;
     private boolean isDeleted;
     private int likeCount;
-    private int replyCount;
 }

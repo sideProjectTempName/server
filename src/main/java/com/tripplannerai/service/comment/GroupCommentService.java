@@ -1,8 +1,10 @@
 package com.tripplannerai.service.comment;
+
 import com.tripplannerai.common.exception.comment.AlreadyCommentLikeException;
 import com.tripplannerai.common.exception.comment.NotFoundCommentException;
 import com.tripplannerai.common.exception.comment.NotFoundCommentLikeException;
 import com.tripplannerai.common.exception.comment.NotFoundReceiptReviewExeption;
+import com.tripplannerai.common.exception.group.NotFoundGroupException;
 import com.tripplannerai.common.exception.member.NotAuthorizeException;
 import com.tripplannerai.common.exception.member.NotFoundMemberException;
 import com.tripplannerai.dto.request.comment.AddCommentRequest;
@@ -10,10 +12,15 @@ import com.tripplannerai.dto.request.comment.UpdateCommentRequest;
 import com.tripplannerai.dto.response.comment.*;
 import com.tripplannerai.entity.comment.Comment;
 import com.tripplannerai.entity.comment.CommentLike;
+import com.tripplannerai.entity.comment.GroupComment;
+import com.tripplannerai.entity.group.Group;
 import com.tripplannerai.entity.member.Member;
 import com.tripplannerai.entity.receiptreview.ReceiptReview;
 import com.tripplannerai.repository.comment.CommentLikeRepository;
 import com.tripplannerai.repository.comment.CommentRepository;
+import com.tripplannerai.repository.comment.GroupCommentLikeRepository;
+import com.tripplannerai.repository.comment.GroupCommentRepository;
+import com.tripplannerai.repository.group.GroupRepository;
 import com.tripplannerai.repository.member.MemberRepository;
 import com.tripplannerai.repository.receiptreview.ReceiptReviewRepository;
 import jakarta.transaction.Transactional;
@@ -23,20 +30,32 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.tripplannerai.util.ConstClass.*;
+import static com.tripplannerai.util.ConstClass.SUCCESS_CODE;
+import static com.tripplannerai.util.ConstClass.SUCCESS_MESSAGE;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class CommentService {
+public class GroupCommentService {
     private final MemberRepository memberRepository;
-    private final CommentRepository commentRepository;
-    private final CommentLikeRepository commentLikeRepository;
-    private final ReceiptReviewRepository reviewRepository;
+    private final GroupCommentRepository groupCommentRepository;
+    private final GroupCommentLikeRepository groupCommentLikeRepository;
+    private final GroupRepository groupRepository;
+    public AddCommentResponse addComment(Long groupId, AddCommentRequest addCommentRequest, Long id) {
+
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new NotFoundMemberException("Not Found Member!!"));
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new NotFoundGroupException("Not Found Group!!"));
+        String content = addCommentRequest.getContent();
+        GroupComment groupComment = GroupComment.of(member,group,content);
+        groupCommentRepository.save(groupComment);
+        return AddCommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
+    }
+
     public LikeCommentResponse likeComment(Long commentId, Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("Not Found Member!!"));
@@ -60,17 +79,6 @@ public class CommentService {
         commentLikeRepository.delete(commentLike);
         comment.minusCount();
         return LikeCommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
-    }
-
-    public AddCommentResponse addComment(Long reviewId, AddCommentRequest addCommentRequest, Long id) {
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new NotFoundMemberException("Not Found Member!!"));
-        ReceiptReview receiptReview = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new NotFoundReceiptReviewExeption("Not Found ReceiptReview!!"));
-        String content = addCommentRequest.getContent();
-        Comment comment = Comment.of(member,receiptReview,content);
-        commentRepository.save(comment);
-        return AddCommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
     public UpdateCommentResponse updateComment(Long reviewId, Long commentId, UpdateCommentRequest updateCommentRequest, Long id) {

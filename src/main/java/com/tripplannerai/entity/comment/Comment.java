@@ -24,11 +24,6 @@ public class Comment extends BaseEntity {
     private Long id;
     private int count;
     private String content;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_comment_id")
-    private Comment parentComment;
-    @OneToMany
-    private List<Comment> childComments = new ArrayList<>();
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -36,18 +31,14 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "receipt_review_id")
     private ReceiptReview receiptReview;
     private boolean isDeleted;
-    private int depth;
-    private String path;
-    
-    public static Comment of(Member member, ReceiptReview receiptReview, String content, Comment parentComment) {
+
+    public static Comment of(Member member, ReceiptReview receiptReview, String content) {
         return Comment.builder()
                 .member(member)
                 .content(content)
-                .parentComment(parentComment)
                 .receiptReview(receiptReview)
                 .isDeleted(false)
                 .count(0)
-                .depth(parentComment == null ? 0 : parentComment.getDepth() + 1)
                 .build();
     }
 
@@ -60,6 +51,9 @@ public class Comment extends BaseEntity {
     }
     public void changeContent(String content){
         this.content = content;
+    }
+    public void changeStatus(boolean status){
+        this.isDeleted = status;
     }
 
 }
