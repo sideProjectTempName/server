@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController("")
 @RequiredArgsConstructor
 public class CommentController {
+
     private final CommentService commentService;
+
     @PostMapping("/api/review/comment/{commentId}/like")
     public ResponseEntity<LikeCommentResponse> likeComment(@PathVariable Long commentId, @Id Long id){
         LikeCommentResponse likeCommentResponse = commentService.likeComment(commentId,id);
@@ -26,7 +28,8 @@ public class CommentController {
         return new ResponseEntity<>(likeCommentResponse, HttpStatus.OK);
     }
     @PostMapping("/api/review/{reviewId}/comment")
-    public ResponseEntity<AddCommentResponse> addComment(@PathVariable Long reviewId, @RequestBody AddCommentRequest addCommentRequest,@Id Long id){
+    public ResponseEntity<AddCommentResponse> addComment(@PathVariable Long reviewId
+            , @RequestBody AddCommentRequest addCommentRequest, @Id Long id){
         AddCommentResponse addCommentResponse = commentService.addComment(reviewId,addCommentRequest,id);
         return new ResponseEntity<>(addCommentResponse, HttpStatus.OK);
     }

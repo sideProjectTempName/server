@@ -18,8 +18,8 @@ public class AiRecommendationController {
     private final AiRecommendationService recommendationService;
     private final PlanService planService;
 
-    @GetMapping
-    public ResponseEntity<RecommendationResponse> getRecommendation(@ModelAttribute RecommendRequestDto requestDto, @Username String email) throws JsonProcessingException {
+    @PostMapping
+    public ResponseEntity<RecommendationResponse> getRecommendation(@RequestBody RecommendRequestDto requestDto, @Username String email) throws JsonProcessingException {
         RecommendationResponse recommendations = recommendationService.getRecommendation(requestDto);
         return ResponseEntity.ok(recommendations);
     }

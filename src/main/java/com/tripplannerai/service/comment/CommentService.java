@@ -23,7 +23,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +36,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
     private final ReceiptReviewRepository reviewRepository;
+
     public LikeCommentResponse likeComment(Long commentId, Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("Not Found Member!!"));
@@ -62,7 +62,7 @@ public class CommentService {
         return LikeCommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
-    public AddCommentResponse addComment(Long reviewId, AddCommentRequest addCommentRequest, Long id) {
+    public AddCommentResponse addComment(Long reviewId, AddCommentRequest addCommentRequest,  Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("Not Found Member!!"));
         ReceiptReview receiptReview = reviewRepository.findById(reviewId)
@@ -109,7 +109,7 @@ public class CommentService {
                 .orElseThrow(()-> new NotFoundReceiptReviewExeption("Not Found Review!!"));
         memberRepository.findById(id)
                 .orElseThrow(()->new NotFoundMemberException("Not Found Member!!"));
-        PageRequest pageRequest = PageRequest.of(pageNum - 1, pageSize, Sort.Direction.ASC, "comment_id");
+        PageRequest pageRequest = PageRequest.of(pageNum - 1, pageSize, Sort.Direction.ASC, "path");
         Page<CommentElement> page = commentRepository.findCommentsByReceiptReview(reviewId, pageRequest);
         List<CommentElement> comments = page.getContent();
         boolean hasNext = page.hasNext();

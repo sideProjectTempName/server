@@ -4,7 +4,6 @@ import com.tripplannerai.common.annotation.Id;
 import com.tripplannerai.dto.request.comment.AddCommentRequest;
 import com.tripplannerai.dto.request.comment.UpdateCommentRequest;
 import com.tripplannerai.dto.response.comment.*;
-import com.tripplannerai.service.comment.CommentService;
 import com.tripplannerai.service.comment.GroupCommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

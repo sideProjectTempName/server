@@ -31,22 +31,13 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "receipt_review_id")
     private ReceiptReview receiptReview;
     private boolean isDeleted;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_comment_id")
-    private Comment parentComment;
-    @OneToMany(mappedBy = "parentComment")
-    private List<Comment> childComments = new ArrayList<>();
-    private String path;
-    private int depth;
 
-    public static Comment of(Member member, ReceiptReview receiptReview, String content,Comment parentComment) {
+    public static Comment of(Member member, ReceiptReview receiptReview, String content) {
         return Comment.builder()
                 .member(member)
                 .content(content)
                 .receiptReview(receiptReview)
                 .isDeleted(false)
-                .parentComment(parentComment)
-                .depth(parentComment == null ? 1 : parentComment.getDepth() + 1)
                 .count(0)
                 .build();
     }

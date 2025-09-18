@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
 
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
@@ -15,8 +16,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             "from Comment c " +
             "left join c.member m " +
             "left join c.receiptReview r " +
-            "where r.receiptReviewId = :reviewId")
+            "where r.receiptReviewId = :reviewId and c.isDeleted = false")
     Page<CommentElement> findCommentsByReceiptReview(Long reviewId, Pageable pageable);
+
 
 
 }
