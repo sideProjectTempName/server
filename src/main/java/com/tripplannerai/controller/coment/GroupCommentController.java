@@ -18,7 +18,7 @@ public class GroupCommentController {
     @PostMapping("/api/group/{groupId}/comment/{parentCommentId}")
     public ResponseEntity<AddCommentResponse> addComment(@PathVariable Long groupId
             , @RequestBody AddCommentRequest addCommentRequest
-            ,@Id Long id,Long parentCommentId){
+            ,@Id Long id,@RequestParam(required = false) Long parentCommentId){
         AddCommentResponse addCommentResponse = groupCommentService.addComment(groupId,addCommentRequest,id,parentCommentId);
         return new ResponseEntity<>(addCommentResponse, HttpStatus.OK);
     }

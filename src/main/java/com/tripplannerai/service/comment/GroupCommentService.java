@@ -44,7 +44,7 @@ public class GroupCommentService {
     private final GroupCommentRepository groupCommentRepository;
     private final GroupCommentLikeRepository groupCommentLikeRepository;
     private final GroupRepository groupRepository;
-    public AddCommentResponse addComment(Long groupId, AddCommentRequest addCommentRequest, Long id) {
+    public AddCommentResponse addComment(Long groupId, AddCommentRequest addCommentRequest, Long id,Long parentCommentId) {
 
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("Not Found Member!!"));
