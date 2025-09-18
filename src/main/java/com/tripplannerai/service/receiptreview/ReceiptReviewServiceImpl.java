@@ -26,6 +26,7 @@ public class ReceiptReviewServiceImpl implements ReceiptReviewService{
     private final ReceiptReviewRepository reviewRepository;
     private final S3UploadService s3UploadService;
     private final MemberRepository memberRepository;
+
     @Override
     @Transactional
     public void createReceiptReview(ReceiptReviewRequest request, List<MultipartFile> images, Long memberId) throws IOException {

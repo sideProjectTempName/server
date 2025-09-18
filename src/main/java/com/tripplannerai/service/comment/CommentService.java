@@ -18,9 +18,11 @@ import com.tripplannerai.repository.member.MemberRepository;
 import com.tripplannerai.repository.receiptreview.ReceiptReviewRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +36,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
     private final ReceiptReviewRepository reviewRepository;
+
     public LikeCommentResponse likeComment(Long commentId, Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("Not Found Member!!"));
@@ -59,21 +62,13 @@ public class CommentService {
         return LikeCommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
-    public AddCommentResponse addComment(Long reviewId, AddCommentRequest addCommentRequest, Long id) {
+    public AddCommentResponse addComment(Long reviewId, AddCommentRequest addCommentRequest,  Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("Not Found Member!!"));
         ReceiptReview receiptReview = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new NotFoundReceiptReviewExeption("Not Found ReceiptReview!!"));
         String content = addCommentRequest.getContent();
-        Long parentCommentId = addCommentRequest.getParentCommentId();
-        boolean hasParent = parentCommentId != null;
-        Comment parentComment = null;
-        if(hasParent) {
-            parentComment = commentRepository.findById(parentCommentId)
-                    .orElseThrow(() -> new NotFoundCommentException("Not Found Comment!!"));
-
-        }
-        Comment comment = Comment.of(member,receiptReview,content,parentComment);
+        Comment comment = Comment.of(member,receiptReview,content);
         commentRepository.save(comment);
         return AddCommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
@@ -105,17 +100,19 @@ public class CommentService {
         Long memberId = member.getId();
         boolean authorize = commentMemberId.equals(memberId);
         if(!authorize) throw new NotAuthorizeException("Not Authorize!!");
-        commentRepository.delete(comment);
+        comment.changeStatus(true);
         return DeleteCommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
-    public CommentResponse comments(Long reviewId, Long id, Integer page, Integer pageSize) {
+    public CommentResponse comments(Long reviewId, Long id, Integer pageNum, Integer pageSize) {
         reviewRepository.findById(reviewId)
                 .orElseThrow(()-> new NotFoundReceiptReviewExeption("Not Found Review!!"));
         memberRepository.findById(id)
                 .orElseThrow(()->new NotFoundMemberException("Not Found Member!!"));
-        boolean hasNext = true;
-        List<CommentElement> comments = new ArrayList<>();
+        PageRequest pageRequest = PageRequest.of(pageNum - 1, pageSize, Sort.Direction.ASC, "path");
+        Page<CommentElement> page = commentRepository.findCommentsByReceiptReview(reviewId, pageRequest);
+        List<CommentElement> comments = page.getContent();
+        boolean hasNext = page.hasNext();
         return CommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,comments,hasNext);
     }
 }
