@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class GroupCommentController {
     private final GroupCommentService groupCommentService;
+
     @PostMapping("/api/group/{groupId}/comment")
     public ResponseEntity<AddCommentResponse> addComment(@PathVariable Long groupId
             , @RequestBody AddCommentRequest addCommentRequest
@@ -29,7 +30,7 @@ public class GroupCommentController {
     }
 
     @DeleteMapping("/api/group/{groupId}/comment/{groupCommentId}")
-    public ResponseEntity<DeleteCommentResponse> updateComment(@PathVariable Long groupId, @PathVariable Long groupCommentId,
+    public ResponseEntity<DeleteCommentResponse> deleteComment(@PathVariable Long groupId, @PathVariable Long groupCommentId,
                                                                @Id Long id){
         DeleteCommentResponse deleteCommentResponse = groupCommentService.deleteComment(groupId,groupCommentId,id);
         return new ResponseEntity<>(deleteCommentResponse, HttpStatus.OK);
