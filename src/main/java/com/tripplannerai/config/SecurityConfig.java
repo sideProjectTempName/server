@@ -3,6 +3,7 @@ package com.tripplannerai.config;
 import com.tripplannerai.common.security.JwtAuthFilter;
 import com.tripplannerai.common.handler.OAuth2FailureHandler;
 import com.tripplannerai.common.handler.OAuth2SuccessHandler;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +29,9 @@ public class SecurityConfig {
             "/auth/login","/auth/sign-up",
             "/v3/api-docs/**","/swagger-ui/**", "/api/post/**","/api/posts","/swagger-resources/**", "/webjars/**","/oauth2/**"
             ,"/email-check","/check-certification","/subscribe/**","close/**","/certification","/image/**","/auth/refresh",
-            "/api/festival/favorites-count","/api/category/total","/api/destination/**","/api/course/**","/health","/kindplace","/api/receiptReview/reviews","/api/receiptReview/reviews/*"
+            "/api/festival/favorites-count","/api/category/total","/api/destination/**","/api/course/**",
+//            "/health",
+            "/kindplace","/api/receiptReview/reviews","/api/receiptReview/reviews/*"
     };
 
     private final JwtAuthFilter jwtAuthFilter;
@@ -46,6 +49,13 @@ public class SecurityConfig {
                         .requestMatchers(whitelist)
                         .permitAll()
                         .anyRequest().authenticated())
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setContentType("application/json;charset=UTF-8");
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.getWriter().write("{\"code\":\"AF\",\"message\":\"Authorization Fail\"}");
+                        })
+                )
                 .oauth2Login(oauth2 -> oauth2
                         .authorizationEndpoint(endpoint -> endpoint.baseUri("/api/auth/oauth2"))
                         .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
