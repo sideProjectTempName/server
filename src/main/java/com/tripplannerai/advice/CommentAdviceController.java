@@ -5,6 +5,7 @@ import com.tripplannerai.common.exception.group.NotFoundGroupException;
 import com.tripplannerai.common.exception.group.NotParticipateException;
 import com.tripplannerai.common.exception.member.NotAuthorizeException;
 import com.tripplannerai.common.exception.member.NotFoundMemberException;
+import com.tripplannerai.controller.coment.CommentController;
 import com.tripplannerai.controller.group.GroupController;
 import com.tripplannerai.dto.response.ErrorResponse;
 import org.springframework.core.annotation.Order;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import static com.tripplannerai.util.ConstClass.*;
 
 @Order(1)
-@RestControllerAdvice(basePackageClasses = GroupController.class)
+@RestControllerAdvice(basePackageClasses = CommentController.class)
 public class CommentAdviceController {
 
     @ExceptionHandler(NotFoundMemberException.class)

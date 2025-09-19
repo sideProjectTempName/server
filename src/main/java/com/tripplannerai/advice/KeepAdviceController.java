@@ -8,6 +8,7 @@ import com.tripplannerai.common.exception.keep.NotFoundKeepException;
 import com.tripplannerai.common.exception.member.NotAuthorizeException;
 import com.tripplannerai.common.exception.member.NotFoundMemberException;
 import com.tripplannerai.controller.group.GroupController;
+import com.tripplannerai.controller.keep.KeepController;
 import com.tripplannerai.dto.response.ErrorResponse;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import static com.tripplannerai.util.ConstClass.*;
 
 @Order(1)
-@RestControllerAdvice(basePackageClasses = GroupController.class)
+@RestControllerAdvice(basePackageClasses = KeepController.class)
 public class KeepAdviceController {
 
     @ExceptionHandler(NotFoundMemberException.class)
