@@ -32,12 +32,24 @@ public class Comment extends BaseEntity {
     private ReceiptReview receiptReview;
     private boolean isDeleted;
 
-    public static Comment of(Member member, ReceiptReview receiptReview, String content) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_comment_id")
+    private Comment parentComment;
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Comment> childComments;
+    private String path;
+    private int depth;
+
+    public static Comment of(Member member, ReceiptReview receiptReview, String content,String path, Comment parentComment,int depth) {
         return Comment.builder()
                 .member(member)
                 .content(content)
                 .receiptReview(receiptReview)
                 .isDeleted(false)
+                .path(path)
+                .parentComment(parentComment)
+                .childComments(new ArrayList<>())
+                .depth(depth)
                 .count(0)
                 .build();
     }

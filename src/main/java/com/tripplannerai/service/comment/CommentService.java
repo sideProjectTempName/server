@@ -16,16 +16,20 @@ import com.tripplannerai.repository.comment.CommentLikeRepository;
 import com.tripplannerai.repository.comment.CommentRepository;
 import com.tripplannerai.repository.member.MemberRepository;
 import com.tripplannerai.repository.receiptreview.ReceiptReviewRepository;
+import com.tripplannerai.util.CommentUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.tripplannerai.util.CommentUtil.*;
 import static com.tripplannerai.util.ConstClass.*;
 
 @Service
@@ -67,8 +71,18 @@ public class CommentService {
                 .orElseThrow(() -> new NotFoundMemberException("Not Found Member!!"));
         ReceiptReview receiptReview = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new NotFoundReceiptReviewExeption("Not Found ReceiptReview!!"));
+        Long parentId = addCommentRequest.getParentId();
+        Comment parentComment = null;
+        int depth = 0;
+        if(parentId != null){
+            parentComment = commentRepository.findById(parentId)
+                    .orElseThrow(() -> new NotFoundCommentException("Not Found Comment!"));
+            depth = parentComment.getDepth() + 1;
+        }
+        Comment lastComment = commentRepository.findLastCommentByParentComment(parentId);
+        String path = getNextPath(lastComment,depth);
         String content = addCommentRequest.getContent();
-        Comment comment = Comment.of(member,receiptReview,content);
+        Comment comment = Comment.of(member,receiptReview,content,path,parentComment,depth);
         commentRepository.save(comment);
         return AddCommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
@@ -100,7 +114,9 @@ public class CommentService {
         Long memberId = member.getId();
         boolean authorize = commentMemberId.equals(memberId);
         if(!authorize) throw new NotAuthorizeException("Not Authorize!!");
-        comment.changeStatus(true);
+        //TODO
+        List<Long> ids = commentRepository.findByRecursive(commentId);
+        commentRepository.deleteAllById(ids);
         return DeleteCommentResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
