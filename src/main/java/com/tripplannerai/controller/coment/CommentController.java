@@ -19,6 +19,7 @@ public class CommentController {
     @PostMapping("/api/review/comment/{commentId}/like")
     public ResponseEntity<LikeCommentResponse> likeComment(@PathVariable Long commentId, @Id Long id){
         LikeCommentResponse likeCommentResponse = commentService.likeComment(commentId,id);
+
         return new ResponseEntity<>(likeCommentResponse, HttpStatus.OK);
     }
 
