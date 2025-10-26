@@ -75,5 +75,11 @@ public class GroupController {
 
     }
 
+    @GetMapping("/{groupId}")
+    public ResponseEntity<GroupResponse> groupDetail(@PathVariable Long groupId,@Id Long id){
+        GroupResponse groupResponse = groupService.groupDetail(groupId,id);
+        return new ResponseEntity<>(groupResponse,HttpStatus.OK);
+    }
+
 
 }
