@@ -16,24 +16,24 @@ import org.springframework.web.bind.annotation.*;
 public class KeepController {
     private final KeepService keepService;
 
-    @PostMapping("/destination/{contentId}/create")
+    @PostMapping("/api/destination/{contentId}/create")
     public ResponseEntity<CreateKeepResponse> createKeep(@PathVariable String contentId, @Id Long id){
         CreateKeepResponse createKeepResponse = keepService.createKeep(contentId,id);
         return new ResponseEntity<>(createKeepResponse, HttpStatus.OK);
     }
-    @PostMapping("/destination/{contentId}/delete")
+    @PostMapping("/api/destination/{contentId}/delete")
     public ResponseEntity<DeleteKeepResponse> deleteKeep(@PathVariable String contentId, @Id Long id){
         DeleteKeepResponse deleteKeepResponse = keepService.deleteKeep(contentId,id);
         return new ResponseEntity<>(deleteKeepResponse, HttpStatus.OK);
     }
-    @GetMapping("/destination/keeps")
+    @GetMapping("/api/destination/keeps")
     public ResponseEntity<KeepsResponse> keeps(@Id Long id
             , @RequestParam(defaultValue = "1") Integer pageNum
             , @RequestParam(defaultValue = "10") Integer pageSize){
         KeepsResponse keepsResponse = keepService.keeps(id,pageNum,pageSize);
         return new ResponseEntity<>(keepsResponse, HttpStatus.OK);
     }
-    @GetMapping("/destination/{contentId}/keep")
+    @GetMapping("/api/destination/{contentId}/keep")
     public ResponseEntity<DetailKeepResponse> detailKeep(@PathVariable String contentId, @Id Long id){
         DetailKeepResponse detailKeepResponse = keepService.detailKeep(contentId,id);
         return new ResponseEntity<>(detailKeepResponse, HttpStatus.OK);
