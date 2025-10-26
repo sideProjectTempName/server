@@ -178,4 +178,13 @@ public class GroupService {
         boolean hasNext = page.hasNext();
         return GroupsResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,content,hasNext);
     }
+
+    public GroupResponse groupDetail(Long groupId, Long id) {
+        memberRepository.findById(id)
+                .orElseThrow(() -> new NotFoundMemberException("not found Member!!"));
+        GroupElement groupElement = groupRepository.fetchGroup(groupId)
+                .orElseThrow(() -> new NotFoundGroupException("not found Group!!"));
+        return GroupResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE,groupElement);
+
+    }
 }
