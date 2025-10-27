@@ -3,6 +3,7 @@ package com.tripplannerai.service.recommend;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tripplannerai.common.exception.destination.NotFoundDDestinationException;
 import com.tripplannerai.dto.request.recommend.RecommendRequestDto;
 import com.tripplannerai.dto.request.recommend.SaveRecommendRequest;
 import com.tripplannerai.dto.response.recommend.DayScheduleDto;
@@ -120,7 +121,7 @@ public class AiRecommendationServiceImpl implements AiRecommendationService {
 
     private Destination findDestinationById(String destinationId) {
         return destinationRepository.findById(Long.parseLong(destinationId))
-                .orElseThrow(() -> new RuntimeException("장소 없음"));
+                .orElseThrow(() -> new NotFoundDDestinationException("Not Found Destination"));
     }
 
 }
