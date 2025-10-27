@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tripplannerai.common.exception.destination.NotFoundDDestinationException;
 import com.tripplannerai.dto.request.recommend.RecommendRequestDto;
 import com.tripplannerai.dto.request.recommend.SaveRecommendRequest;
+import com.tripplannerai.dto.response.recommend.AiSaveResponse;
 import com.tripplannerai.dto.response.recommend.DayScheduleDto;
 import com.tripplannerai.dto.response.recommend.RecommendationResponse;
 import com.tripplannerai.dto.response.recommend.SpotDto;
@@ -17,6 +18,7 @@ import com.tripplannerai.entity.tourspot.TourSpot;
 import com.tripplannerai.repository.destination.DestinationRepository;
 import com.tripplannerai.repository.member.MemberRepository;
 import com.tripplannerai.repository.plan.PlanRepository;
+import com.tripplannerai.util.ConstClass;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.tripplannerai.util.ConstClass.*;
 
 @Service
 @RequiredArgsConstructor
@@ -72,7 +76,7 @@ public class AiRecommendationServiceImpl implements AiRecommendationService {
 
     @Transactional
     @Override
-    public void saveRecommendation(SaveRecommendRequest request, String email){
+    public AiSaveResponse saveRecommendation(SaveRecommendRequest request, String email){
         Date startDate = request.getStartDate();
         Date endDate = request.getEndDate();
         RecommendationResponse response = request.getResponse();
@@ -116,6 +120,7 @@ public class AiRecommendationServiceImpl implements AiRecommendationService {
             }
         }
         planRepository.save(plan);
+        return AiSaveResponse.of(SUCCESS_CODE,SUCCESS_MESSAGE);
     }
 
 
