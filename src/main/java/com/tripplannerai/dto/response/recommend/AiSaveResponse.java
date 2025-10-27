@@ -15,6 +15,7 @@ public class AiSaveResponse {
 
 
     public static AiSaveResponse of(String code, String message) {
+
         return new AiSaveResponse(code, message);
     }
 }
